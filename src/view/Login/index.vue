@@ -1,11 +1,17 @@
 <script lang="ts" setup>
   import options from './options.vue';
+  import LoginForm from './login-form.vue';
+  import { maskVisible, gotoLogin } from './login';
 
-  const maskVisible = ref<boolean>(false);
-
-  const gotoLogin = () => {
-    maskVisible.value = true;
+  const loginWallPaperClick = (e: Event) => {
+    if ((e as KeyboardEvent).keyCode === 13) {
+      gotoLogin();
+    }
   };
+
+  onMounted(() => {
+    document.addEventListener('keydown', loginWallPaperClick);
+  });
 </script>
 
 <template>
@@ -16,10 +22,10 @@
         <div class="minute-second">20 : 26</div>
         <div class="date">10月15日，星期日</div>
       </div>
-      <options></options>
+      <options v-if="!maskVisible"></options>
     </section>
     <section class="mask" v-if="maskVisible">
-      <div class="login-wrapper">123456</div>
+      <login-form></login-form>
     </section>
   </div>
 </template>
@@ -67,40 +73,6 @@
       height: 100%;
       filter: blur(25px);
       backdrop-filter: blur(25px);
-    }
-
-    .login-wrapper {
-      position: absolute;
-      margin: auto;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      z-index: 2;
-      width: 500px;
-      height: 500px;
-      animation: slideIn 0.5s;
-      background-color: #000;
-    }
-  }
-
-  @keyframes slideOut {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(60px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
     }
   }
 </style>

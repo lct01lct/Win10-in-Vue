@@ -1,6 +1,4 @@
-<script lang="ts" setup>
-  console.log(1);
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <div>home</div>

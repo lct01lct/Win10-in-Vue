@@ -15,7 +15,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
 
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', 'vue'],
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
   },
 
   plugins: [vue(), AutoImport({ imports: ['vue'] })],
