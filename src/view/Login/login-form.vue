@@ -6,11 +6,14 @@
 
   let enterClickCount = 0; // 控制回车事件的计数器
 
-  const decorationClickHandler = (fn: Function) => {
+  const asyncSetCount = () => {
     setTimeout(() => {
       enterClickCount++;
     });
+  };
 
+  const decorationClickHandler = (fn: Function) => {
+    asyncSetCount();
     fn();
   };
 
@@ -19,9 +22,7 @@
       if (!(enterClickCount % 2)) {
         login();
 
-        setTimeout(() => {
-          enterClickCount++;
-        });
+        asyncSetCount();
       }
     }
   };
@@ -31,9 +32,7 @@
       if (enterClickCount % 2) {
         checkError();
 
-        setTimeout(() => {
-          enterClickCount++;
-        });
+        asyncSetCount();
       }
     }
   };
