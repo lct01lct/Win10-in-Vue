@@ -5,12 +5,11 @@ const loginIsSuccess = ref<boolean>(true);
 
 const loginForm = reactive({
   username: 'user',
-  password: '123456',
+  password: '12345',
 });
 
 const login = () => {
   if (checkLoginForm()) {
-    console.log(0);
     router.push({ name: 'Home' });
   } else {
     errorTipVisvible.value = true;

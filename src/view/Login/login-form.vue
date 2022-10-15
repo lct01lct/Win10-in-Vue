@@ -4,14 +4,43 @@
   import WinBtn from '../../plugin/Win10UI/WinBtn/index.vue';
   import Options from './options.vue';
 
+  let enterClickCount = 0; // 控制回车事件的计数器
+
+  const decorationClickHandler = (fn: Function) => {
+    setTimeout(() => {
+      enterClickCount++;
+    });
+
+    fn();
+  };
+
   const loginBtnClick = (e: Event) => {
     if ((e as KeyboardEvent).keyCode === 13) {
-      login();
+      if (!(enterClickCount % 2)) {
+        login();
+
+        setTimeout(() => {
+          enterClickCount++;
+        });
+      }
+    }
+  };
+
+  const checkErrorBtnClick = (e: Event) => {
+    if ((e as KeyboardEvent).keyCode === 13) {
+      if (enterClickCount % 2) {
+        checkError();
+
+        setTimeout(() => {
+          enterClickCount++;
+        });
+      }
     }
   };
 
   onMounted(() => {
     document.addEventListener('keydown', loginBtnClick);
+    document.addEventListener('keydown', checkErrorBtnClick);
   });
 </script>
 
@@ -24,7 +53,7 @@
     </div>
     <div class="password-ipt" v-if="loginIsSuccess">
       <input type="password" placeholder="密码" class="login-ipt" v-model="loginForm.password" />
-      <button class="login-btn" @click="login">
+      <button class="login-btn" @click="decorationClickHandler(login)">
         <Icon>
           <img src="@/assets/images/loginPage/right-arrow.svg" alt="" />
         </Icon>
@@ -36,7 +65,7 @@
     </div>
     <div class="passwordIsErrorTip" v-else>
       <span>密码不正确，请再试一次</span>
-      <WinBtn class="check-btn" @click="checkError">确认</WinBtn>
+      <WinBtn class="check-btn" @click="decorationClickHandler(checkError)">确认</WinBtn>
     </div>
   </div>
 </template>
