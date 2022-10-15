@@ -38,7 +38,10 @@
     }
   };
 
+  const passwordIptRef = ref<HTMLInputElement | null>(null);
+
   onMounted(() => {
+    passwordIptRef.value!.focus();
     document.addEventListener('keydown', loginBtnClick);
     document.addEventListener('keydown', checkErrorBtnClick);
   });
@@ -52,7 +55,13 @@
       <span class="username">user</span>
     </div>
     <div class="password-ipt" v-if="loginIsSuccess">
-      <input type="password" placeholder="密码" class="login-ipt" v-model="loginForm.password" />
+      <input
+        type="password"
+        placeholder="密码"
+        class="login-ipt"
+        v-model="loginForm.password"
+        ref="passwordIptRef"
+      />
       <button class="login-btn" @click="decorationClickHandler(login)">
         <Icon>
           <img src="@/assets/images/loginPage/right-arrow.svg" alt="" />

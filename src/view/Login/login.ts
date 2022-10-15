@@ -26,6 +26,10 @@ const checkLoginForm = (): boolean => {
 
 const checkError = () => {
   loginIsSuccess.value = true;
+
+  setTimeout(() => {
+    (document.getElementsByClassName('login-ipt')[0] as HTMLElement).focus();
+  });
 };
 
 const maskVisible = ref<boolean>(false);
