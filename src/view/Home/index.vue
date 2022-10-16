@@ -1,7 +1,13 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import DeskTop from './DeskTop/index.vue';
+  import TaskBar from './TaskBar/index.vue';
+</script>
 
 <template>
-  <div>home</div>
+  <div class="home-wrapper">
+    <DeskTop></DeskTop>
+    <TaskBar></TaskBar>
+  </div>
 </template>
 
 <style scoped></style>
