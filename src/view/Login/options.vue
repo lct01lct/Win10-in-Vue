@@ -1,11 +1,15 @@
 <script lang="ts" setup>
   import Icon from '@/components/Icon/index.vue';
   import { maskVisible } from './login';
+
+  const showdown = () => {
+    location.reload();
+  };
 </script>
 
 <template>
   <div class="options-wrapper">
-    <div class="options-btn shutdown-btn">
+    <div class="options-btn wifi-btn">
       <Icon>
         <img src="../../assets/images/loginPage/wifi.png" alt="" />
       </Icon>
@@ -15,7 +19,7 @@
         <img src="../../assets/images/loginPage/RestartTonight_80_contrast-black.png" alt="" />
       </Icon>
     </div>
-    <div class="options-btn wifi-btn">
+    <div class="options-btn shutdown-btn" @click="showdown">
       <Icon>
         <img src="../../assets/images/loginPage/RestartNowPower_80.png" alt="" />
       </Icon>

@@ -2,6 +2,7 @@
   import options from './options.vue';
   import LoginForm from './login-form.vue';
   import { maskVisible, gotoLogin } from './login';
+  import { hour, minute, month, date, day } from '@/share/time';
 
   const loginWallPaperClick = (e: Event) => {
     if ((e as KeyboardEvent).keyCode === 13) {
@@ -19,8 +20,8 @@
     <section class="login-wallpaper-wrapper" @click="gotoLogin">
       <img src="@/assets/images/loginPage/login-bg.jpg" alt="" id="login-wallpaper" />
       <div class="clock-wrapper" v-if="!maskVisible">
-        <div class="minute-second">20 : 26</div>
-        <div class="date">10月15日，星期日</div>
+        <div class="minute-second">{{ hour }} : {{ minute }}</div>
+        <div class="date">{{ month }}月{{ date }}日，{{ day }}</div>
       </div>
       <options v-if="!maskVisible"></options>
     </section>
