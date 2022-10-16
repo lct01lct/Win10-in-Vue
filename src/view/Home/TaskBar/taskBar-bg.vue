@@ -1,32 +1,7 @@
 <script lang="ts" setup>
   import Icon from '@/components/Icon/index.vue';
   import { hour, minute, year, month, date } from '@/share/time';
-
-  const systemTaskIconList = [
-    {
-      tp: '/src/assets/images/homePage/taskBar-img/up-arrow.png',
-      className: 'sougou',
-    },
-    {
-      tp: '/src/assets/images/homePage/taskBar-img/power.png',
-      className: 'sougou',
-    },
-    {
-      tp: '/src/assets/images/homePage/taskBar-img/wifi.png',
-      className: 'sougou',
-    },
-    {
-      tp: '/src/assets/images/homePage/taskBar-img/volume.png',
-      className: 'sougou',
-    },
-    {
-      className: 'Chinese',
-    },
-    {
-      tp: '/src/assets/images/homePage/taskBar-img/sougou.png',
-      className: 'sougou',
-    },
-  ];
+  import { systemTaskIconList } from './taskBar-bg';
 </script>
 
 <template>
@@ -63,12 +38,16 @@
       }
     }
     .system-task {
+      box-sizing: content-box;
       height: 50px;
       text-align: center;
       line-height: 50px;
       > .icon {
-        margin-top: 5px;
         margin-left: 2px;
+        > img {
+          display: block;
+          margin-top: 17px;
+        }
       }
     }
     .back-deskTop-item {
@@ -85,8 +64,11 @@
       height: 50px;
       line-height: 50px;
       > .icon {
-        margin-top: 6px;
         margin-left: 8px;
+        > img {
+          display: block;
+          margin-top: 17px;
+        }
       }
     }
     .time-task {
