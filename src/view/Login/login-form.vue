@@ -1,7 +1,13 @@
 <script lang="ts" setup>
   import Icon from '@/components/Icon/index.vue';
-  import { errorTipVisvible, login, loginForm, loginIsSuccess, checkError } from './login';
-  import WinBtn from '../../plugin/Win10UI/WinBtn/index.vue';
+  import {
+    errorTipVisvible,
+    login,
+    loginForm,
+    loginIsSuccess,
+    checkError,
+    username,
+  } from './login';
   import Options from './options.vue';
 
   let enterClickCount = 0; // 控制回车事件的计数器
@@ -51,7 +57,7 @@
     <options class="options-wrapper"></options>
     <div class="avatar-wrapper">
       <img src="@/assets/images/loginPage/user.png" alt="" class="avatar-img" />
-      <span class="username">user</span>
+      <span class="username">{{ username }}</span>
     </div>
     <div class="password-ipt" v-if="loginIsSuccess">
       <input

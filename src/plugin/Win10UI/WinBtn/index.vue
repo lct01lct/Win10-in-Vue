@@ -1,5 +1,11 @@
 <script lang="ts" setup></script>
 
+<script>
+  export default {
+    name: 'WinBtn',
+  };
+</script>
+
 <template>
   <button>
     <slot></slot>

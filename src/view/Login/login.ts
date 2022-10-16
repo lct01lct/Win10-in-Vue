@@ -1,11 +1,13 @@
 import router from '@/router';
+import useUserStore from '@/store/user';
+const { username, password } = toRefs(useUserStore());
 
 const errorTipVisvible = ref<boolean>(false);
 const loginIsSuccess = ref<boolean>(true);
 
 const loginForm = reactive({
-  username: 'user',
-  password: '12345',
+  username: username.value,
+  password: '123456',
 });
 
 const login = () => {
@@ -18,7 +20,7 @@ const login = () => {
 };
 
 const checkLoginForm = (): boolean => {
-  if (loginForm.password === '123456' && loginForm.username === 'user') {
+  if (loginForm.password === password.value && loginForm.username === username.value) {
     return true;
   }
   return false;
@@ -38,4 +40,13 @@ const gotoLogin = () => {
   maskVisible.value = true;
 };
 
-export { errorTipVisvible, login, loginForm, loginIsSuccess, checkError, maskVisible, gotoLogin };
+export {
+  errorTipVisvible,
+  login,
+  loginForm,
+  loginIsSuccess,
+  checkError,
+  maskVisible,
+  gotoLogin,
+  username,
+};
