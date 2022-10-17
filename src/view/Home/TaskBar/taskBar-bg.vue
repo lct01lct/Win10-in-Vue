@@ -3,23 +3,29 @@
   import { hour, minute, year, month, date } from '@/share/time';
   import { systemTaskIconList } from './taskBar-bg';
   import Popover from '@/components/Popover/index.vue';
+  import MessageTask from './task-bg-item/mess-task.vue';
 </script>
 
 <template>
   <div class="background-task-wrapper">
-    <div class="system-task task-bg-item" v-for="item in systemTaskIconList" :key="item.className">
-      <Icon :width="18" :height="18" v-if="item.tp">
-        <img :src="item.tp" alt="" />
-      </Icon>
-      <div v-else style="font-size: 17px; color: #fff">英</div>
-    </div>
+    <Popover v-for="item in systemTaskIconList" :key="item.className">
+      <component :is="item.comp"></component>
+      <template #reference>
+        <div class="system-task task-bg-item">
+          <Icon :width="18" :height="18" v-if="item.tp">
+            <img :src="item.tp" alt="" />
+          </Icon>
+          <div v-else style="font-size: 17px; color: #fff">英</div>
+        </div>
+      </template>
+    </Popover>
     <div class="time-task task-bg-item">
       <span>{{ hour }}:{{ minute }}</span>
       <span>{{ year }}-{{ month }}-{{ date }}</span>
     </div>
 
     <Popover>
-      <div>1</div>
+      <MessageTask></MessageTask>
       <template #reference>
         <div class="message-task task-bg-item">
           <Icon :width="20" :height="20">

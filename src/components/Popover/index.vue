@@ -12,7 +12,7 @@
 
 <template>
   <div class="popover-wrapper" @click.stop>
-    <div class="reference-container">
+    <div class="target-container">
       <slot v-if="visible"></slot>
     </div>
     <div @click="referenceClickHandler" class="popover-reference">
