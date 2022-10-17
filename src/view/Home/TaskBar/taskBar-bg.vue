@@ -8,7 +8,7 @@
 
 <template>
   <div class="background-task-wrapper">
-    <Popover v-for="item in systemTaskIconList" :key="item.className">
+    <Popover v-for="item in systemTaskIconList" :key="item.className" trigger-type="contextmenu">
       <component :is="item.comp"></component>
       <template #reference>
         <div class="system-task task-bg-item">

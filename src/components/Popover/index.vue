@@ -1,21 +1,58 @@
 <script lang="ts" setup>
-  const visible = ref<boolean>(false);
+  import PopoverContent from './Popover-content.vue';
+  import { whenTrigger } from './trigger';
+  import type { TriggerType } from './trigger';
 
-  document.addEventListener('click', () => {
-    visible.value = false;
+  const props = defineProps({
+    triggerType: {
+      type: String,
+      default: 'click',
+    },
   });
 
-  const referenceClickHandler = () => {
+  const triggerRef = ref<HTMLElement | null>(null);
+
+  const onClick = (e: Event) => {
+    whenTrigger(props.triggerType as TriggerType, 'click', () => {
+      toggle(e);
+    });
+  };
+
+  const onContextmenu = (e: Event) => {
+    whenTrigger(props.triggerType as TriggerType, 'contextmenu', () => {
+      toggle(e);
+    });
+  };
+
+  const visible = ref<boolean>(false);
+
+  const toggle = (e: Event) => {
     visible.value = !visible.value;
+  };
+
+  const setVisible = (isVisible: boolean) => {
+    visible.value = isVisible;
   };
 </script>
 
 <template>
-  <div class="popover-wrapper" @click.stop>
+  <div class="popover-wrapper">
     <div class="target-container">
-      <slot v-if="visible"></slot>
+      <PopoverContent
+        :setVisible="setVisible"
+        v-if="visible"
+        :triggerRef="triggerRef!"
+        :triggerType="triggerType"
+      >
+        <slot></slot>
+      </PopoverContent>
     </div>
-    <div @click="referenceClickHandler" class="popover-reference">
+    <div
+      @click="onClick($event)"
+      class="popover-reference"
+      ref="triggerRef"
+      @contextmenu="onContextmenu($event)"
+    >
       <template v-if="$slots.reference">
         <slot name="reference"></slot>
       </template>
