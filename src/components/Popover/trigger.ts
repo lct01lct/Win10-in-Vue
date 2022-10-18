@@ -1,22 +1,47 @@
+import { PropType } from 'vue';
+
 export type TriggerType = 'click' | 'contextmenu';
-const triggerTypes = ['click', 'contextmenu'];
+export const triggerTypes = ['click', 'contextmenu'];
 
-const visible = ref<boolean>(false);
+export type AnimationDir = 'top' | 'bottom' | 'left' | 'right';
+export const animationDirs = ['top', 'bottom', 'left', 'right'];
 
-const hideContent = () => {
-  visible.value = false;
+export type Pos = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+export const posList = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+
+export const usePopoverProps = {
+  // 触发方式
+  triggerType: {
+    type: String as PropType<TriggerType>,
+    default: 'click',
+    validator(value: string) {
+      return triggerTypes.includes(value);
+    },
+  },
+
+  // 动画指向方向
+  animationDir: {
+    type: String as PropType<AnimationDir>,
+    default: 'top',
+    validator(value: string) {
+      return animationDirs.includes(value);
+    },
+  },
+
+  // 定位位置
+  pos: {
+    type: String as PropType<Pos>,
+    default: 'top-left',
+    validator(value: string) {
+      return posList.includes(value);
+    },
+  },
 };
 
-const toggle = () => {
-  visible.value = !visible.value;
-};
-
-const whenTrigger = (type: TriggerType, triggerType: TriggerType, handler: () => void) => {
+export const whenTrigger = (type: TriggerType, triggerType: TriggerType, handler: () => void) => {
   if (triggerTypes.includes(type)) {
     type === triggerType && handler();
   } else {
     console.warn('invalid trigger-type');
   }
 };
-
-export { visible, hideContent, toggle, whenTrigger };

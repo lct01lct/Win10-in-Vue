@@ -1,14 +1,9 @@
 <script lang="ts" setup>
   import PopoverContent from './Popover-content.vue';
-  import { whenTrigger } from './trigger';
+  import { whenTrigger, usePopoverProps } from './trigger';
   import type { TriggerType } from './trigger';
 
-  const props = defineProps({
-    triggerType: {
-      type: String,
-      default: 'click',
-    },
-  });
+  const props = defineProps(usePopoverProps);
 
   const triggerRef = ref<HTMLElement | null>(null);
 
@@ -33,20 +28,23 @@
   const setVisible = (isVisible: boolean) => {
     visible.value = isVisible;
   };
+
+  provide('pos', props.pos);
+  provide('animationDir', props.animationDir);
+  provide('a', ref(0));
 </script>
 
 <template>
   <div class="popover-wrapper">
-    <div class="target-container">
-      <PopoverContent
-        :setVisible="setVisible"
-        v-if="visible"
-        :triggerRef="triggerRef!"
-        :triggerType="triggerType"
-      >
-        <slot></slot>
-      </PopoverContent>
-    </div>
+    <PopoverContent
+      :setVisible="setVisible"
+      v-if="visible"
+      :triggerRef="triggerRef!"
+      :triggerType="triggerType"
+    >
+      <slot></slot>
+    </PopoverContent>
+
     <div
       @click="onClick($event)"
       class="popover-reference"

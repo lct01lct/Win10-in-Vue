@@ -20,8 +20,6 @@
     const res =
       (props.triggerRef && props.triggerRef!.contains(tar)) ||
       (contentRef.value && contentRef.value!.contains(tar));
-
-    console.log(contentRef.value);
     if (res) {
       e.stopPropagation();
     } else {
@@ -38,12 +36,35 @@
     document.removeEventListener('click', hideContent);
     document.removeEventListener('contextmenu', hideContent);
   });
+
+  onMounted(() => {
+    const oContent = contentRef.value!;
+    const computedStyle = window.getComputedStyle(oContent, null);
+    const oContentWidth = parseInt(computedStyle.width);
+    const oContentHeight = parseInt(computedStyle.height);
+    topPos.value = oContentHeight;
+    // todo
+    bottomPos.value = 1;
+  });
+
+  const topPos = ref<number>(0);
+  const bottomPos = ref<number>(0);
+  const leftPos = ref<number>(0);
+  const rightPos = ref<number>(0);
+
+  const pos = inject('pos');
+  const animationDir = inject('animationDir');
 </script>
 
 <template>
-  <div ref="contentRef">
+  <div ref="contentRef" class="content-wrapper" :style="`top: -${topPos}px`">
     <slot></slot>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+  .content-wrapper {
+    position: absolute;
+    // top: -50px;
+  }
+</style>
