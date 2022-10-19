@@ -6,8 +6,8 @@ export const triggerTypes = ['click', 'contextmenu'];
 export type AnimationDir = 'top' | 'bottom' | 'left' | 'right';
 export const animationDirs = ['top', 'bottom', 'left', 'right'];
 
-export type Pos = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-export const posList = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+export type Pos = 'top' | 'bottom' | 'left' | 'right';
+export const posList = ['top', 'bottom', 'left', 'right'];
 
 export const usePopoverProps = {
   // 触发方式
@@ -31,10 +31,20 @@ export const usePopoverProps = {
   // 定位位置
   pos: {
     type: String as PropType<Pos>,
-    default: 'top-left',
+    default: 'top',
     validator(value: string) {
       return posList.includes(value);
     },
+  },
+
+  leftMargin: {
+    type: Number,
+    default: 0,
+  },
+
+  topMargin: {
+    type: Number,
+    default: 0,
   },
 };
 

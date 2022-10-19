@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import { AnimationDir, Pos } from './trigger';
+
   const props = defineProps({
     triggerRef: { type: Object },
     setVisible: {
@@ -37,27 +39,55 @@
     document.removeEventListener('contextmenu', hideContent);
   });
 
+  const pos: Pos = inject('pos')!;
+  const animationDir: AnimationDir = inject('animationDir')!;
+  const leftMargin: number = inject('left-margin')!;
+  const topMargin: number = inject('top-margin')!;
+
+  const oContentWidth = ref<number>(0);
+  const oContentHeight = ref<number>(0);
+  const oTriggerWidth = ref<number>(0);
+  const oTriggerHeight = ref<number>(0);
+
   onMounted(() => {
     const oContent = contentRef.value!;
-    const computedStyle = window.getComputedStyle(oContent, null);
-    const oContentWidth = parseInt(computedStyle.width);
-    const oContentHeight = parseInt(computedStyle.height);
-    topPos.value = oContentHeight;
-    // todo
-    bottomPos.value = 1;
+    const oTrigger = props.triggerRef! as HTMLElement;
+
+    const computedStyleOfContent = window.getComputedStyle(oContent, null);
+    const computedStyledofTrigger = window.getComputedStyle(oTrigger, null);
+
+    oContentWidth.value = parseInt(computedStyleOfContent.width);
+    oContentHeight.value = parseInt(computedStyleOfContent.height);
+    oTriggerWidth.value = parseInt(computedStyledofTrigger.width);
+    oTriggerHeight.value = parseInt(computedStyledofTrigger.height);
   });
 
-  const topPos = ref<number>(0);
-  const bottomPos = ref<number>(0);
-  const leftPos = ref<number>(0);
-  const rightPos = ref<number>(0);
+  const getStyle = (pos: Pos): string => {
+    let styleStr: string = '';
 
-  const pos = inject('pos');
-  const animationDir = inject('animationDir');
+    switch (pos) {
+      case 'top':
+        styleStr = `left: ${leftMargin}px; top: -${oContentHeight.value + topMargin}px;`;
+        break;
+      case 'bottom':
+        styleStr = `left: ${leftMargin}px; top: ${oTriggerHeight.value + topMargin}px;`;
+        break;
+      case 'left':
+        styleStr = `left: ${oTriggerWidth.value + leftMargin}px; top: ${topMargin}px;`;
+        break;
+      case `right`:
+        styleStr = `left: -${oContentWidth.value + leftMargin}px; top: ${topMargin}px;`;
+        break;
+      default:
+        break;
+    }
+    console.log(styleStr);
+    return styleStr;
+  };
 </script>
 
 <template>
-  <div ref="contentRef" class="content-wrapper" :style="`top: -${topPos}px`">
+  <div ref="contentRef" class="content-wrapper" :style="getStyle(pos)">
     <slot></slot>
   </div>
 </template>

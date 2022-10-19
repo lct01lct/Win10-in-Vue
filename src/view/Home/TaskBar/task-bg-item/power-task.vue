@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <div style="color: #fff">1</div>
+  <div>1</div>
 </template>
 
 <style scoped></style>

@@ -31,7 +31,8 @@
 
   provide('pos', props.pos);
   provide('animationDir', props.animationDir);
-  provide('a', ref(0));
+  provide('left-margin', props.leftMargin);
+  provide('top-margin', props.topMargin);
 </script>
 
 <template>
