@@ -22,7 +22,6 @@ export const usePopoverProps = {
   // 动画指向方向
   animationDir: {
     type: String as PropType<AnimationDir>,
-    default: 'top',
     validator(value: string) {
       return animationDirs.includes(value);
     },

@@ -2,6 +2,7 @@
   import PopoverContent from './Popover-content.vue';
   import { whenTrigger, usePopoverProps } from './trigger';
   import type { TriggerType } from './trigger';
+  import './slide-animation.scss';
 
   const props = defineProps(usePopoverProps);
 
@@ -30,21 +31,22 @@
   };
 
   provide('pos', props.pos);
-  provide('animationDir', props.animationDir);
   provide('left-margin', props.leftMargin);
   provide('top-margin', props.topMargin);
 </script>
 
 <template>
   <div class="popover-wrapper">
-    <PopoverContent
-      :setVisible="setVisible"
-      v-if="visible"
-      :triggerRef="triggerRef!"
-      :triggerType="triggerType"
-    >
-      <slot></slot>
-    </PopoverContent>
+    <Transition :name="props.animationDir ? `slide-${animationDir}` : 'none'">
+      <PopoverContent
+        :setVisible="setVisible"
+        v-if="visible"
+        :triggerRef="triggerRef!"
+        :triggerType="triggerType"
+      >
+        <slot></slot>
+      </PopoverContent>
+    </Transition>
 
     <div
       @click="onClick($event)"

@@ -15,5 +15,6 @@
     width: 500px;
     height: 704px;
     background-color: #3d3d3d;
+    opacity: 0.9;
   }
 </style>

@@ -24,7 +24,7 @@
       <span>{{ year }}-{{ month }}-{{ date }}</span>
     </div>
 
-    <Popover :left-margin="-458">
+    <Popover :left-margin="-458" animation-dir="left">
       <MessageTask></MessageTask>
       <template #reference>
         <div class="message-task task-bg-item">

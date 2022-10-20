@@ -17,6 +17,7 @@
 
   const contentRef = ref<HTMLElement | null>(null);
 
+  // 互斥原理
   const hideContent = (e: Event) => {
     const tar = e.target as HTMLElement;
     const res =
@@ -39,10 +40,10 @@
     document.removeEventListener('contextmenu', hideContent);
   });
 
+  // 定位原理
   const pos: Pos = inject('pos')!;
-  const animationDir: AnimationDir = inject('animationDir')!;
-  const leftMargin: number = inject('left-margin')!;
-  const topMargin: number = inject('top-margin')!;
+  const leftMargin = inject<number>('left-margin')!;
+  const topMargin = inject<number>('top-margin')!;
 
   const oContentWidth = ref<number>(0);
   const oContentHeight = ref<number>(0);
@@ -81,7 +82,6 @@
       default:
         break;
     }
-    console.log(styleStr);
     return styleStr;
   };
 </script>
@@ -95,6 +95,5 @@
 <style scoped lang="scss">
   .content-wrapper {
     position: absolute;
-    // top: -50px;
   }
 </style>
