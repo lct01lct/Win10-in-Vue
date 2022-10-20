@@ -1,10 +1,10 @@
 <script lang="ts" setup>
   import PopoverContent from './Popover-content.vue';
-  import { whenTrigger, usePopoverProps } from './trigger';
+  import { whenTrigger, PopoverProps, PopoverEmits, setIsAnimate } from './trigger';
   import type { TriggerType } from './trigger';
   import './slide-animation.scss';
 
-  const props = defineProps(usePopoverProps);
+  const props = defineProps(PopoverProps);
 
   const triggerRef = ref<HTMLElement | null>(null);
 
@@ -33,11 +33,39 @@
   provide('pos', props.pos);
   provide('left-margin', props.leftMargin);
   provide('top-margin', props.topMargin);
+
+  const emits = defineEmits(PopoverEmits);
+
+  const beforeEnter = () => {
+    props.animationDir && setIsAnimate(false);
+    emits('onBeforeEnter');
+  };
+
+  const afterEnter = () => {
+    props.animationDir && setIsAnimate(true);
+    emits('onAfterEnter');
+  };
+
+  const beforeLeave = () => {
+    props.animationDir && setIsAnimate(false);
+    emits('onBeforeEnter');
+  };
+
+  const afterLeave = () => {
+    props.animationDir && setIsAnimate(true);
+    emits('onAfterLeave');
+  };
 </script>
 
 <template>
   <div class="popover-wrapper">
-    <Transition :name="props.animationDir ? `slide-${animationDir}` : 'none'">
+    <Transition
+      :name="props.animationDir ? `slide-${animationDir}` : 'none'"
+      @beforeEnter="beforeEnter"
+      @afterEnter="afterEnter"
+      @beforeLeave="beforeLeave"
+      @afterLeave="afterLeave"
+    >
       <PopoverContent
         :setVisible="setVisible"
         v-if="visible"

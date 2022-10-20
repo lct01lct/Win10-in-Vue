@@ -9,7 +9,7 @@ export const animationDirs = ['top', 'bottom', 'left', 'right'];
 export type Pos = 'top' | 'bottom' | 'left' | 'right';
 export const posList = ['top', 'bottom', 'left', 'right'];
 
-export const usePopoverProps = {
+export const PopoverProps = {
   // 触发方式
   triggerType: {
     type: String as PropType<TriggerType>,
@@ -47,10 +47,24 @@ export const usePopoverProps = {
   },
 };
 
+type EmitType = 'onBeforeEnter' | 'onAfterEnter' | 'onBeforeLeave' | 'onAfterLeave';
+export const PopoverEmits: EmitType[] = [
+  'onBeforeEnter',
+  'onAfterEnter',
+  'onBeforeLeave',
+  'onAfterLeave',
+];
+
 export const whenTrigger = (type: TriggerType, triggerType: TriggerType, handler: () => void) => {
   if (triggerTypes.includes(type)) {
     type === triggerType && handler();
   } else {
     console.warn('invalid trigger-type');
   }
+};
+
+export let isAnimate = false;
+
+export const setIsAnimate = (is: boolean) => {
+  isAnimate = is;
 };

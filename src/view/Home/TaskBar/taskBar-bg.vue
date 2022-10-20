@@ -19,27 +19,29 @@
         </div>
       </template>
     </Popover>
-    <div class="time-task task-bg-item">
-      <span>{{ hour }}:{{ minute }}</span>
-      <span>{{ year }}-{{ month }}-{{ date }}</span>
-    </div>
-
-    <Popover :left-margin="-458" animation-dir="left">
-      <MessageTask></MessageTask>
+    <Popover :left-margin="-300">
+      <div class="test-container"></div>
       <template #reference>
-        <div class="message-task task-bg-item">
-          <Icon :width="20" :height="20">
-            <img src="@/assets/images/homePage/taskBar-img/message.svg" />
-          </Icon>
+        <div class="time-task task-bg-item">
+          <span>{{ hour }}:{{ minute }}</span>
+          <span>{{ year }}-{{ month }}-{{ date }}</span>
         </div>
       </template>
     </Popover>
+
+    <MessageTask></MessageTask>
 
     <div class="back-deskTop-item"></div>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  .test-container {
+    width: 500px;
+    height: 704px;
+    background-color: #3d3d3d;
+    opacity: 0.9;
+  }
   .background-task-wrapper {
     display: flex;
     align-items: center;
@@ -66,9 +68,7 @@
         background-color: #373838;
       }
     }
-    .message-task {
-      width: 36px;
-    }
+
     .time-task {
       display: flex;
       flex-direction: column;
