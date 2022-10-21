@@ -63,8 +63,4 @@ export const whenTrigger = (type: TriggerType, triggerType: TriggerType, handler
   }
 };
 
-export let isAnimate = false;
-
-export const setIsAnimate = (is: boolean) => {
-  isAnimate = is;
-};
+export const animQueue: any[] = [];

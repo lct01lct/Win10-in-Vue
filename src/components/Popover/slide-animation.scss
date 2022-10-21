@@ -43,8 +43,12 @@
 }
 
 // top
+// .slide-top-enter-to {
+//   width: 0;
+// }
+
 .slide-top-leave-to {
-  transform: translateY(-100%);
+  transform: translateY(100%);
 }
 
 .slide-top-leave-active {
@@ -57,7 +61,7 @@
 
 @keyframes slide-top-in {
   0% {
-    transform: translateY(-100%);
+    transform: translateY(100%);
   }
   100% {
     transform: translateY(0);
@@ -66,7 +70,7 @@
 
 // bottom
 .slide-bottom-leave-to {
-  transform: translateY(100%);
+  transform: translateY(-100%);
 }
 
 .slide-bottom-leave-active {
@@ -79,7 +83,7 @@
 
 @keyframes slide-bottom-in {
   0% {
-    transform: translateY(100%);
+    transform: translateY(-100%);
   }
   100% {
     transform: translateY(0);

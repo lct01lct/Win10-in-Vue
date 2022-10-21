@@ -19,7 +19,7 @@
         </div>
       </template>
     </Popover>
-    <Popover :left-margin="-300">
+    <Popover :left-margin="-300" animation-dir="top">
       <div class="test-container"></div>
       <template #reference>
         <div class="time-task task-bg-item">

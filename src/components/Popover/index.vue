@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import PopoverContent from './Popover-content.vue';
-  import { whenTrigger, PopoverProps, PopoverEmits, setIsAnimate } from './trigger';
+  import { whenTrigger, PopoverProps, PopoverEmits, animQueue } from './trigger';
   import type { TriggerType } from './trigger';
   import './slide-animation.scss';
 
@@ -37,22 +37,25 @@
   const emits = defineEmits(PopoverEmits);
 
   const beforeEnter = () => {
-    props.animationDir && setIsAnimate(false);
     emits('onBeforeEnter');
+
+    if (animQueue.length) {
+    }
+
+    if (props.animationDir) {
+      animQueue.push(true);
+    }
   };
 
   const afterEnter = () => {
-    props.animationDir && setIsAnimate(true);
     emits('onAfterEnter');
   };
 
   const beforeLeave = () => {
-    props.animationDir && setIsAnimate(false);
     emits('onBeforeEnter');
   };
 
   const afterLeave = () => {
-    props.animationDir && setIsAnimate(true);
     emits('onAfterLeave');
   };
 </script>
@@ -65,6 +68,7 @@
       @afterEnter="afterEnter"
       @beforeLeave="beforeLeave"
       @afterLeave="afterLeave"
+      appear
     >
       <PopoverContent
         :setVisible="setVisible"
@@ -92,10 +96,5 @@
 <style scoped lang="scss">
   .popover-wrapper {
     position: relative;
-    .reference-container {
-      position: absolute;
-      top: -40px;
-      left: 10px;
-    }
   }
 </style>

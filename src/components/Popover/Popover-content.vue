@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { isAnimate, Pos } from './trigger';
+  import { Pos } from './trigger';
 
   const props = defineProps({
     triggerRef: { type: Object },
@@ -26,13 +26,7 @@
     if (res) {
       e.stopPropagation();
     } else {
-      if (isAnimate) {
-        setTimeout(() => {
-          setVisible(false);
-        }, 300);
-      } else {
-        setVisible(false);
-      }
+      setVisible(false);
     }
   };
 

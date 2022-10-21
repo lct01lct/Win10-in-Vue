@@ -16,6 +16,7 @@
   .taskBar-wrapper {
     display: flex;
     position: absolute;
+    z-index: 9999;
     justify-content: space-between;
     bottom: 0;
     width: 100%;
