@@ -95,5 +95,6 @@
 <style scoped lang="scss">
   .content-wrapper {
     position: absolute;
+    z-index: -1;
   }
 </style>

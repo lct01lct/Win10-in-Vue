@@ -43,28 +43,26 @@
 }
 
 // top
-// .slide-top-enter-to {
-//   width: 0;
-// }
-
 .slide-top-leave-to {
   transform: translateY(100%);
 }
 
 .slide-top-leave-active {
-  transition: all 0.3s ease-out;
+  transition: all 0.1s ease-out;
 }
 
 .slide-top-enter-active {
-  animation: slide-top-in 0.3s;
+  animation: slide-top-in 0.2s;
 }
 
 @keyframes slide-top-in {
   0% {
     transform: translateY(100%);
+    opacity: 0.5;
   }
   100% {
     transform: translateY(0);
+    opacity: 1;
   }
 }
 

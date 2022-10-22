@@ -96,5 +96,6 @@
 <style scoped lang="scss">
   .popover-wrapper {
     position: relative;
+    z-index: auto;
   }
 </style>
