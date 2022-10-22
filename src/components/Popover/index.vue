@@ -44,13 +44,13 @@
     emits('onBeforeEnter');
 
     nextTick(() => {
-      beforeEnterAnimeHandler(el, props.animationDir);
+      props.animationDir && beforeEnterAnimeHandler(el, props.animationDir);
     });
   };
 
   const enter = (el: HTMLElement, done: any) => {
     nextTick(() => {
-      enterAnimeHandler(el, props.animationDir, done);
+      props.animationDir && enterAnimeHandler(el, props.animationDir, done);
     });
   };
 
@@ -63,7 +63,11 @@
   };
 
   const leave = (el: HTMLElement, done: any) => {
-    LeaveAnimeHandler(el, props.animationDir, done);
+    if (props.animationDir) {
+      LeaveAnimeHandler(el, props.animationDir, done);
+    } else {
+      done();
+    }
   };
 
   const afterLeave = () => {

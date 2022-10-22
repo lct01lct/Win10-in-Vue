@@ -22,15 +22,12 @@ const beforeEnterAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined)
 };
 
 const enterAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined, done: any) => {
-  const styles = getOffset(el);
-
   const animeOpt = {
     targets: el,
     easing: 'easeInOutExpo',
     duration: 300,
     complete: done,
   };
-
   const tmp = {} as { translateY: number; translateX: number };
 
   switch (dir) {
