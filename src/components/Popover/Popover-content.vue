@@ -87,13 +87,13 @@
 </script>
 
 <template>
-  <div ref="contentRef" class="content-wrapper" :style="getStyle(pos)">
+  <div ref="contentRef" class="popover-content-wrapper" :style="getStyle(pos)">
     <slot></slot>
   </div>
 </template>
 
 <style scoped lang="scss">
-  .content-wrapper {
+  .popover-content-wrapper {
     position: absolute;
     z-index: -1;
   }

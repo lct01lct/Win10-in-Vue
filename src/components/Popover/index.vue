@@ -2,7 +2,7 @@
   import PopoverContent from './Popover-content.vue';
   import { whenTrigger, PopoverProps, PopoverEmits, animQueue } from './trigger';
   import type { TriggerType } from './trigger';
-  import './slide-animation.scss';
+  import { beforeEnterAnimeHandler, enterAnimeHandler, LeaveAnimeHandler } from './animate';
 
   const props = defineProps(PopoverProps);
 
@@ -36,23 +36,34 @@
 
   const emits = defineEmits(PopoverEmits);
 
-  const beforeEnter = () => {
+  const cbIsAnim = (fn: Function) => {
+    props.animationDir && fn();
+  };
+
+  const beforeEnter = (el: HTMLElement) => {
     emits('onBeforeEnter');
 
-    if (animQueue.length) {
-    }
+    nextTick(() => {
+      beforeEnterAnimeHandler(el, props.animationDir);
+    });
+  };
 
-    if (props.animationDir) {
-      animQueue.push(true);
-    }
+  const enter = (el: HTMLElement, done: any) => {
+    nextTick(() => {
+      enterAnimeHandler(el, props.animationDir, done);
+    });
   };
 
   const afterEnter = () => {
     emits('onAfterEnter');
   };
 
-  const beforeLeave = () => {
-    emits('onBeforeEnter');
+  const beforeLeave = (el: HTMLElement) => {
+    emits('onBeforeLeave');
+  };
+
+  const leave = (el: HTMLElement, done: any) => {
+    LeaveAnimeHandler(el, props.animationDir, done);
   };
 
   const afterLeave = () => {
@@ -63,11 +74,13 @@
 <template>
   <div class="popover-wrapper">
     <Transition
-      :name="props.animationDir ? `slide-${animationDir}` : 'none'"
       @beforeEnter="beforeEnter"
+      @enter="enter"
       @afterEnter="afterEnter"
       @beforeLeave="beforeLeave"
+      @leave="leave"
       @afterLeave="afterLeave"
+      :css="false"
       appear
     >
       <PopoverContent
