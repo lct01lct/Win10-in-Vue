@@ -11,6 +11,9 @@
       type: String,
       default: 'click',
     },
+    popoverRef: {
+      type: HTMLElement,
+    },
   });
 
   const { setVisible } = props;
@@ -18,15 +21,22 @@
   const contentRef = ref<HTMLElement | null>(null);
 
   // 互斥原理
+  const _leave = inject<Function>('_leave')!;
+  let setClickCount = inject<Function>('set-click-count')!;
+
   const hideContent = (e: Event) => {
     const tar = e.target as HTMLElement;
     const res =
       (props.triggerRef && props.triggerRef!.contains(tar)) ||
       (contentRef.value && contentRef.value!.contains(tar));
+
     if (res) {
       e.stopPropagation();
     } else {
-      setVisible(false);
+      _leave(() => {
+        setVisible(false);
+        setClickCount(0);
+      });
     }
   };
 
@@ -51,43 +61,71 @@
   const oTriggerHeight = ref<number>(0);
 
   onMounted(() => {
+    const oWrap = document.createElement('div');
     const oContent = contentRef.value!;
     const oTrigger = props.triggerRef! as HTMLElement;
-
-    const computedStyleOfContent = window.getComputedStyle(oContent, null);
     const computedStyledofTrigger = window.getComputedStyle(oTrigger, null);
 
-    oContentWidth.value = parseInt(computedStyleOfContent.width);
-    oContentHeight.value = parseInt(computedStyleOfContent.height);
     oTriggerWidth.value = parseInt(computedStyledofTrigger.width);
     oTriggerHeight.value = parseInt(computedStyledofTrigger.height);
+
+    oWrap.className = 'popover-tmp-wrapper';
+    oWrap.style.overflow = 'hidden';
+    oWrap.style.position = 'absolute';
+
+    oWrap.appendChild(oContent);
+    props.popoverRef!.appendChild(oWrap);
+
+    setTimeout(() => {
+      const computedStyleOfContent = window.getComputedStyle(oContent, null);
+
+      oContentWidth.value = parseInt(computedStyleOfContent.width);
+      oContentHeight.value = parseInt(computedStyleOfContent.height);
+
+      oWrap.style.width = oContent.clientWidth + 'px';
+      oWrap.style.height = oContent.clientHeight + 'px';
+      const styles = getStyles(pos);
+
+      oWrap.style.left = `${styles.left}px`;
+      oWrap.style.top = `${styles.top}px`;
+    }, 0);
   });
 
-  const getStyle = (pos: Pos): string => {
-    let styleStr: string = '';
+  const getStyles = (pos: Pos) => {
+    let left: number = 0;
+    let top: number = 0;
 
     switch (pos) {
       case 'top':
-        styleStr = `left: ${leftMargin}px; top: -${oContentHeight.value + topMargin}px;`;
+        left = leftMargin;
+        top = -(oContentHeight.value + topMargin);
         break;
       case 'bottom':
-        styleStr = `left: ${leftMargin}px; top: ${oTriggerHeight.value + topMargin}px;`;
+        left = leftMargin;
+        top = oContentHeight.value + topMargin;
         break;
       case 'left':
-        styleStr = `left: ${oTriggerWidth.value + leftMargin}px; top: ${topMargin}px;`;
+        left = oTriggerWidth.value + leftMargin;
+        top = topMargin;
         break;
+
       case `right`:
-        styleStr = `left: -${oContentWidth.value + leftMargin}px; top: ${topMargin}px;`;
+        left = oContentWidth.value + leftMargin;
+        top = topMargin;
         break;
       default:
         break;
     }
-    return styleStr;
+
+    return {
+      left,
+      top,
+    };
   };
 </script>
 
 <template>
-  <div ref="contentRef" class="popover-content-wrapper" :style="getStyle(pos)">
+  <div ref="contentRef" class="popover-content-wrapper">
     <slot></slot>
   </div>
 </template>
@@ -95,6 +133,6 @@
 <style scoped lang="scss">
   .popover-content-wrapper {
     position: absolute;
-    z-index: -1;
+    z-index: 999;
   }
 </style>

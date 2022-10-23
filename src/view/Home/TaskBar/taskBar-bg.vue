@@ -1,9 +1,9 @@
 <script lang="ts" setup>
   import Icon from '@/components/Icon/index.vue';
-  import { hour, minute, year, month, date } from '@/share/time';
   import { systemTaskIconList } from './taskBar-bg';
   import Popover from '@/components/Popover/index.vue';
   import MessageTask from './task-bg-item/mess-task.vue';
+  import TimeTask from './task-bg-item/time-task.vue';
 </script>
 
 <template>
@@ -19,15 +19,8 @@
         </div>
       </template>
     </Popover>
-    <Popover :left-margin="-300" animation-dir="top">
-      <div class="test-container"></div>
-      <template #reference>
-        <div class="time-task task-bg-item">
-          <span>{{ hour }}:{{ minute }}</span>
-          <span>{{ year }}-{{ month }}-{{ date }}</span>
-        </div>
-      </template>
-    </Popover>
+
+    <TimeTask></TimeTask>
 
     <MessageTask></MessageTask>
 

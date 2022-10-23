@@ -8,21 +8,43 @@
 
   const triggerRef = ref<HTMLElement | null>(null);
 
+  let clickCount = 0;
+  const setClickCount = (num: number) => {
+    clickCount = num;
+  };
+
   const onClick = (e: Event) => {
     whenTrigger(props.triggerType as TriggerType, 'click', () => {
-      toggle(e);
+      if (clickCount % 2) {
+        _leave(toggle);
+      } else {
+        toggle();
+      }
+      clickCount++;
     });
+  };
+
+  const _leave = (cb: Function) => {
+    if (props.animationDir) {
+      LeaveAnimeHandler(
+        popoverRef.value!.querySelector('.popover-content-wrapper')!,
+        props.animationDir,
+        cb
+      );
+    } else {
+      cb();
+    }
   };
 
   const onContextmenu = (e: Event) => {
     whenTrigger(props.triggerType as TriggerType, 'contextmenu', () => {
-      toggle(e);
+      toggle();
     });
   };
 
   const visible = ref<boolean>(false);
 
-  const toggle = (e: Event) => {
+  const toggle = () => {
     visible.value = !visible.value;
   };
 
@@ -33,6 +55,8 @@
   provide('pos', props.pos);
   provide('left-margin', props.leftMargin);
   provide('top-margin', props.topMargin);
+  provide('_leave', _leave);
+  provide('set-click-count', setClickCount);
 
   const emits = defineEmits(PopoverEmits);
 
@@ -42,15 +66,15 @@
 
   const beforeEnter = (el: HTMLElement) => {
     emits('onBeforeEnter');
-
-    nextTick(() => {
+    setTimeout(() => {
       props.animationDir && beforeEnterAnimeHandler(el, props.animationDir);
     });
   };
 
   const enter = (el: HTMLElement, done: any) => {
-    nextTick(() => {
-      props.animationDir && enterAnimeHandler(el, props.animationDir, done);
+    setTimeout(() => {
+      props.animationDir && enterAnimeHandler(el, props.animationDir);
+      done();
     });
   };
 
@@ -58,25 +82,24 @@
     emits('onAfterEnter');
   };
 
-  const beforeLeave = (el: HTMLElement) => {
+  const beforeLeave = () => {
     emits('onBeforeLeave');
   };
 
   const leave = (el: HTMLElement, done: any) => {
-    if (props.animationDir) {
-      LeaveAnimeHandler(el, props.animationDir, done);
-    } else {
-      done();
-    }
+    done();
   };
 
   const afterLeave = () => {
     emits('onAfterLeave');
+    popoverRef.value!.querySelector('.popover-tmp-wrapper')!.remove();
   };
+
+  const popoverRef = ref<HTMLElement | null>(null);
 </script>
 
 <template>
-  <div class="popover-wrapper">
+  <div class="popover-wrapper" ref="popoverRef">
     <Transition
       @beforeEnter="beforeEnter"
       @enter="enter"
@@ -92,6 +115,7 @@
         v-if="visible"
         :triggerRef="triggerRef!"
         :triggerType="triggerType"
+        :popoverRef="popoverRef!"
       >
         <slot></slot>
       </PopoverContent>

@@ -21,12 +21,11 @@ const beforeEnterAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined)
   }
 };
 
-const enterAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined, done: any) => {
+const enterAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined) => {
   const animeOpt = {
     targets: el,
     easing: 'easeInOutExpo',
     duration: 300,
-    complete: done,
   };
   const tmp = {} as { translateY: number; translateX: number };
 
@@ -49,18 +48,19 @@ const enterAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined, done:
   anime(Object.assign(animeOpt, tmp));
 };
 
-const LeaveAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined, done: any) => {
+const LeaveAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined, done: Function) => {
   const styles = getOffset(el);
 
   const animeOpt = {
     targets: el,
     easing: 'easeInOutExpo',
     duration: 300,
-    complete: done,
+    complete() {
+      done();
+    },
   };
 
   const tmp = {} as { translateY: number; translateX: number };
-
   switch (dir) {
     case 'top':
       tmp.translateY = styles.height;
@@ -77,16 +77,16 @@ const LeaveAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined, done:
     default:
       break;
   }
+
   anime(Object.assign(animeOpt, tmp));
 };
 
 const getOffset = (el: HTMLElement): { width: number; height: number } => {
   const styles = window.getComputedStyle(el, null);
-
   return {
     width: parseInt(styles.width),
     height: parseInt(styles.height),
   };
 };
 
-export { beforeEnterAnimeHandler, enterAnimeHandler, LeaveAnimeHandler };
+export { beforeEnterAnimeHandler, enterAnimeHandler, LeaveAnimeHandler, getOffset };
