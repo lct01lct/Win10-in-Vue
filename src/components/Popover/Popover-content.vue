@@ -76,7 +76,7 @@
     oWrap.appendChild(oContent);
     props.popoverRef!.appendChild(oWrap);
 
-    setTimeout(() => {
+    nextTick(() => {
       const computedStyleOfContent = window.getComputedStyle(oContent, null);
 
       oContentWidth.value = parseInt(computedStyleOfContent.width);
@@ -88,7 +88,7 @@
 
       oWrap.style.left = `${styles.left}px`;
       oWrap.style.top = `${styles.top}px`;
-    }, 0);
+    });
   });
 
   const getStyles = (pos: Pos) => {

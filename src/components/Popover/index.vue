@@ -62,13 +62,13 @@
 
   const beforeEnter = (el: HTMLElement) => {
     emits('onBeforeEnter');
-    setTimeout(() => {
+    nextTick(() => {
       props.animationDir && beforeEnterAnimeHandler(el, props.animationDir);
     });
   };
 
   const enter = (el: HTMLElement, done: any) => {
-    setTimeout(() => {
+    nextTick(() => {
       props.animationDir && enterAnimeHandler(el, props.animationDir);
       done();
     });
