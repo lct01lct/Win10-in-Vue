@@ -13,7 +13,7 @@
     clickCount = num;
   };
 
-  const onClick = (e: Event) => {
+  const onClick = () => {
     whenTrigger(props.triggerType as TriggerType, 'click', () => {
       if (clickCount % 2) {
         _leave(toggle);
@@ -36,7 +36,7 @@
     }
   };
 
-  const onContextmenu = (e: Event) => {
+  const onContextmenu = () => {
     whenTrigger(props.triggerType as TriggerType, 'contextmenu', () => {
       toggle();
     });
@@ -118,10 +118,10 @@
     </Transition>
 
     <div
-      @click="onClick($event)"
+      @click="onClick()"
       class="popover-reference"
       ref="triggerRef"
-      @contextmenu="onContextmenu($event)"
+      @contextmenu="onContextmenu()"
     >
       <template v-if="$slots.reference">
         <slot name="reference"></slot>
