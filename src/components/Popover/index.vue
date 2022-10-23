@@ -60,10 +60,6 @@
 
   const emits = defineEmits(PopoverEmits);
 
-  const cbIsAnim = (fn: Function) => {
-    props.animationDir && fn();
-  };
-
   const beforeEnter = (el: HTMLElement) => {
     emits('onBeforeEnter');
     setTimeout(() => {

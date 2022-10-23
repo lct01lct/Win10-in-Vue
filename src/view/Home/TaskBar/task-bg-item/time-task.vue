@@ -10,10 +10,10 @@
 </script>
 
 <template>
-  <Popover :left-margin="-358" animation-dir="top">
+  <Popover :left-margin="-218" animation-dir="top">
     <div class="test-container"></div>
     <template #reference>
-      <div class="time-task task-bg-item">
+      <div class="task-bg-item time-task">
         <span>{{ hour }}:{{ minute }}</span>
         <span>{{ year }}-{{ month }}-{{ date }}</span>
       </div>
@@ -21,4 +21,26 @@
   </Popover>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+  .time-task {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100px !important;
+    color: #fff;
+    font-size: 13px;
+    > span {
+      &:nth-child(2) {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .test-container {
+    width: 360px;
+    height: 690px;
+    background-color: #1e1e1e;
+    opacity: 0.9;
+  }
+</style>

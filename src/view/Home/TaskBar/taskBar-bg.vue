@@ -29,12 +29,6 @@
 </template>
 
 <style lang="scss">
-  .test-container {
-    width: 500px;
-    height: 704px;
-    background-color: #3d3d3d;
-    opacity: 0.9;
-  }
   .background-task-wrapper {
     display: flex;
     align-items: center;
@@ -59,21 +53,6 @@
 
       &:hover {
         background-color: #373838;
-      }
-    }
-
-    .time-task {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100px;
-      color: #fff;
-      font-size: 13px;
-      > span {
-        &:nth-child(2) {
-          margin-top: 5px;
-        }
       }
     }
   }

@@ -10,7 +10,7 @@
 </script>
 
 <template>
-  <Popover :left-margin="-458" animation-dir="left">
+  <Popover :left-margin="-358" animation-dir="left">
     <div class="message-task-container"></div>
     <template #reference>
       <div class="task-bg-item message-task">
@@ -24,9 +24,9 @@
 
 <style scoped lang="scss">
   .message-task-container {
-    width: 500px;
+    width: 400px;
     height: 704px;
-    background-color: #3d3d3d;
+    background-color: #1e1e1e;
     opacity: 0.9;
   }
 
