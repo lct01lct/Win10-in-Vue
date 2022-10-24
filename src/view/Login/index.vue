@@ -3,16 +3,9 @@
   import LoginForm from './login-form.vue';
   import { maskVisible, gotoLogin } from './login';
   import { hour, minute, month, date, day } from '@/share/time';
+  import EnterHandlers from '@/share/EnterHandlers';
 
-  const loginWallPaperClick = (e: Event) => {
-    if ((e as KeyboardEvent).keyCode === 13) {
-      gotoLogin();
-    }
-  };
-
-  onMounted(() => {
-    document.addEventListener('keydown', loginWallPaperClick);
-  });
+  new EnterHandlers().addLastEnterListener(gotoLogin).notify();
 </script>
 
 <template>

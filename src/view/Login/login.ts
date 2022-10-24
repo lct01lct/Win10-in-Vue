@@ -40,6 +40,29 @@ const gotoLogin = () => {
   maskVisible.value = true;
 };
 
+// 策略模式解决页面多个回车处理函数
+const useEnterListener = () => {
+  const enterHandlers: Function[] = [];
+
+  let count = 0;
+
+  const addEnterListener = (fn: Function) => {
+    enterHandlers.push(fn);
+  };
+
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.keyCode === 13) {
+      const len = enterHandlers.length;
+
+      enterHandlers[count++ % len]();
+    }
+  });
+
+  return {
+    addEnterListener, // 绑定回车处理函数
+  };
+};
+
 export {
   errorTipVisvible,
   login,
@@ -49,4 +72,5 @@ export {
   maskVisible,
   gotoLogin,
   username,
+  useEnterListener,
 };

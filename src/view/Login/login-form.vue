@@ -7,48 +7,18 @@
     loginIsSuccess,
     checkError,
     username,
+    useEnterListener,
   } from './login';
   import Options from './options.vue';
 
-  let enterClickCount = 0; // 控制回车事件的计数器
+  const { addEnterListener } = useEnterListener();
 
-  const asyncSetCount = () => {
-    setTimeout(() => {
-      enterClickCount++;
-    });
-  };
-
-  const decorationClickHandler = (fn: Function) => {
-    asyncSetCount();
-    fn();
-  };
-
-  const loginBtnClick = (e: Event) => {
-    if ((e as KeyboardEvent).keyCode === 13) {
-      if (!(enterClickCount % 2)) {
-        login();
-
-        asyncSetCount();
-      }
-    }
-  };
-
-  const checkErrorBtnClick = (e: Event) => {
-    if ((e as KeyboardEvent).keyCode === 13) {
-      if (enterClickCount % 2) {
-        checkError();
-
-        asyncSetCount();
-      }
-    }
-  };
+  addEnterListener(login);
+  addEnterListener(checkError);
 
   const passwordIptRef = ref<HTMLInputElement | null>(null);
-
   onMounted(() => {
     passwordIptRef.value!.focus();
-    document.addEventListener('keydown', loginBtnClick);
-    document.addEventListener('keydown', checkErrorBtnClick);
   });
 </script>
 
@@ -67,7 +37,7 @@
         v-model="loginForm.password"
         ref="passwordIptRef"
       />
-      <button class="login-btn" @click="decorationClickHandler(login)">
+      <button class="login-btn" @click="login">
         <Icon>
           <img src="@/assets/images/loginPage/right-arrow.svg" alt="" />
         </Icon>
@@ -79,7 +49,7 @@
     </div>
     <div class="passwordIsErrorTip" v-else>
       <span>密码不正确，请再试一次</span>
-      <WinBtn class="check-btn" @click="decorationClickHandler(checkError)">确认</WinBtn>
+      <WinBtn class="check-btn" @click="checkError">确认</WinBtn>
     </div>
   </div>
 </template>
