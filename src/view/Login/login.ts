@@ -29,7 +29,7 @@ const checkLoginForm = (): boolean => {
 const checkError = () => {
   loginIsSuccess.value = true;
 
-  setTimeout(() => {
+  nextTick(() => {
     (document.getElementsByClassName('login-ipt')[0] as HTMLElement).focus();
   });
 };

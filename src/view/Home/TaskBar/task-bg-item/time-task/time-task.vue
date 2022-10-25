@@ -11,7 +11,7 @@
 
 <template>
   <Popover :left-margin="-218" animation-dir="top">
-    <div class="test-container"></div>
+    <div class="time-task-container"></div>
     <template #reference>
       <div class="task-bg-item time-task">
         <span>{{ hour }}:{{ minute }}</span>
@@ -37,7 +37,7 @@
     }
   }
 
-  .test-container {
+  .time-task-container {
     width: 360px;
     height: 690px;
     background-color: #1e1e1e;
