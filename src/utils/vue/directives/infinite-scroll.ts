@@ -12,13 +12,20 @@ type InfiniteScrollEl = HTMLElement & {
   };
 };
 
-const getScrollOptions = (el: InfiniteScrollEl, binding: DirectiveBinding<any>) => {
-  const fn = binding.value.load as (dir: Dir) => void;
+type DirectiveOpt = {
+  load: (dir: Dir) => void;
+  initTop: number;
+  scrollRate: number;
+};
+
+const getScrollOptions = (el: InfiniteScrollEl, binding: DirectiveBinding<DirectiveOpt>) => {
+  const fn = binding.value.load;
   const top = binding.value.initTop;
+  const rate = binding.value.scrollRate;
   const baseTop = 50;
   const initTop: number = top ? (top < baseTop ? baseTop : top) : baseTop;
 
-  return { fn, initTop };
+  return { fn, initTop, rate };
 };
 
 const directive: Directive = {
@@ -26,17 +33,20 @@ const directive: Directive = {
     // 确保父元素加载完毕
     await nextTick();
 
-    const { fn, initTop } = getScrollOptions(el, binding);
-
+    const { fn, initTop, rate } = getScrollOptions(el, binding);
     el.scrollTop = initTop;
 
     const onScroll = (e: Event) => {
       if (el.clientHeight + el.scrollTop >= el.scrollHeight) {
-        fn('down');
+        for (let i = 0; i < rate; i++) {
+          fn('down');
+        }
       }
       if (el.scrollTop <= 10) {
-        fn('up');
-        el.scrollTop = 100;
+        for (let i = 0; i < rate; i++) {
+          fn('up');
+        }
+        el.scrollTop = initTop * rate;
       }
     };
 
