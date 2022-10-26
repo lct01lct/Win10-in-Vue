@@ -38,7 +38,7 @@
           <th v-for="item in ['一', '二', '三', '四', '五', '六', '日']">{{ item }}</th>
         </tr>
       </thead>
-      <div v-infinite-scroll="{ load, initTop: 50, scrollRate: 2 }" class="calendar-table-body">
+      <div class="calendar-table-body" v-infinite-scroll="{ load, initTop: 50, scrollRate: 10 }">
         <tr v-for="row in baseArr">
           <!-- <td class="cell" v-for="col in 7">{{ row - 1 }}</td> -->
           <td class="cell">{{ row }} {{ baseArr.length }}</td>
@@ -69,6 +69,9 @@
       .calendar-table-body {
         height: 300px;
         overflow: auto;
+        &::-webkit-scrollbar {
+          display: none;
+        }
         .cell {
           height: 50px;
         }
