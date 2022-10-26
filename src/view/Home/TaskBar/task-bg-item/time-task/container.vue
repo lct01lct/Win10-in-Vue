@@ -1,7 +1,11 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import Today from './today.vue';
+</script>
 
 <template>
-  <div class="time-task-container"></div>
+  <div class="time-task-container">
+    <Today></Today>
+  </div>
 </template>
 
 <style scoped lang="scss">

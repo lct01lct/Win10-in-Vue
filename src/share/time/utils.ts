@@ -12,3 +12,5 @@ export const paddingZero = (num: number): string => {
 export const formatDay = (num: number): string => {
   return `星期${dayArr[num]}`;
 };
+
+export { getLunar } from 'chinese-lunar-calendar';

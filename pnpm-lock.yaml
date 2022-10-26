@@ -5,6 +5,7 @@ specifiers:
   '@types/node': 18.7.18
   '@vitejs/plugin-vue': ^3.1.0
   animejs: ^3.2.1
+  chinese-lunar-calendar: ^1.0.1
   dayjs: ^1.11.5
   eslint: ^8.25.0
   eslint-plugin-prettier: ^4.2.1
@@ -21,6 +22,7 @@ specifiers:
 dependencies:
   '@types/animejs': 3.1.5
   animejs: 3.2.1
+  chinese-lunar-calendar: 1.0.1
   dayjs: 1.11.5
   eslint-plugin-prettier: 4.2.1_znq2sm4m5bonjw4qqm6mwhbe2q
   pinia: 2.0.23_l7r24p6nevbtlimqmqcwa3ouhu
@@ -367,6 +369,10 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+
+  /chinese-lunar-calendar/1.0.1:
+    resolution: {integrity: sha512-T5XjtA6ygOkxjwltYf8dEB1DLsPKewDKajf74fNeT6rH2g9EZPf2AHk6vAlK/SAImTYKXoUNQ3Q4JwN0BduqRA==}
+    dev: false
 
   /chokidar/3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
