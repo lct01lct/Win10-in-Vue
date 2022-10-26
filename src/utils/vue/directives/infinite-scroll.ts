@@ -14,10 +14,9 @@ type InfiniteScrollEl = HTMLElement & {
 
 const getScrollOptions = (el: InfiniteScrollEl, binding: DirectiveBinding<any>) => {
   const fn = binding.value.load as (dir: Dir) => void;
-  const initTop: number =
-    binding.value.initTop < 10
-      ? (el as HTMLElement).children[0].clientHeight
-      : binding.value.initTop;
+  const top = binding.value.initTop;
+  const baseTop = 50;
+  const initTop: number = top ? (top < baseTop ? baseTop : top) : baseTop;
 
   return { fn, initTop };
 };
@@ -35,9 +34,9 @@ const directive: Directive = {
       if (el.clientHeight + el.scrollTop >= el.scrollHeight) {
         fn('down');
       }
-
       if (el.scrollTop <= 10) {
         fn('up');
+        el.scrollTop = 100;
       }
     };
 
