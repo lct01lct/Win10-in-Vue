@@ -1,27 +1,29 @@
 import { getRealTime, paddingZero, formatDay, getLunar } from './utils';
 
+const now = getRealTime();
+
 const realTime = reactive({
-  hour: '00',
-  minute: '00',
-  second: '00',
-  year: '1971',
-  month: '01',
-  date: '01',
-  day: '星期一',
+  hour: paddingZero(now.hour()),
+  minute: paddingZero(now.minute()),
+  second: paddingZero(now.second()),
+  year: String(now.year()),
+  month: paddingZero(now.month() + 1),
+  date: paddingZero(now.date()),
+  day: formatDay(now.day()),
   lunar: '一月初一',
 });
 
 const { hour, minute, month, date, day, year, second, lunar } = toRefs(realTime);
 
 setInterval(() => {
-  const realTime = getRealTime();
-  hour.value = paddingZero(realTime.hour());
-  minute.value = paddingZero(realTime.minute());
-  year.value = String(realTime.year());
-  month.value = paddingZero(realTime.month() + 1);
-  date.value = paddingZero(realTime.date());
-  day.value = formatDay(realTime.day());
-  second.value = paddingZero(realTime.second());
+  const now = getRealTime();
+  hour.value = paddingZero(now.hour());
+  minute.value = paddingZero(now.minute());
+  year.value = String(now.year());
+  month.value = paddingZero(now.month() + 1);
+  date.value = paddingZero(now.date());
+  day.value = formatDay(now.day());
+  second.value = paddingZero(now.second());
   lunar.value = getLunar(year.value, month.value, date.value).dateStr;
 }, 1000);
 

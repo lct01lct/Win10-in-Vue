@@ -1,10 +1,12 @@
 <script lang="ts" setup>
   import Today from './today.vue';
+  import Calendar from './calendar.vue';
 </script>
 
 <template>
   <div class="time-task-container">
     <Today></Today>
+    <Calendar></Calendar>
   </div>
 </template>
 

@@ -1,0 +1,23 @@
+{
+  "id": "3730726",
+  "name": "Win10-in-Vue",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "14732",
+      "name": "向下",
+      "font_class": "xiangxia",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "14733",
+      "name": "向上",
+      "font_class": "xiangshang",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    }
+  ]
+}
