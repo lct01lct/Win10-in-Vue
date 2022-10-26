@@ -3,7 +3,7 @@
   import { systemTaskIconList } from './taskBar-bg';
   import Popover from '@/components/Popover/index.vue';
   import MessageTask from './task-bg-item/mess-task.vue';
-  import TimeTask from './task-bg-item/time-task/time-task.vue';
+  import TimeTask from './task-bg-item/time-task/index.vue';
 </script>
 
 <template>

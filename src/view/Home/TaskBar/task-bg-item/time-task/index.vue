@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import Popover from '@/components/Popover/index.vue';
   import { hour, minute, year, month, date } from '@/share/time';
+  import Container from './container.vue';
 </script>
 
 <script lang="ts">
@@ -11,7 +12,7 @@
 
 <template>
   <Popover :left-margin="-218" animation-dir="top">
-    <div class="time-task-container"></div>
+    <Container></Container>
     <template #reference>
       <div class="task-bg-item time-task">
         <span>{{ hour }}:{{ minute }}</span>
@@ -35,12 +36,5 @@
         margin-top: 5px;
       }
     }
-  }
-
-  .time-task-container {
-    width: 360px;
-    height: 690px;
-    background-color: #1e1e1e;
-    opacity: 0.9;
   }
 </style>
