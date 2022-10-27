@@ -4,6 +4,7 @@
   import dayjs from 'dayjs';
   import { getNowDay, getDayLunar, domSommthlyScroll } from './calendar';
   import { getNearestInt } from '@/utils/number';
+  import throttle from 'lodash/throttle';
 
   const currentYear = ref<string>(year.value);
   const currentMonth = ref<string>(month.value);
@@ -95,19 +96,23 @@
       }
     }, 300);
   };
+
+  const onTodayInMonthBtnClick = throttle(goTodayInMonth, 600);
+  const onPrevMonthClick = throttle(goPrevMonth, 600);
+  const onNextMonthClick = throttle(goNextMonth, 600);
 </script>
 
 <template>
   <div class="calendar-wrapper">
     <div class="calendar-title">
-      <Btn color="#dfdfdff3" hover-color="#fff" @click="goTodayInMonth">
+      <Btn color="#dfdfdff3" hover-color="#fff" @click="onTodayInMonthBtnClick">
         <span class="current">{{ currentYear }} 年 {{ currentMonth }} 月</span>
       </Btn>
       <span class="btn-group">
-        <Btn color="#dfdfdff3" hover-color="#fff" @click="goPrevMonth">
+        <Btn color="#dfdfdff3" hover-color="#fff" @click="onPrevMonthClick">
           <span class="iconfont icon-xiangshang"></span>
         </Btn>
-        <Btn color="#dfdfdff3" hover-color="#fff" @click="goNextMonth">
+        <Btn color="#dfdfdff3" hover-color="#fff" @click="onNextMonthClick">
           <span class="iconfont icon-xiangxia"></span>
         </Btn>
       </span>
