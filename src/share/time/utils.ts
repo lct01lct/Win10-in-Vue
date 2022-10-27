@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { dayArr } from '@/config/time';
 
+type Dayjs = dayjs.Dayjs;
+
 export const getRealTime = () => {
   return dayjs(new Date());
 };
@@ -14,3 +16,5 @@ export const formatDay = (num: number): string => {
 };
 
 export { getLunar } from 'chinese-lunar-calendar';
+
+export type { Dayjs };

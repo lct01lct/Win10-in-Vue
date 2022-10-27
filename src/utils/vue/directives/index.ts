@@ -1,4 +1,3 @@
-import { appendFile } from 'fs';
 import { App, Directive } from 'vue';
 import { withInstallDirective } from '../';
 const files = import.meta.glob('./**.ts', { eager: true });

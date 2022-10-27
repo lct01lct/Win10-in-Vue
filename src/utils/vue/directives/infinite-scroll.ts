@@ -16,16 +16,18 @@ type DirectiveOpt = {
   load: (dir: Dir) => void;
   initTop: number;
   scrollRate: number;
+  scrollCb: (scrolledPx: number) => void;
 };
 
 const getScrollOptions = (el: InfiniteScrollEl, binding: DirectiveBinding<DirectiveOpt>) => {
   const fn = binding.value.load;
-  const top = binding.value.initTop;
-  const rate = binding.value.scrollRate;
+  const top = binding.value.initTop || 50;
+  const rate = binding.value.scrollRate || 5;
+  const scrollCb = binding.value.scrollCb || (() => {});
   const baseTop = 50;
-  const initTop: number = top ? (top < baseTop ? baseTop : top) : baseTop;
+  const initTop: number = top < baseTop ? baseTop : top;
 
-  return { fn, initTop, rate };
+  return { fn, initTop, rate, scrollCb };
 };
 
 const directive: Directive = {
@@ -33,21 +35,30 @@ const directive: Directive = {
     // 确保父元素加载完毕
     await nextTick();
 
-    const { fn, initTop, rate } = getScrollOptions(el, binding);
+    const { fn, initTop, rate, scrollCb } = getScrollOptions(el, binding);
     el.scrollTop = initTop;
 
-    const onScroll = (e: Event) => {
+    let scrolledPx: number = 0;
+    let newAddedpx: number = 0;
+
+    const onScroll = async (e: Event) => {
       if (el.clientHeight + el.scrollTop >= el.scrollHeight) {
+        // 触发底部
         for (let i = 0; i < rate; i++) {
           fn('down');
+          scrolledPx = el.scrollTop - initTop - newAddedpx;
         }
-      }
-      if (el.scrollTop <= 10) {
+      } else if (el.scrollTop <= 10) {
+        // 触发顶部
         for (let i = 0; i < rate; i++) {
           fn('up');
+          newAddedpx += initTop;
         }
-        el.scrollTop = initTop * rate;
+        el.scrollTop = 11;
+      } else {
+        scrolledPx = el.scrollTop - initTop - newAddedpx;
       }
+      scrollCb(scrolledPx);
     };
 
     el[__SCOPE__] = {
