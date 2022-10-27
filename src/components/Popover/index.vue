@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import PopoverContent from './Popover-content.vue';
-  import { whenTrigger, PopoverProps, PopoverEmits, animQueue } from './trigger';
+  import { whenTrigger, PopoverProps, PopoverEmits } from './trigger';
   import type { TriggerType } from './trigger';
   import { beforeEnterAnimeHandler, enterAnimeHandler, LeaveAnimeHandler } from './animate';
 

@@ -1,12 +1,18 @@
 <script lang="ts" setup>
   import Today from './today.vue';
   import Calendar from './calendar.vue';
+
+  const selecedDay = ref<string>('');
+
+  watch(selecedDay, (val) => {
+    console.log(val);
+  });
 </script>
 
 <template>
   <div class="time-task-container">
     <Today></Today>
-    <Calendar></Calendar>
+    <Calendar v-model="selecedDay"></Calendar>
   </div>
 </template>
 

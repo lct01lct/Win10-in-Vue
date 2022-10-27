@@ -21,3 +21,11 @@ export const domSommthlyScroll = (dom: HTMLElement, y: number) => {
     behavior: 'smooth',
   });
 };
+
+export const calendarProps = {
+  modelValue: {
+    type: String,
+  },
+};
+
+export const calendarEmits = ['update:modelValue'];

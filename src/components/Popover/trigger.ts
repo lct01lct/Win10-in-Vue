@@ -62,5 +62,3 @@ export const whenTrigger = (type: TriggerType, triggerType: TriggerType, handler
     console.warn('invalid trigger-type');
   }
 };
-
-export const animQueue: any[] = [];

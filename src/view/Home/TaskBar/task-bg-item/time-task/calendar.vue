@@ -1,10 +1,19 @@
 <script lang="ts" setup>
   import Btn from '@/components/Btn/index.vue';
-  import { year, month, paddingZero, getDiffDays } from '@/share/time';
-  import dayjs from 'dayjs';
-  import { getNowDay, getDayLunar, domSommthlyScroll } from './calendar';
+  import { year, month, date, paddingZero, getDiffDays } from '@/share/time';
+  import dayjs, { Dayjs } from 'dayjs';
+  import {
+    getNowDay,
+    getDayLunar,
+    domSommthlyScroll,
+    calendarProps,
+    calendarEmits,
+  } from './calendar';
   import { getNearestInt } from '@/utils/number';
   import throttle from 'lodash/throttle';
+
+  const props = defineProps(calendarProps);
+  const emits = defineEmits(calendarEmits);
 
   const currentYear = ref<string>(year.value);
   const currentMonth = ref<string>(month.value);
@@ -96,6 +105,17 @@
   const onTodayInMonthBtnClick = throttle(goTodayInMonth, 600);
   const onPrevMonthClick = throttle(goPrevMonth, 600);
   const onNextMonthClick = throttle(goNextMonth, 600);
+
+  const selecedDay = ref<string>(`${year.value}-${month.value}-${date.value}`);
+  const selectDay = (selectedDay: Dayjs) => {
+    selecedDay.value = `${selectedDay.year()}-${paddingZero(selectedDay.month() + 1)}-${paddingZero(
+      selectedDay.date()
+    )}`;
+  };
+
+  watch(selecedDay, (val) => {
+    emits('update:modelValue', val);
+  });
 </script>
 
 <template>
@@ -131,7 +151,13 @@
         ref="calendarRef"
       >
         <tr v-for="row in baseArr" class="calendar-table-row" :key="row">
-          <td class="cell" :class="getClass(row, col)" v-for="col in 7" :key="col">
+          <td
+            class="cell"
+            :class="getClass(row, col)"
+            v-for="col in 7"
+            :key="col"
+            @click="selectDay(geyDay(row, col))"
+          >
             <span>{{ geyDay(row, col).date() }}</span>
             <span>{{ getDayLunar(geyDay(row, col)) }}</span>
           </td>
