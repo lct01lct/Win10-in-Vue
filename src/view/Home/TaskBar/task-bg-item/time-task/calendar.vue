@@ -32,8 +32,8 @@
     scroPx = scrolledPx;
   };
 
-  const firstDay = getNowDay(`${year.value}-${month.value}-01`); // 今天所在月份的第一天
-  const rowDay = firstDay.add(-firstDay.day() + 1, 'day');
+  const nowMonthFirstDay = getNowDay(`${year.value}-${month.value}-01`); // 今天所在月份的第一天
+  const rowDay = nowMonthFirstDay.add(-nowMonthFirstDay.day() + 1, 'day');
 
   const geyDay = (row: number, col: number) => {
     return rowDay.add((row - 1) * 7 + col - 1, 'day');
@@ -56,43 +56,39 @@
   };
 
   const goPrevMonth = () => {
+    const scroDay = rowDay.add(getNearestInt(scroPx / 50), 'week');
     const currMonth = dayjs(`${currentYear.value}-${currentMonth.value}-01`);
     const prevMonth = dayjs(currMonth).add(-1, 'month');
-    const diffDays = getDiffDays(currMonth, prevMonth);
-    const currMonthDay = currMonth.day() === 0 ? 7 : currMonth.day();
+    const diffDays = getDiffDays(scroDay, prevMonth);
+    const tarNum = Math.floor(diffDays / 7) + (diffDays % 7 === 0 ? 0 : 1);
 
-    const diffNum =
-      Math.floor((diffDays + 1 - currMonthDay) / 7) + ((diffDays + 1 - currMonthDay) % 7 ? 1 : 0);
-
-    domSommthlyScroll(calendarRef.value!, -diffNum * 50);
+    domSommthlyScroll(calendarRef.value!, -tarNum * 50);
 
     let scroPx1 = scroPx;
     setTimeout(() => {
       let scroNum = Math.abs(scroPx - scroPx1) / 50;
       scroNum = getNearestInt(scroNum);
-
-      if (scroNum !== diffNum) {
-        domSommthlyScroll(calendarRef.value!, -(diffNum - scroNum) * 50);
+      if (scroNum !== tarNum) {
+        domSommthlyScroll(calendarRef.value!, -(tarNum - scroNum) * 50);
       }
     }, 300);
   };
 
   const goNextMonth = () => {
+    const scroDay = rowDay.add(getNearestInt(scroPx / 50), 'week'); // 滚动条的 Day
     const currMonth = dayjs(`${currentYear.value}-${currentMonth.value}-01`);
     const nextMonth = dayjs(currMonth).add(1, 'month');
-    const diffDays = getDiffDays(nextMonth, currMonth);
-    const currMonthDay = currMonth.day() === 0 ? 7 : currMonth.day();
-    const diffNum = Math.floor(diffDays / 7) + ((diffDays % 7) + currMonthDay > 7 ? 1 : 0);
+    const tarNum = Math.floor(getDiffDays(nextMonth, scroDay) / 7);
 
-    domSommthlyScroll(calendarRef.value!, diffNum * 50);
+    domSommthlyScroll(calendarRef.value!, tarNum * 50);
 
     let scroPx1 = scroPx;
     setTimeout(() => {
       let scroNum = (scroPx - scroPx1) / 50;
       scroNum = getNearestInt(scroNum);
 
-      if (scroNum !== diffNum) {
-        domSommthlyScroll(calendarRef.value!, (diffNum - scroNum) * 50);
+      if (tarNum !== scroNum) {
+        domSommthlyScroll(calendarRef.value!, (tarNum - scroNum) * 50);
       }
     }, 300);
   };
