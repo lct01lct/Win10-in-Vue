@@ -3,6 +3,7 @@
   import { year, month, getLunar, paddingZero } from '@/share/time';
   import type { Dayjs } from '@/share/time';
   import { getNowDay } from './calendar';
+  import { Ref } from 'vue';
 
   const currentYear = ref<string>(year.value);
   const currentMonth = ref<string>(month.value);
@@ -35,7 +36,23 @@
   const getDayLunar = (day: Dayjs) => {
     try {
       return getLunar(day.year(), day.month() + 1, day.date()).dateStr.slice(2);
-    } catch (e) {}
+    } catch (e) {
+      return '出错';
+    }
+  };
+
+  const getClass = (row: number, col: number) => {
+    if (isScrolling.value) {
+      return 'light';
+    }
+
+    return geyDay(row, col).month() + 1 === Number(currentMonth.value) ? 'light' : 'dark';
+  };
+
+  const isScrolling = ref<boolean>(false);
+
+  const scrollingCb = (isScroll: boolean) => {
+    isScrolling.value = isScroll;
   };
 </script>
 
@@ -68,16 +85,11 @@
       </thead>
       <div
         class="calendar-table-body"
-        v-infinite-scroll="{ load, initTop: 50, scrollRate: 5, scrollCb }"
+        v-infinite-scroll="{ load, initTop: 50, scrollRate: 5, scrollCb, scrollingCb }"
       >
         <tr v-for="row in baseArr" class="calendar-table-row" :key="row">
-          <td
-            class="cell"
-            :class="geyDay(row, col).month() + 1 === Number(currentMonth) ? 'light' : 'dark'"
-            v-for="col in 7"
-            :key="col"
-          >
-            <span>{{ geyDay(row, col).month() + 1 }}-{{ geyDay(row, col).date() }}</span>
+          <td class="cell" :class="getClass(row, col)" v-for="col in 7" :key="col">
+            <span>{{ geyDay(row, col).date() }}</span>
             <span>{{ getDayLunar(geyDay(row, col)) }}</span>
           </td>
         </tr>
