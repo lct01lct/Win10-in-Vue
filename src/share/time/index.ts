@@ -1,4 +1,4 @@
-import { getRealTime, paddingZero, formatDay, getLunar } from './utils';
+import { getRealTime, paddingZero, formatDay, getLunar, getDiffDays } from './utils';
 import type { Dayjs } from './utils';
 
 const now = getRealTime();
@@ -28,5 +28,5 @@ setInterval(() => {
   lunar.value = getLunar(year.value, month.value, date.value).dateStr;
 }, 1000);
 
-export { hour, minute, month, date, day, year, second, lunar, paddingZero, getLunar };
+export { hour, minute, month, date, day, year, second, lunar, paddingZero, getLunar, getDiffDays };
 export type { Dayjs };

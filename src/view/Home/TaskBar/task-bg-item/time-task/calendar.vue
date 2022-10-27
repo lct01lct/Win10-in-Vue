@@ -1,14 +1,14 @@
 <script lang="ts" setup>
   import Btn from '@/components/Btn/index.vue';
-  import { year, month, getLunar, paddingZero } from '@/share/time';
+  import { year, month, getLunar, paddingZero, getDiffDays } from '@/share/time';
+  import dayjs from 'dayjs';
   import type { Dayjs } from '@/share/time';
   import { getNowDay } from './calendar';
-  import { Ref } from 'vue';
 
   const currentYear = ref<string>(year.value);
   const currentMonth = ref<string>(month.value);
 
-  const baseArr = reactive(new Array(10).fill(0).map((i, index) => index));
+  const baseArr = reactive(new Array(30).fill(0).map((i, index) => index));
   let frontP = 0;
 
   const load = (dir: 'up' | 'down') => {
@@ -19,12 +19,14 @@
     }
   };
 
+  let scroPx: number = 0; // 记录滚动的 px 值
   const scrollCb = (scrolledPx: number) => {
-    const scrolledWeeks = Math.floor(scrolledPx / 50) + 2;
+    const scrolledWeeks = Math.floor(scrolledPx / 50) + 2.5; // 设置2.5， 因为第二个半行是月份是分隔线
     const scrolledDay = getNowDay(`${year.value}-${month.value}-01`).add(scrolledWeeks * 7, 'day');
 
     currentMonth.value = paddingZero(scrolledDay.month() + 1);
     currentYear.value = String(scrolledDay.year());
+    scroPx = scrolledPx;
   };
 
   const firstDay = getNowDay(`${year.value}-${month.value}-01`);
@@ -35,7 +37,7 @@
   };
   const getDayLunar = (day: Dayjs) => {
     try {
-      return getLunar(day.year(), day.month() + 1, day.date()).dateStr.slice(2);
+      return getLunar(day.year(), day.month() + 1, day.date()).dateStr.slice(-2);
     } catch (e) {
       return '出错';
     }
@@ -54,19 +56,90 @@
   const scrollingCb = (isScroll: boolean) => {
     isScrolling.value = isScroll;
   };
+
+  const calendarRef = ref<HTMLElement | null>(null);
+
+  const goCurrentMonth = () => {
+    calendarRef.value!.scrollBy({
+      top: -scroPx,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  const goPrevMonth = () => {
+    const currMonth = dayjs(`${currentYear.value}-${currentMonth.value}-01`);
+    const prevMonth = dayjs(currMonth).add(-1, 'month');
+    const diffDays = getDiffDays(currMonth, prevMonth);
+    const currMonthDay = currMonth.day() === 0 ? 7 : currMonth.day();
+
+    const diffNum =
+      Math.floor((diffDays + 1 - currMonthDay) / 7) + ((diffDays + 1 - currMonthDay) % 7 ? 1 : 0);
+
+    calendarRef.value!.scrollBy({
+      top: -diffNum * 50,
+      left: 0,
+      behavior: 'smooth',
+    });
+
+    let scroPx1 = scroPx;
+    setTimeout(() => {
+      let scroNum = Math.abs(scroPx - scroPx1) / 50;
+      scroNum =
+        scroNum - Math.floor(scroNum) > Math.ceil(scroNum) - scroNum
+          ? Math.ceil(scroNum)
+          : Math.floor(scroNum);
+      if (scroNum !== diffNum) {
+        calendarRef.value!.scrollBy({
+          top: -(diffNum - scroNum) * 50,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }
+    }, 300);
+  };
+  const goNextMonth = () => {
+    const currMonth = dayjs(`${currentYear.value}-${currentMonth.value}-01`);
+    const nextMonth = dayjs(currMonth).add(1, 'month');
+    const diffDays = getDiffDays(nextMonth, currMonth);
+    const currMonthDay = currMonth.day() === 0 ? 7 : currMonth.day();
+
+    const diffNum = Math.floor(diffDays / 7) + ((diffDays % 7) + currMonthDay > 7 ? 1 : 0);
+
+    calendarRef.value!.scrollBy({
+      top: diffNum * 50,
+      left: 0,
+      behavior: 'smooth',
+    });
+    let scroPx1 = scroPx;
+    setTimeout(() => {
+      let scroNum = (scroPx - scroPx1) / 50;
+      scroNum =
+        scroNum - Math.floor(scroNum) > Math.ceil(scroNum) - scroNum
+          ? Math.ceil(scroNum)
+          : Math.floor(scroNum);
+      if (scroNum !== diffNum) {
+        calendarRef.value!.scrollBy({
+          top: (diffNum - scroNum) * 50,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }
+    }, 300);
+  };
 </script>
 
 <template>
   <div class="calendar-wrapper">
     <div class="calendar-title">
-      <Btn color="#dfdfdff3" hover-color="#fff">
+      <Btn color="#dfdfdff3" hover-color="#fff" @click="goCurrentMonth">
         <span class="current">{{ currentYear }} 年 {{ currentMonth }} 月</span>
       </Btn>
       <span class="btn-group">
-        <Btn color="#dfdfdff3" hover-color="#fff">
+        <Btn color="#dfdfdff3" hover-color="#fff" @click="goPrevMonth">
           <span class="iconfont icon-xiangshang"></span>
         </Btn>
-        <Btn color="#dfdfdff3" hover-color="#fff">
+        <Btn color="#dfdfdff3" hover-color="#fff" @click="goNextMonth">
           <span class="iconfont icon-xiangxia"></span>
         </Btn>
       </span>
@@ -85,7 +158,8 @@
       </thead>
       <div
         class="calendar-table-body"
-        v-infinite-scroll="{ load, initTop: 50, scrollRate: 5, scrollCb, scrollingCb }"
+        v-infinite-scroll="{ load, initTop: 50, scrollRate: 50, scrollCb, scrollingCb }"
+        ref="calendarRef"
       >
         <tr v-for="row in baseArr" class="calendar-table-row" :key="row">
           <td class="cell" :class="getClass(row, col)" v-for="col in 7" :key="col">

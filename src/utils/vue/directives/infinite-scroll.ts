@@ -74,7 +74,8 @@ const directive: Directive = {
       } else {
         scrolledPx = el.scrollTop - initTop - newAddedpx;
       }
-      scrollCb(scrolledPx);
+
+      scrollCb(scrolledPx < 0 ? Math.ceil(scrolledPx) : Math.floor(scrolledPx)); // 区分负数的四舍五入
     };
 
     el[__SCOPE__] = {
