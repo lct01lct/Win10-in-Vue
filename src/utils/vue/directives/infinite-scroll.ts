@@ -62,10 +62,10 @@ const directive: Directive = {
         // 触发底部
         for (let i = 0; i < rate; i++) {
           fn('down');
-          scrolledPx = el.scrollTop - initTop - newAddedpx;
         }
         await nextTick();
-      } else if (el.scrollTop <= 10) {
+      }
+      if (el.scrollTop <= 10) {
         // 触发顶部
         for (let i = 0; i < rate; i++) {
           fn('up');
@@ -73,10 +73,9 @@ const directive: Directive = {
         }
         await nextTick();
         el.scrollTop = rate * initTop;
-      } else {
-        scrolledPx = el.scrollTop - initTop - newAddedpx;
       }
 
+      scrolledPx = el.scrollTop - initTop - newAddedpx;
       scrollCb(scrolledPx < 0 ? Math.ceil(scrolledPx) : Math.floor(scrolledPx)); // 区分负数的四舍五入
     };
 
