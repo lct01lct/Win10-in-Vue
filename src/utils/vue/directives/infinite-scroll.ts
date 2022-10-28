@@ -64,13 +64,15 @@ const directive: Directive = {
           fn('down');
           scrolledPx = el.scrollTop - initTop - newAddedpx;
         }
+        await nextTick();
       } else if (el.scrollTop <= 10) {
         // 触发顶部
         for (let i = 0; i < rate; i++) {
           fn('up');
           newAddedpx += initTop;
         }
-        el.scrollTop = 11;
+        await nextTick();
+        el.scrollTop = rate * initTop;
       } else {
         scrolledPx = el.scrollTop - initTop - newAddedpx;
       }

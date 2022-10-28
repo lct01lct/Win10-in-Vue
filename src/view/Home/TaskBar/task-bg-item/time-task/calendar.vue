@@ -12,7 +12,7 @@
   import { getNearestInt } from '@/utils/number';
   import throttle from 'lodash/throttle';
 
-  const props = defineProps(calendarProps);
+  defineProps(calendarProps);
   const emits = defineEmits(calendarEmits);
 
   const currentYear = ref<string>(year.value);
