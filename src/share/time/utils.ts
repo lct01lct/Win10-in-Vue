@@ -19,6 +19,10 @@ export const getDiffDays = (day1: string | Dayjs, day2: string | Dayjs, type = '
   return dayjs(day1).diff(day2, type as any);
 };
 
+export const getFormatFullTime = (day: Dayjs) => {
+  return `${day.year()}-${paddingZero(day.month() + 1)}-${paddingZero(day.date())}`;
+};
+
 export { getLunar } from 'chinese-lunar-calendar';
 
 export type { Dayjs };
