@@ -81,6 +81,7 @@
 
   const goTodayInMonth = () => {
     domSommthlyScroll(calendarRef.value!, -scroPx);
+    selectedDay.value = `${year.value}-${month.value}-${date.value}`;
   };
 
   const goPrevMonth = () => {
@@ -171,6 +172,10 @@
       tar.classList.remove('active');
     }
   };
+
+  defineExpose({
+    onTodayInMonthBtnClick,
+  });
 </script>
 
 <template>
@@ -206,16 +211,11 @@
         ref="calendarRef"
       >
         <tr v-for="row in baseArr" class="calendar-table-row" :key="row">
-          <td
-            class="cell"
-            :class="getClass(row, col)"
-            v-for="col in 7"
-            :key="col"
-            @click="selectDay(getDay(row, col))"
-          >
+          <td class="cell" :class="getClass(row, col)" v-for="col in 7" :key="col">
             <div
               class="cell-border"
               :class="getBorderClass(row, col)"
+              @click="selectDay(getDay(row, col))"
               @mouseenter="onMouseEnter($event)"
               @mouseleave="onMouseLeave($event)"
             ></div>
@@ -296,6 +296,8 @@
             position: absolute;
             width: 40px;
             height: 42px;
+            background-color: transparent;
+            z-index: 1;
           }
 
           .cell-border.active {

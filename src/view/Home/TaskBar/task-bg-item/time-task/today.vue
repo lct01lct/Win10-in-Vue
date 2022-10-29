@@ -1,11 +1,15 @@
 <script lang="ts" setup>
   import { second, minute, hour, year, month, date, lunar } from '@/share/time';
+
+  const emits = defineEmits(['onTodayInMonthBtnClick']);
 </script>
 
 <template>
   <div class="today-wrapper">
     <div class="hour-minute-second">{{ hour }}:{{ minute }}:{{ second }}</div>
-    <div class="year-month-date">{{ year }}-{{ month }}-{{ date }} {{ lunar }}</div>
+    <Btn @click="emits('onTodayInMonthBtnClick')">
+      <span class="year-month-date">{{ year }}-{{ month }}-{{ date }} {{ lunar }}</span>
+    </Btn>
   </div>
 </template>
 

@@ -2,6 +2,12 @@
   import Today from './today.vue';
   import Calendar from './calendar.vue';
 
+  const CalendarRef = ref<any>(null);
+
+  const onTodayInMonthBtnClick = () => {
+    CalendarRef.value.onTodayInMonthBtnClick();
+  };
+
   const selecedDay = ref<string>('');
 
   watch(selecedDay, (val) => {
@@ -11,8 +17,8 @@
 
 <template>
   <div class="time-task-container">
-    <Today></Today>
-    <Calendar v-model="selecedDay"></Calendar>
+    <Today @onTodayInMonthBtnClick="onTodayInMonthBtnClick"></Today>
+    <Calendar v-model="selecedDay" ref="CalendarRef"></Calendar>
   </div>
 </template>
 
