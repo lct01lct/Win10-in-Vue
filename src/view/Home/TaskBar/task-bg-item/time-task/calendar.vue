@@ -181,7 +181,7 @@
 <template>
   <div class="calendar-wrapper">
     <div class="calendar-title">
-      <Btn color="#dfdfdff3" hover-color="#fff" @click="onTodayInMonthBtnClick">
+      <Btn color="#dfdfdff3" hover-color="#fff">
         <span class="current">{{ currentYear }} 年 {{ currentMonth }} 月</span>
       </Btn>
       <span class="btn-group">
