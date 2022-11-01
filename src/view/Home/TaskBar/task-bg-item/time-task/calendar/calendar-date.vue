@@ -111,14 +111,10 @@
   };
 
   const calendarRef = ref<null | HTMLElement>(null);
-  const setSelectedDay = (dateStr: string) => {
-    selectedDay.value = dateStr;
-  };
 
   defineExpose({
     calendarRef,
     rowDay,
-    setSelectedDay,
   });
 </script>
 

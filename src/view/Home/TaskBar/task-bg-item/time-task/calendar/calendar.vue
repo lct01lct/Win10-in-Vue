@@ -6,6 +6,7 @@
   import throttle from 'lodash/throttle';
   import CalendarDate from './calendar-date.vue';
   import { domSommthlyScroll, currentYear, currentMonth, scroPx } from './calendar';
+  import StateMachine from '@/utils/fsm';
 
   const props = defineProps({
     modelValue: {
@@ -18,7 +19,7 @@
   const goTodayInMonth = () => {
     domSommthlyScroll(calendarDateRef.value!.calendarRef!, -scroPx);
 
-    calendarDateRef.value!.setSelectedDay(`${year.value}-${month.value}-${date.value}`);
+    emits('update:modelValue', `${year.value}-${month.value}-${date.value}`);
   };
 
   const goPrevMonth = () => {
@@ -74,12 +75,31 @@
   });
 
   const calendarDateRef = ref<InstanceType<typeof CalendarDate> | null>();
+
+  type SelectType = 'year' | 'month' | 'date';
+  const fsm = new StateMachine<SelectType>({
+    init: 'date',
+    transitions: [
+      { name: 'pressed', from: 'date', to: 'month' },
+      { name: 'pressed', from: 'month', to: 'year' },
+    ],
+    methods: {
+      onChangeState(n: SelectType, o: SelectType) {
+        console.log(n, o);
+      },
+    },
+  });
+  const selectType = ref<SelectType>(fsm.state);
+  const setType = () => {
+    fsm.pressed();
+    selectType.value = fsm.state;
+  };
 </script>
 
 <template>
   <div class="calendar-wrapper">
     <div class="calendar-title">
-      <Btn color="#dfdfdff3" hover-color="#fff">
+      <Btn color="#dfdfdff3" hover-color="#fff" @click="setType">
         <span class="current">{{ currentYear }} 年 {{ currentMonth }} 月</span>
       </Btn>
       <span class="btn-group">
@@ -92,7 +112,11 @@
       </span>
     </div>
     <div class="calendar-table">
-      <CalendarDate ref="calendarDateRef" v-model="selectedDay"></CalendarDate>
+      <CalendarDate
+        ref="calendarDateRef"
+        v-model="selectedDay"
+        v-if="selectType === 'date'"
+      ></CalendarDate>
     </div>
   </div>
 </template>
