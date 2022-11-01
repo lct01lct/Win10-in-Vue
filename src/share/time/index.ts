@@ -43,6 +43,8 @@ const isToday = (day: Dayjs) => {
   );
 };
 
+const todayStr = `${year.value}-${month.value}-${date.value}`;
+
 export {
   hour,
   minute,
@@ -57,5 +59,6 @@ export {
   getDiffDays,
   getFormatFullTime,
   isToday,
+  todayStr,
 };
 export type { Dayjs };

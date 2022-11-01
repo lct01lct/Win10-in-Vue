@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import Today from './today.vue';
-  import Calendar from './calendar.vue';
+  import Calendar from './calendar/calendar.vue';
+  import { todayStr } from '@/share/time';
 
   const CalendarRef = ref<any>(null);
 
@@ -8,7 +9,7 @@
     CalendarRef.value.onTodayInMonthBtnClick();
   };
 
-  const selecedDay = ref<string>('');
+  const selecedDay = ref<string>(todayStr);
 
   watch(selecedDay, (val) => {
     console.log(val);
