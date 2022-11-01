@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { second, minute, hour, year, month, date, lunar } from '@/share/time';
+  import Btn from '@/components/Btn/index.vue';
 
   const emits = defineEmits(['onTodayInMonthBtnClick']);
 </script>
@@ -7,9 +8,11 @@
 <template>
   <div class="today-wrapper">
     <div class="hour-minute-second">{{ hour }}:{{ minute }}:{{ second }}</div>
-    <Btn @click="emits('onTodayInMonthBtnClick')">
-      <span class="year-month-date">{{ year }}-{{ month }}-{{ date }} {{ lunar }}</span>
-    </Btn>
+    <div class="today-btn-wrapper">
+      <Btn @click="emits('onTodayInMonthBtnClick')">
+        <span class="year-month-date">{{ year }}-{{ month }}-{{ date }} {{ lunar }}</span>
+      </Btn>
+    </div>
   </div>
 </template>
 
