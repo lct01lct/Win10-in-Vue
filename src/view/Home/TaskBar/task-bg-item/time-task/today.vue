@@ -1,13 +1,12 @@
 <script lang="ts" setup>
   import { second, minute, hour, year, month, date, lunar } from '@/share/time';
   import Btn from '@/components/Btn/index.vue';
-  import { fsm, selectType } from './calendar/calendar';
+  import { resetCalendar } from './calendar/calendar';
 
   const emits = defineEmits(['onTodayInMonthBtnClick']);
 
   const onTodayBtnClick = () => {
-    fsm.reset();
-    selectType.value = fsm.state!;
+    resetCalendar();
     nextTick(() => {
       emits('onTodayInMonthBtnClick');
     });

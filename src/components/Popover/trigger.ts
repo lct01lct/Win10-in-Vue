@@ -47,12 +47,13 @@ export const PopoverProps = {
   },
 };
 
-type EmitType = 'onBeforeEnter' | 'onAfterEnter' | 'onBeforeLeave' | 'onAfterLeave';
+type EmitType = 'onBeforeEnter' | 'onAfterEnter' | 'onBeforeLeave' | 'onAfterLeave' | 'closed';
 export const PopoverEmits: EmitType[] = [
   'onBeforeEnter',
   'onAfterEnter',
   'onBeforeLeave',
   'onAfterLeave',
+  'closed',
 ];
 
 export const whenTrigger = (type: TriggerType, triggerType: TriggerType, handler: () => void) => {

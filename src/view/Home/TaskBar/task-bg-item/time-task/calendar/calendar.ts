@@ -55,3 +55,8 @@ export const fsm = new FSM<SelectType>({
   },
 });
 export const selectType = ref<SelectType>('date');
+
+export const resetCalendar = () => {
+  fsm.reset();
+  selectType.value = fsm.state!;
+};

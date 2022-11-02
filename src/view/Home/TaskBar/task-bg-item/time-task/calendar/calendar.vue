@@ -4,7 +4,6 @@
   import dayjs from 'dayjs';
   import { getNearestInt } from '@/utils/number';
   import throttle from 'lodash/throttle';
-  import CalendarDate from './calendar-date.vue';
   import {
     domSommthlyScroll,
     currentYear,
@@ -13,6 +12,9 @@
     fsm,
     selectType,
   } from './calendar';
+  import CalendarDate from './calendar-date.vue';
+  import CalendarMonth from './calendar-month.vue';
+  import CalendarYear from './calendar-year.vue';
 
   const props = defineProps({
     modelValue: {
@@ -83,7 +85,6 @@
 
   defineExpose({
     onTodayInMonthBtnClick,
-    reset: fsm.reset,
   });
 </script>
 
@@ -108,6 +109,8 @@
         v-model="selectedDay"
         v-if="selectType === 'date'"
       ></CalendarDate>
+      <CalendarMonth v-else-if="selectType === 'month'"></CalendarMonth>
+      <CalendarYear v-else></CalendarYear>
     </div>
   </div>
 </template>

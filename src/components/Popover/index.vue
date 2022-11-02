@@ -89,6 +89,7 @@
   const afterLeave = () => {
     emits('onAfterLeave');
     popoverRef.value!.querySelector('.popover-tmp-wrapper')!.remove();
+    emits('closed');
   };
 
   const popoverRef = ref<HTMLElement | null>(null);
