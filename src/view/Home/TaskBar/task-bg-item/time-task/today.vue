@@ -1,15 +1,24 @@
 <script lang="ts" setup>
   import { second, minute, hour, year, month, date, lunar } from '@/share/time';
   import Btn from '@/components/Btn/index.vue';
+  import { fsm, selectType } from './calendar/calendar';
 
   const emits = defineEmits(['onTodayInMonthBtnClick']);
+
+  const onTodayBtnClick = () => {
+    fsm.reset();
+    selectType.value = fsm.state!;
+    nextTick(() => {
+      emits('onTodayInMonthBtnClick');
+    });
+  };
 </script>
 
 <template>
   <div class="today-wrapper">
     <div class="hour-minute-second">{{ hour }}:{{ minute }}:{{ second }}</div>
     <div class="today-btn-wrapper">
-      <Btn @click="emits('onTodayInMonthBtnClick')">
+      <Btn @click="onTodayBtnClick">
         <span class="year-month-date">{{ year }}-{{ month }}-{{ date }} {{ lunar }}</span>
       </Btn>
     </div>

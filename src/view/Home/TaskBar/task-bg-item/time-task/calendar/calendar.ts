@@ -1,6 +1,7 @@
 import { getLunar, year, month, paddingZero, getDiffDays } from '@/share/time';
 import type { Dayjs } from '@/share/time';
 import dayjs from 'dayjs';
+import FSM from '@/utils/fsm';
 
 export const getNowDay = (dateStr: string): dayjs.Dayjs => {
   return dayjs(dateStr);
@@ -40,3 +41,17 @@ export const isScrolling = ref<boolean>(false);
 export const scrollingCb = (isScroll: boolean) => {
   isScrolling.value = isScroll;
 };
+
+export type SelectType = 'year' | 'month' | 'date';
+export const fsm = new FSM<SelectType>({
+  init: 'date',
+  steps: [
+    { from: 'date', to: 'month' },
+    { from: 'month', to: 'year' },
+    { from: 'year', to: 'year' },
+  ],
+  onStateChange(newState) {
+    selectType.value = newState;
+  },
+});
+export const selectType = ref<SelectType>('date');

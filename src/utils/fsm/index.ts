@@ -1,96 +1,115 @@
-interface IStateMachine<T> {
-  init?: ITransitionBase<T>[keyof ITransitionBase<T>];
-  transitions: ITransitionItem<T>[];
-  methods?: {
-    onChangeState?: (newState: T, oldState: T) => void; // 钩子函数，当变化状态时触发
-    [key: string]: ((newState: T, oldState: T) => void) | undefined; // 自定义钩子函数
-  };
+interface IFSMOtpions<State> {
+  init?: State;
+  steps: StepType<State>[];
+  onStateChange?: (currState: State, prevState: State | null) => void;
 }
 
-interface ITransitionBase<T> {
-  from: T;
-  to: T;
+interface StepType<State> {
+  from: State;
+  to: State;
+  onStep?: (currState: State, prevState: State | null) => void;
 }
 
-type ITransitionItem<T> = { name: string } & ITransitionBase<T>;
+class FSM<State> {
+  private _init: State | null = null;
+  private _state: State | null = null;
+  private _currState: StepType<State> | null = null;
+  private _prevState: StepType<State> | null = null;
+  private _steps: StepType<State>[] = [];
+  private _onStateChange: ((currState: State, prevState: State | null) => void) | undefined =
+    undefined;
 
-// 扩充 this
-interface StateMachine<T> {
-  [key: string]: any;
-}
-
-type IStateMap<T extends string> = {
-  [P in T]: ITransitionItem<T>;
-};
-
-// 状态机类
-class StateMachine<T extends string> {
-  currentState: ITransitionItem<T> | null;
-  map: IStateMap<T> = {} as IStateMap<T>; // 动作与状态的映射
-  state: T;
-  prevState: ITransitionItem<T> | null = null;
-
-  constructor(options: IStateMachine<T>) {
-    options.transitions.forEach((item) => {
-      this.mapTransitions(item);
-    });
-    this.currentState = options.init
-      ? this.map[options.init]
-      : this.map[options.transitions[0].from];
-    this.state = options.init || options.transitions[0].from;
-    this.methods = options.methods || {};
+  constructor(opt: IFSMOtpions<State>) {
+    const { init, steps, onStateChange } = opt;
+    this._init = init!;
+    this.mapSteps(steps);
+    this._onStateChange = onStateChange;
+    this.reset();
   }
 
-  changeState(state: T) {
-    this.currentState = this.map[state] || null;
+  get state() {
+    return this._state;
   }
 
-  mapTransitions(transition: ITransitionItem<T>) {
-    const name = transition.name;
-    const from = transition.from;
+  step() {
+    if (!this._currState) {
+      this.postError('Unable to go to the next step');
+    }
+    this._prevState = this._currState;
+    const nextStep = this.findNextStep(this._currState!);
 
-    this.addState(from, transition);
-    this.addTransition(name);
-    this.addOnHook(name);
+    this._currState?.onStep && this._currState?.onStep(this._currState.to, this._currState.from);
+    this.triggerCb();
+
+    this.setCurrState(nextStep);
   }
 
-  addState(from: T, transition: ITransitionItem<T>) {
-    this.map[from] = transition;
+  goto(to: State) {
+    const nextStep = this.findNextStep(to);
+
+    if (!nextStep) return this.postError(`'Unable to go to the ${to} this step'`);
+
+    this._prevState = this._currState;
+    this._currState?.onStep &&
+      this._currState?.onStep(to, this._prevState ? this._prevState.from : this._prevState);
+    this.triggerCb();
+    this.setCurrState(nextStep);
+
+    return this;
   }
 
-  addTransition(name: string) {
-    this[name] = function () {
-      if (!this.currentState) {
-        this.state = this.prevState!.to!;
-      } else if (name === this.currentState.name) {
-        this.prevState = this.currentState;
-
-        // 改变状态
-        this.state = this.currentState.to;
-        this.changeState(this.currentState.to);
+  reset() {
+    if (!this._init) {
+      try {
+        this._state = this._steps[0].from;
+        this._init = this._steps[0].from;
+        this.setCurrState(this._steps[0]);
+        this.triggerCb();
+      } catch {
+        this.postError('FSM constructor need a initival state!');
       }
-      // 触发change钩子函数
-      const newState = this.prevState ? this.prevState.to : null;
-      const oldState = this.prevState ? this.prevState.from : null;
-      this.methods.onChangeState && this.methods.onChangeState(newState, oldState);
-
-      // 触发自定义钩子函数
-      const hookFuName = 'on' + camelizer(name);
-      this[hookFuName]();
-    };
+    } else {
+      this.setCurrState(this._steps[0]);
+    }
+    return this;
   }
 
-  addOnHook(name: string) {
-    const hookFuName = 'on' + camelizer(name);
-    this[hookFuName] = function () {
-      this.methods[hookFuName] &&
-        this.methods[hookFuName](this.currentState!.to, this.currentState!.from);
-    };
+  private mapSteps(steps: StepType<State>[]) {
+    this._steps = steps;
+  }
+
+  private setCurrState(nextStep: StepType<State> | undefined) {
+    if (!nextStep) {
+      this._currState = null;
+      this._state = this._prevState!.to || null;
+    } else {
+      this._currState = nextStep;
+      this._state = this._currState ? this._currState.from : this._prevState!.to;
+    }
+  }
+
+  private findNextStep(currState: StepType<State> | State): StepType<State> | undefined {
+    return this._steps.find((item) => {
+      if (typeof currState === 'object') {
+        return item.from === (currState as StepType<State>).to;
+      }
+      return item.from === currState;
+    });
+  }
+
+  private triggerCb() {
+    if (this._currState) {
+      this._onStateChange &&
+        this._onStateChange(
+          this._currState!.to!,
+          this._prevState ? this._prevState.from : this._prevState
+        );
+    }
+  }
+
+  private postError(errStr: string) {
+    throw new Error(errStr);
   }
 }
 
-function camelizer(name: string) {
-  return name.replace(name[0], name[0].toUpperCase());
-}
-
-export default StateMachine;
+export default FSM;

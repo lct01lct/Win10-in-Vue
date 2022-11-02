@@ -5,8 +5,14 @@
   import { getNearestInt } from '@/utils/number';
   import throttle from 'lodash/throttle';
   import CalendarDate from './calendar-date.vue';
-  import { domSommthlyScroll, currentYear, currentMonth, scroPx } from './calendar';
-  import StateMachine from '@/utils/fsm';
+  import {
+    domSommthlyScroll,
+    currentYear,
+    currentMonth,
+    scroPx,
+    fsm,
+    selectType,
+  } from './calendar';
 
   const props = defineProps({
     modelValue: {
@@ -18,7 +24,6 @@
 
   const goTodayInMonth = () => {
     domSommthlyScroll(calendarDateRef.value!.calendarRef!, -scroPx);
-
     emits('update:modelValue', `${year.value}-${month.value}-${date.value}`);
   };
 
@@ -70,30 +75,16 @@
     emits('update:modelValue', val);
   });
 
-  defineExpose({
-    onTodayInMonthBtnClick,
-  });
-
   const calendarDateRef = ref<InstanceType<typeof CalendarDate> | null>();
 
-  type SelectType = 'year' | 'month' | 'date';
-  const fsm = new StateMachine<SelectType>({
-    init: 'date',
-    transitions: [
-      { name: 'pressed', from: 'date', to: 'month' },
-      { name: 'pressed', from: 'month', to: 'year' },
-    ],
-    methods: {
-      onChangeState(n: SelectType, o: SelectType) {
-        console.log(n, o);
-      },
-    },
-  });
-  const selectType = ref<SelectType>(fsm.state);
   const setType = () => {
-    fsm.pressed();
-    selectType.value = fsm.state;
+    fsm.step();
   };
+
+  defineExpose({
+    onTodayInMonthBtnClick,
+    reset: fsm.reset,
+  });
 </script>
 
 <template>
