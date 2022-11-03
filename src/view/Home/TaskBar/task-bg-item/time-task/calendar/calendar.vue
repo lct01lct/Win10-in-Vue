@@ -12,9 +12,10 @@
     scroPx,
     fsm,
     selectType,
-    currentYearInMonthComp,
     title,
-    getTitle,
+    selectedMonth,
+    _month,
+    _year,
   } from './calendar';
   import CalendarDate from './calendar-date.vue';
   import CalendarMonth from './calendar-month.vue';
@@ -28,9 +29,21 @@
   });
   const emits = defineEmits(['update:modelValue']);
 
+  let dateCompKey = 0;
   const goTodayInMonth = () => {
-    domSommthlyScroll(calendarDateRef.value!.calendarRef!, -scroPx);
     emits('update:modelValue', `${year.value}-${month.value}-${date.value}`);
+    selectedMonth.value = `${year.value}-${month.value}`;
+    _month.value = month.value;
+    _year.value = year.value;
+
+    // 如果是 date，不可以直接强制刷新
+    if (selectType.value === 'date') {
+      selectType.value = 'month';
+      nextTick(() => {
+        selectType.value = 'date';
+      });
+    }
+    dateCompKey++;
   };
 
   const goPrevMonth = () => {
@@ -90,10 +103,6 @@
   defineExpose({
     onTodayInMonthBtnClick,
   });
-
-  watch(currentYearInMonthComp, () => {
-    getTitle();
-  });
 </script>
 
 <template>
@@ -116,6 +125,7 @@
         ref="calendarDateRef"
         v-model="selectedDay"
         v-if="selectType === 'date'"
+        :key="dateCompKey"
       ></CalendarDate>
       <CalendarMonth v-else-if="selectType === 'month'" ref="calendarMonthRef"></CalendarMonth>
       <CalendarYear v-else></CalendarYear>

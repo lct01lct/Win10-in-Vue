@@ -48,8 +48,8 @@
     }
   };
 
-  const nowMonthFirstDay = getNowDay(`${_year.value}-${_month.value}-01`); // 今天所在月份的第一天
-  const rowDay = nowMonthFirstDay.add(-nowMonthFirstDay.day() + 1, 'day');
+  const nowMonthFirstDay = computed(() => getNowDay(`${_year.value}-${_month.value}-01`)); // 今天所在月份的第一天
+  const rowDay = nowMonthFirstDay.value.add(-nowMonthFirstDay.value.day() + 1, 'day');
 
   const getDay = (row: number, col: number) => {
     return rowDay.add((row - 1) * 7 + col - 1, 'day');
@@ -113,10 +113,13 @@
   };
 
   const calendarRef = ref<null | HTMLElement>(null);
-
+  const compCtx = getCurrentInstance();
   defineExpose({
     calendarRef,
     rowDay,
+    reset() {
+      (compCtx as any).ctx.$forceUpdate();
+    },
   });
 </script>
 
