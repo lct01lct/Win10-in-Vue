@@ -24,15 +24,19 @@
   const _leave = inject<Function>('_leave')!;
   let setClickCount = inject<Function>('set-click-count')!;
 
+  const isHide = (tar: HTMLElement, e: Event) => {
+    const conditions = [
+      props.triggerRef && props.triggerRef.contains(tar), // 点击元素是触发器
+      e.composedPath().includes(contentRef.value!), // 解决点击元素导致自身隐藏
+    ];
+
+    return conditions.includes(true);
+  };
+
   const hideContent = (e: Event) => {
     const tar = e.target as HTMLElement;
-    let res: boolean = false;
 
-    res =
-      (props.triggerRef && props.triggerRef!.contains(tar)) ||
-      (contentRef.value && contentRef.value!.contains(tar));
-
-    if (res) {
+    if (isHide(tar, e)) {
       e.stopPropagation();
     } else {
       _leave(() => {

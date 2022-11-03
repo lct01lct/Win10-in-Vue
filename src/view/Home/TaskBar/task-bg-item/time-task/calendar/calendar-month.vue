@@ -53,10 +53,7 @@
 
   const selectMonth = (day: Dayjs) => {
     selectedMonth.value = `${day.year()}-${day.month() + 1}`;
-    // 在 Popover 组件内设置元素隐藏，必须异步地设置
-    setTimeout(() => {
-      fsm.goto('date');
-    }, 0);
+    fsm.goto('date');
   };
 
   const onMouseEnter = (e: Event) => {
