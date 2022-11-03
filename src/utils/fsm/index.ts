@@ -52,8 +52,14 @@ class FSM<State> {
     this._prevState = this._currState;
     this._currState?.onStep &&
       this._currState?.onStep(to, this._prevState ? this._prevState.from : this._prevState);
-    this.triggerCb();
     this.setCurrState(nextStep);
+    if (this._currState) {
+      this._onStateChange &&
+        this._onStateChange(
+          this._currState!.from!,
+          this._prevState ? this._prevState.from : this._prevState
+        );
+    }
 
     return this;
   }

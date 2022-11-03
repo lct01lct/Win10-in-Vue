@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import dayjs from 'dayjs';
   import { todayStr, year, month, Dayjs } from '@/share/time';
+  import { currentYearInMonthComp, fsm, selectType } from './calendar';
 
   const baseArr = reactive(new Array(30).fill(0).map((i, index) => index));
   let frontP = 0;
@@ -29,7 +30,7 @@
     } else if (`${monthDayjs.year()}-${monthDayjs.month() + 1}` === selectedMonth.value) {
       classes.push('light');
     } else {
-      classes.push(monthDayjs.year() === Number(year.value) ? 'light' : 'dark');
+      classes.push(monthDayjs.year() === Number(currentYearInMonthComp.value) ? 'light' : 'dark');
     }
 
     const isCurrMonth = (monthDayjs: Dayjs) => {
@@ -52,6 +53,7 @@
 
   const selectMonth = (day: Dayjs) => {
     selectedMonth.value = `${day.year()}-${day.month() + 1}`;
+    fsm.goto('date');
   };
 
   const onMouseEnter = (e: Event) => {
@@ -71,12 +73,22 @@
       tar.classList.remove('active');
     }
   };
+
+  const scrollCb = (scrolledPx: number) => {
+    const scrolledFourMonths = Math.floor(scrolledPx / 75) + 2.5; // 设置2.5， 因为第二个半行是月份是分隔线
+    const scrolledDay = dayjs(`${Number(year.value) - 1}-${month.value}-01`).add(
+      scrolledFourMonths * 4,
+      'month'
+    );
+
+    currentYearInMonthComp.value = String(scrolledDay.year());
+  };
 </script>
 
 <template>
   <div
     class="select-month-table"
-    v-infinite-scroll="{ load, initTop: 75, scrollRate: 50, scrollingCb }"
+    v-infinite-scroll="{ load, initTop: 75, scrollRate: 50, scrollingCb, scrollCb }"
     ref="calendarRef"
   >
     <tr v-for="row in baseArr" class="calendar-table-row" :key="row">

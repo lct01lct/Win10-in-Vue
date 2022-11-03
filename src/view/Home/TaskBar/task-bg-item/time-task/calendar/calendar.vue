@@ -4,6 +4,7 @@
   import dayjs from 'dayjs';
   import { getNearestInt } from '@/utils/number';
   import throttle from 'lodash/throttle';
+  import type { CompType } from '@/utils/vue';
   import {
     domSommthlyScroll,
     currentYear,
@@ -11,6 +12,7 @@
     scroPx,
     fsm,
     selectType,
+    currentYearInMonthComp,
   } from './calendar';
   import CalendarDate from './calendar-date.vue';
   import CalendarMonth from './calendar-month.vue';
@@ -77,8 +79,8 @@
     emits('update:modelValue', val);
   });
 
-  const calendarDateRef = ref<InstanceType<typeof CalendarDate> | null>();
-
+  const calendarDateRef = ref<CompType<typeof CalendarDate>>();
+  const calendarMonthRef = ref<CompType<typeof CalendarMonth>>();
   const setType = () => {
     fsm.step();
   };
@@ -86,13 +88,35 @@
   defineExpose({
     onTodayInMonthBtnClick,
   });
+
+  const getTitle = async () => {
+    const type = selectType.value;
+
+    switch (type) {
+      case 'date':
+        title.value = `${currentYear.value} 年 ${currentMonth.value} 月`;
+      case 'month':
+        await nextTick();
+        title.value = `${currentYearInMonthComp.value} 年`;
+        return;
+      case 'year':
+        break;
+      default:
+        break;
+    }
+  };
+
+  const title = ref(`${currentYear.value} 年 ${currentMonth.value} 月`);
+
+  watch(selectType, () => getTitle());
+  watch(currentYearInMonthComp, () => getTitle());
 </script>
 
 <template>
   <div class="calendar-wrapper">
     <div class="calendar-title">
       <Btn color="#dfdfdff3" hover-color="#fff" @click="setType">
-        <span class="current">{{ currentYear }} 年 {{ currentMonth }} 月</span>
+        <span class="current">{{ title }}</span>
       </Btn>
       <span class="btn-group">
         <Btn color="#dfdfdff3" hover-color="#fff" @click="onPrevMonthClick">
@@ -109,7 +133,7 @@
         v-model="selectedDay"
         v-if="selectType === 'date'"
       ></CalendarDate>
-      <CalendarMonth v-else-if="selectType === 'month'"></CalendarMonth>
+      <CalendarMonth v-else-if="selectType === 'month'" ref="calendarMonthRef"></CalendarMonth>
       <CalendarYear v-else></CalendarYear>
     </div>
   </div>

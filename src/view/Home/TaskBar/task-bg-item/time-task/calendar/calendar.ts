@@ -46,8 +46,14 @@ export type SelectType = 'year' | 'month' | 'date';
 export const fsm = new FSM<SelectType>({
   init: 'date',
   steps: [
-    { from: 'date', to: 'month' },
-    { from: 'month', to: 'year' },
+    {
+      from: 'date',
+      to: 'month',
+    },
+    {
+      from: 'month',
+      to: 'year',
+    },
     { from: 'year', to: 'year' },
   ],
   onStateChange(newState) {
@@ -60,3 +66,5 @@ export const resetCalendar = () => {
   fsm.reset();
   selectType.value = fsm.state!;
 };
+
+export const currentYearInMonthComp = ref(`${year.value}`);

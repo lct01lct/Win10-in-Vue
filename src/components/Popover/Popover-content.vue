@@ -26,9 +26,12 @@
 
   const hideContent = (e: Event) => {
     const tar = e.target as HTMLElement;
-    const res =
+    let res: boolean = false;
+
+    res =
       (props.triggerRef && props.triggerRef!.contains(tar)) ||
-      (contentRef.value && contentRef.value!.contains(tar));
+      (contentRef.value && contentRef.value!.contains(tar)) ||
+      (contentRef.value && !document.contains(tar));
 
     if (res) {
       e.stopPropagation();
