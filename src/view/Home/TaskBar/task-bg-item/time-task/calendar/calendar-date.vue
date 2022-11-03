@@ -16,6 +16,8 @@
     scrollCb,
     scrollingCb,
     currentMonth,
+    _year,
+    _month,
   } from './calendar';
 
   const props = defineProps({
@@ -46,7 +48,7 @@
     }
   };
 
-  const nowMonthFirstDay = getNowDay(`${year.value}-${month.value}-01`); // 今天所在月份的第一天
+  const nowMonthFirstDay = getNowDay(`${_year.value}-${_month.value}-01`); // 今天所在月份的第一天
   const rowDay = nowMonthFirstDay.add(-nowMonthFirstDay.day() + 1, 'day');
 
   const getDay = (row: number, col: number) => {

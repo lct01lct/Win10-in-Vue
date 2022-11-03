@@ -1,25 +1,23 @@
 <script lang="ts" setup>
   import Today from './today.vue';
   import Calendar from './calendar/calendar.vue';
-  import { todayStr } from '@/share/time';
+  import { selectedDay } from './calendar/calendar';
 
   const CalendarRef = ref<any>(null);
 
   const onTodayInMonthBtnClick = () => {
     CalendarRef.value.onTodayInMonthBtnClick();
   };
-
-  const selecedDay = ref<string>(todayStr);
-
-  watch(selecedDay, (val) => {
-    console.log(val);
+  console.log(selectedDay.value, 'selected');
+  watch(selectedDay, (val) => {
+    console.log(val, 'selected');
   });
 </script>
 
 <template>
   <div class="time-task-container">
     <Today @onTodayInMonthBtnClick="onTodayInMonthBtnClick"></Today>
-    <Calendar v-model="selecedDay" ref="CalendarRef"></Calendar>
+    <Calendar v-model="selectedDay" ref="CalendarRef"></Calendar>
   </div>
 </template>
 

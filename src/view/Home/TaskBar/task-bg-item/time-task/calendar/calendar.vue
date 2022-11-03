@@ -13,6 +13,8 @@
     fsm,
     selectType,
     currentYearInMonthComp,
+    title,
+    getTitle,
   } from './calendar';
   import CalendarDate from './calendar-date.vue';
   import CalendarMonth from './calendar-month.vue';
@@ -89,27 +91,9 @@
     onTodayInMonthBtnClick,
   });
 
-  const getTitle = async () => {
-    const type = selectType.value;
-
-    switch (type) {
-      case 'date':
-        title.value = `${currentYear.value} 年 ${currentMonth.value} 月`;
-      case 'month':
-        await nextTick();
-        title.value = `${currentYearInMonthComp.value} 年`;
-        return;
-      case 'year':
-        break;
-      default:
-        break;
-    }
-  };
-
-  const title = ref(`${currentYear.value} 年 ${currentMonth.value} 月`);
-
-  watch(selectType, () => getTitle());
-  watch(currentYearInMonthComp, () => getTitle());
+  watch(currentYearInMonthComp, () => {
+    getTitle();
+  });
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import dayjs from 'dayjs';
   import { todayStr, year, month, Dayjs } from '@/share/time';
-  import { currentYearInMonthComp, fsm, selectType } from './calendar';
+  import { currentYearInMonthComp, fsm, selectedMonth } from './calendar';
 
   const baseArr = reactive(new Array(30).fill(0).map((i, index) => index));
   let frontP = 0;
@@ -48,8 +48,6 @@
   const getMonth = (row: number, col: number) => {
     return rowMonth.add((row - 1) * 4 + (col - 1), 'month');
   };
-
-  const selectedMonth = ref(`${year.value}-${month.value}`);
 
   const selectMonth = (day: Dayjs) => {
     selectedMonth.value = `${day.year()}-${day.month() + 1}`;
