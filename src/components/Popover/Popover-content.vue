@@ -30,8 +30,7 @@
 
     res =
       (props.triggerRef && props.triggerRef!.contains(tar)) ||
-      (contentRef.value && contentRef.value!.contains(tar)) ||
-      (contentRef.value && !document.contains(tar));
+      (contentRef.value && contentRef.value!.contains(tar));
 
     if (res) {
       e.stopPropagation();
