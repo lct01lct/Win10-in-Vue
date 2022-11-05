@@ -22,6 +22,8 @@
       left: `${leftVal}px`,
     };
   };
+
+  const children = [];
 </script>
 
 <template>
