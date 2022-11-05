@@ -85,8 +85,6 @@
   };
 
   const onTodayInMonthBtnClick = throttle(goTodayInMonth, 600);
-  const onPrevMonthClick = throttle(goPrevMonth, 600);
-  const onNextMonthClick = throttle(goNextMonth, 600);
 
   const selectedDay = ref<string>(props.modelValue);
 
@@ -94,11 +92,48 @@
     emits('update:modelValue', val);
   });
 
-  const calendarDateRef = ref<CompType<typeof CalendarDate>>();
-  const calendarMonthRef = ref<CompType<typeof CalendarMonth>>();
+  const calendarDateRef = ref<CompType<typeof CalendarDate>>(null);
+  const calendarMonthRef = ref<CompType<typeof CalendarMonth>>(null);
+  const calendarYearRef = ref<CompType<typeof CalendarYear>>(null);
+
   const setType = () => {
     fsm.step();
   };
+
+  const goNext = () => {
+    const type = selectType.value;
+
+    switch (type) {
+      case 'date':
+        goNextMonth();
+        break;
+      case 'month':
+        break;
+      case 'year':
+        break;
+      default:
+        break;
+    }
+  };
+
+  const goPrev = () => {
+    const type = selectType.value;
+
+    switch (type) {
+      case 'date':
+        goPrevMonth();
+        break;
+      case 'month':
+        break;
+      case 'year':
+        break;
+      default:
+        break;
+    }
+  };
+
+  const onPrevMonthClick = throttle(goPrev, 600);
+  const onNextMonthClick = throttle(goNext, 600);
 
   defineExpose({
     onTodayInMonthBtnClick,
@@ -128,7 +163,7 @@
         :key="dateCompKey"
       ></CalendarDate>
       <CalendarMonth v-else-if="selectType === 'month'" ref="calendarMonthRef"></CalendarMonth>
-      <CalendarYear v-else></CalendarYear>
+      <CalendarYear v-else ref="calendarYearRef"></CalendarYear>
     </div>
   </div>
 </template>

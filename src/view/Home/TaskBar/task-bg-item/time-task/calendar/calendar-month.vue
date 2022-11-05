@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import dayjs from 'dayjs';
-  import { todayStr, year, month, Dayjs, paddingZero } from '@/share/time';
+  import { year, month, Dayjs, paddingZero } from '@/share/time';
   import { currentYearInMonthComp, fsm, selectedMonth, _year } from './calendar';
 
   const baseArr = reactive(new Array(30).fill(0).map((i, index) => index));
@@ -82,6 +82,12 @@
 
     currentYearInMonthComp.value = String(scrolledMonth.value.year());
   };
+
+  const calendarRef = ref<HTMLElement | null>(null);
+
+  defineExpose({
+    calendarRef,
+  });
 </script>
 
 <template>

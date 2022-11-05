@@ -83,6 +83,12 @@
     selectedYear.value = String(dayjs.year());
     fsm.goto('month');
   };
+
+  const calendarRef = ref<HTMLElement | null>(null);
+
+  defineExpose({
+    calendarRef,
+  });
 </script>
 
 <template>
