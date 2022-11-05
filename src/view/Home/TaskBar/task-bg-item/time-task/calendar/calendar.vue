@@ -156,14 +156,16 @@
       </span>
     </div>
     <div class="calendar-table">
-      <CalendarDate
-        ref="calendarDateRef"
-        v-model="selectedDay"
-        v-if="selectType === 'date'"
-        :key="dateCompKey"
-      ></CalendarDate>
-      <CalendarMonth v-else-if="selectType === 'month'" ref="calendarMonthRef"></CalendarMonth>
-      <CalendarYear v-else ref="calendarYearRef"></CalendarYear>
+      <Transition name="calendar">
+        <CalendarDate
+          ref="calendarDateRef"
+          v-model="selectedDay"
+          v-if="selectType === 'date'"
+          :key="dateCompKey"
+        ></CalendarDate>
+        <CalendarMonth v-else-if="selectType === 'month'" ref="calendarMonthRef"></CalendarMonth>
+        <CalendarYear v-else ref="calendarYearRef"></CalendarYear>
+      </Transition>
     </div>
   </div>
 </template>
@@ -173,6 +175,8 @@
     padding: 1.25rem;
     font-size: 0.875rem;
     font-weight: 400;
+    overflow: hidden;
+    height: 400px;
 
     .calendar-title {
       display: flex;
@@ -188,5 +192,16 @@
       color: #fff;
       font-size: 0.875rem;
     }
+  }
+
+  .calendar-enter-active,
+  .calendar-leave-active {
+    transition: all 0.3s ease;
+  }
+
+  .calendar-enter-from,
+  .calendar-leave-to {
+    opacity: 0;
+    transform: scale(1.5);
   }
 </style>

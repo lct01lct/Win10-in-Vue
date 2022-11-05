@@ -124,39 +124,41 @@
 </script>
 
 <template>
-  <thead class="calendar-table-head">
-    <tr class="calendar-table-head-row">
-      <th
-        class="calendar-table-head-cell"
-        v-for="item in ['一', '二', '三', '四', '五', '六', '日']"
-        :key="item"
-      >
-        {{ item }}
-      </th>
-    </tr>
-  </thead>
-  <div
-    class="calendar-table-body"
-    v-infinite-scroll="{ load, initTop: 50, scrollRate: 50, scrollCb, scrollingCb }"
-    ref="calendarRef"
-  >
-    <tr v-for="row in baseArr" class="calendar-table-row" :key="row">
-      <td class="cell" :class="getClass(row, col)" v-for="col in 7" :key="col">
-        <div
-          class="cell-border"
-          :class="getBorderClass(row, col)"
-          @click="selectDay(getDay(row, col))"
-          @mouseenter="onMouseEnter($event)"
-          @mouseleave="onMouseLeave($event)"
-        ></div>
-        <div
-          class="cell-selected-border"
-          :class="isToday(dayjs(selectedDay)) && isToday(getDay(row, col)) ? 'selected' : ''"
-        ></div>
-        <span>{{ getDay(row, col).date() }}</span>
-        <span>{{ getDayLunar(getDay(row, col)) }}</span>
-      </td>
-    </tr>
+  <div>
+    <thead class="calendar-table-head">
+      <tr class="calendar-table-head-row">
+        <th
+          class="calendar-table-head-cell"
+          v-for="item in ['一', '二', '三', '四', '五', '六', '日']"
+          :key="item"
+        >
+          {{ item }}
+        </th>
+      </tr>
+    </thead>
+    <div
+      class="calendar-table-body"
+      v-infinite-scroll="{ load, initTop: 50, scrollRate: 50, scrollCb, scrollingCb }"
+      ref="calendarRef"
+    >
+      <tr v-for="row in baseArr" class="calendar-table-row" :key="row">
+        <td class="cell" :class="getClass(row, col)" v-for="col in 7" :key="col">
+          <div
+            class="cell-border"
+            :class="getBorderClass(row, col)"
+            @click="selectDay(getDay(row, col))"
+            @mouseenter="onMouseEnter($event)"
+            @mouseleave="onMouseLeave($event)"
+          ></div>
+          <div
+            class="cell-selected-border"
+            :class="isToday(dayjs(selectedDay)) && isToday(getDay(row, col)) ? 'selected' : ''"
+          ></div>
+          <span>{{ getDay(row, col).date() }}</span>
+          <span>{{ getDayLunar(getDay(row, col)) }}</span>
+        </td>
+      </tr>
+    </div>
   </div>
 </template>
 

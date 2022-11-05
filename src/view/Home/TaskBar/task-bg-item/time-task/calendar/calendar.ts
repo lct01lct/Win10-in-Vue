@@ -51,7 +51,13 @@ export type SelectType = 'year' | 'month' | 'date';
 export const fsm = new FSM<SelectType>({
   init: 'date',
   steps: [
-    { from: 'date', to: 'month' },
+    {
+      from: 'date',
+      to: 'month',
+      onStep() {
+        monthCompReset();
+      },
+    },
     { from: 'month', to: 'year' },
     { from: 'year', to: 'year' },
   ],
@@ -70,7 +76,6 @@ export const fsm = new FSM<SelectType>({
       setTimeout(() => {
         currentYearInMonthComp.value = selectedYear.value;
         _year.value = selectedYear.value;
-
         selectedMonth.value = `${_year.value}-${paddingZero(Number(_month.value))}`;
 
         yearCompReset();
@@ -123,8 +128,13 @@ watch(yearPeriod, () => getTitle());
 
 const monthCompReset = () => {
   selectedMonth.value = `${year.value}-${paddingZero(Number(_month.value))}`;
+  setTimeout(() => {
+    currentYearInMonthComp.value = `${year.value}`;
+  }, 200);
 };
 
 const yearCompReset = () => {
   selectedYear.value = year.value;
 };
+
+watch(currentYearInMonthComp, (val) => console.log(val));

@@ -9,9 +9,9 @@
     CalendarRef.value.onTodayInMonthBtnClick();
   };
   console.log(selectedDay.value, 'selected');
-  watch(selectedDay, (val) => {
-    console.log(val, 'selected');
-  });
+  // watch(selectedDay, (val) => {
+  //   console.log(val, 'selected');
+  // });
 </script>
 
 <template>

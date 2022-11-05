@@ -52,7 +52,6 @@
 
   const selectMonth = (day: Dayjs) => {
     selectedMonth.value = `${day.year()}-${paddingZero(day.month() + 1)}`;
-    console.log(selectedMonth.value);
     fsm.goto('date');
   };
 
