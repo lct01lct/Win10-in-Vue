@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import dayjs from 'dayjs';
   import { todayStr, year, month, Dayjs, paddingZero } from '@/share/time';
-  import { currentYearInMonthComp, fsm, selectedMonth } from './calendar';
+  import { currentYearInMonthComp, fsm, selectedMonth, _year } from './calendar';
 
   const baseArr = reactive(new Array(30).fill(0).map((i, index) => index));
   let frontP = 0;
@@ -20,14 +20,15 @@
     isScrolling.value = isScroll;
   };
 
-  const rowMonth = dayjs(todayStr.slice(0, 4));
+  const rowMonth = computed(() => dayjs(selectedMonth.value.slice(0, 4)));
+
   const getClass = (row: number, col: number) => {
     const classes = [];
     const monthDayjs = getMonth(row, col);
 
     if (isScrolling.value) {
       classes.push('light');
-    } else if (`${monthDayjs.year()}-${monthDayjs.month() + 1}` === selectedMonth.value) {
+    } else if (`${monthDayjs.year()}-${monthDayjs.month() + 1}` === month.value) {
       classes.push('light');
     } else {
       classes.push(monthDayjs.year() === Number(currentYearInMonthComp.value) ? 'light' : 'dark');
@@ -46,11 +47,12 @@
   };
 
   const getMonth = (row: number, col: number) => {
-    return rowMonth.add((row - 1) * 4 + (col - 1), 'month');
+    return rowMonth.value.add((row - 1) * 4 + (col - 1), 'month');
   };
 
   const selectMonth = (day: Dayjs) => {
     selectedMonth.value = `${day.year()}-${paddingZero(day.month() + 1)}`;
+    console.log(selectedMonth.value);
     fsm.goto('date');
   };
 
@@ -74,12 +76,11 @@
 
   const scrollCb = (scrolledPx: number) => {
     const scrolledFourMonths = Math.floor(scrolledPx / 75) + 2.5; // 设置2.5， 因为第二个半行是月份是分隔线
-    const scrolledDay = dayjs(`${Number(year.value) - 1}-${month.value}-01`).add(
-      scrolledFourMonths * 4,
-      'month'
+    const scrolledMonth = computed(() =>
+      dayjs(`${Number(_year.value) - 1}-${month.value}-01`).add(scrolledFourMonths * 4, 'month')
     );
 
-    currentYearInMonthComp.value = String(scrolledDay.year());
+    currentYearInMonthComp.value = String(scrolledMonth.value.year());
   };
 </script>
 
@@ -98,6 +99,7 @@
         @click="selectMonth(getMonth(row, col))"
         @mouseenter="onMouseEnter($event)"
         @mouseleave="onMouseLeave($event)"
+        @mousemove="onMouseEnter($event)"
       >
         {{ getMonth(row, col).month() + 1 }}月
       </td>
@@ -128,6 +130,7 @@
       justify-content: center;
       align-items: center;
       font-size: 0.8125rem;
+      cursor: default;
     }
 
     .cell.dark {

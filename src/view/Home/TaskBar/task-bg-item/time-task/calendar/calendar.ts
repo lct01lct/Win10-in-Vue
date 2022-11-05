@@ -10,10 +10,6 @@ export const _month = ref(cloneDeep(month).value);
 export const currentYear = computed<string>(() => _year.value);
 export const currentMonth = computed<string>(() => _month.value);
 
-watch(currentMonth, () => {
-  console.log(currentMonth.value);
-});
-
 export const getNowDay = (dateStr: string): dayjs.Dayjs => {
   return dayjs(dateStr);
 };
@@ -61,14 +57,32 @@ export const fsm = new FSM<SelectType>({
   ],
   onStateChange(newState, oldState) {
     if (newState === 'date' && oldState === 'month') {
-      selectedDay.value = `${selectedMonth.value}-01`;
+      // selectedDay.value = `${selectedMonth.value}-01`;
       _month.value = `${selectedMonth.value.slice(5)}`;
       _year.value = `${selectedMonth.value.slice(0, 4)}`;
+
+      setTimeout(() => {
+        monthCompReset();
+      });
     }
+
+    if (newState === 'month' && oldState === 'year') {
+      setTimeout(() => {
+        currentYearInMonthComp.value = selectedYear.value;
+        _year.value = selectedYear.value;
+
+        selectedMonth.value = `${_year.value}-${paddingZero(Number(_month.value))}`;
+
+        yearCompReset();
+        getTitle();
+      });
+    }
+
     selectType.value = newState;
     getTitle();
   },
 });
+
 export const selectType = ref<SelectType>('date');
 
 export const resetCalendar = () => {
@@ -87,7 +101,6 @@ export const title = ref(`${currentYear.value} 年 ${currentMonth.value} 月`);
 
 export const getTitle = () => {
   const type = selectType.value;
-
   switch (type) {
     case 'date':
       title.value = `${currentYear.value} 年 ${currentMonth.value} 月`;
@@ -96,8 +109,22 @@ export const getTitle = () => {
       title.value = `${currentYearInMonthComp.value} 年`;
       break;
     case 'year':
+      title.value = `${yearPeriod.value[0]} - ${yearPeriod.value[1]}`;
       break;
     default:
       break;
   }
+};
+export const yearPeriod = ref([2020, 2029]);
+export const selectedYear = ref(year.value);
+
+watch(currentYearInMonthComp, () => getTitle());
+watch(yearPeriod, () => getTitle());
+
+const monthCompReset = () => {
+  selectedMonth.value = `${year.value}-${paddingZero(Number(_month.value))}`;
+};
+
+const yearCompReset = () => {
+  selectedYear.value = year.value;
 };
