@@ -15,7 +15,7 @@
   <Popover :left-margin="-218" animation-dir="top" @closed="resetCalendar">
     <Container></Container>
     <template #reference>
-      <div class="task-bg-item time-task">
+      <div class="task-bg-detail time-task">
         <span>{{ hour }}:{{ minute }}</span>
         <span>{{ year }}-{{ month }}-{{ date }}</span>
       </div>

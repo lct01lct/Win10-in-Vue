@@ -6,6 +6,8 @@
   import ArrowTask from './task-bg-item/arrow-task.vue';
   import WifiTask from './task-bg-item/wifi-task.vue';
   import VolumeTask from './task-bg-item/volume-task.vue';
+
+  const inputMethodType = ref<'英' | '中'>('英');
 </script>
 
 <template>
@@ -19,7 +21,12 @@
     <VolumeTask></VolumeTask>
 
     <div class="system-task task-bg-item">
-      <div style="font-size: 17px; color: #fff">英</div>
+      <div
+        style="font-size: 17px; color: #fff"
+        @click="inputMethodType = inputMethodType === '中' ? '英' : '中'"
+      >
+        {{ inputMethodType }}
+      </div>
     </div>
 
     <InputMethodTask></InputMethodTask>
@@ -54,10 +61,18 @@
       align-items: center;
       width: 25px;
       height: 50px;
+      cursor: default;
 
       &:hover {
         background-color: #373838;
       }
+    }
+
+    .task-bg-detail {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   }
 </style>

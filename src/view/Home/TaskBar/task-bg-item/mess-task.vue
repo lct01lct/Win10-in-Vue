@@ -11,7 +11,7 @@
 
 <template>
   <Popover :left-margin="-358" animation-dir="left">
-    <div class="message-task-container"></div>
+    <div class="task-bg-detail message-task-container"></div>
     <template #reference>
       <div class="task-bg-item message-task">
         <Icon :width="20" :height="20">

@@ -1,10 +1,22 @@
 <script lang="ts" setup>
-  import { Popover, Icon } from '@/components';
+  import { Popover, Icon, Progess } from '@/components';
+
+  enum PowerStatus {
+    '节点模式',
+    '最长的续航',
+    '更好的性能',
+    '最佳性能',
+  }
+
+  const powerStatus = ['节点模式', '最长的续航', '更好的性能', '最佳性能'];
 </script>
 
 <template>
-  <Popover animation-dir="top">
-    <div class="task-bg-item power-task">power</div>
+  <Popover animation-dir="top" :left-margin="-165">
+    <div class="task-bg-detail power-task">
+      power
+      <Progess :steps="powerStatus" :show-text="true"></Progess>
+    </div>
     <template #reference>
       <div class="system-task task-bg-item">
         <Icon :width="18" :height="18">
@@ -17,9 +29,9 @@
 
 <style scoped lang="scss">
   .power-task {
-    height: 300px !important;
-    width: 400px !important;
-    background-color: #1e1e1e;
+    width: 365px !important;
+    height: 250px !important;
+    background-color: #1e1e1e !important;
     opacity: 0.9;
   }
 </style>
