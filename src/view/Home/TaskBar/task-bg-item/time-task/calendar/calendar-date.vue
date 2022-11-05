@@ -18,6 +18,8 @@
     currentMonth,
     _year,
     _month,
+    getTitle,
+    title,
   } from './calendar';
 
   const props = defineProps({

@@ -92,11 +92,12 @@ export const selectType = ref<SelectType>('date');
 
 export const resetCalendar = () => {
   fsm.reset();
-  selectType.value = fsm.state!;
-  _month.value = month.value;
-  _year.value = year.value;
-  selectedDay.value = todayStr;
-  getTitle();
+  setTimeout(() => {
+    selectType.value = fsm.state!;
+    _month.value = month.value;
+    _year.value = year.value;
+    selectedDay.value = todayStr;
+  }, 100);
 };
 
 export const selectedDay = ref<string>(todayStr);
@@ -136,5 +137,3 @@ const monthCompReset = () => {
 const yearCompReset = () => {
   selectedYear.value = year.value;
 };
-
-watch(currentYearInMonthComp, (val) => console.log(val));

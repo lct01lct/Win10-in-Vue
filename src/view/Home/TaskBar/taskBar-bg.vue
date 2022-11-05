@@ -1,24 +1,28 @@
 <script lang="ts" setup>
-  import Icon from '@/components/Icon/index.vue';
-  import { systemTaskIconList } from './taskBar-bg';
-  import Popover from '@/components/Popover/index.vue';
   import MessageTask from './task-bg-item/mess-task.vue';
   import TimeTask from './task-bg-item/time-task/index.vue';
+  import PowerTask from './task-bg-item/power-task.vue';
+  import InputMethodTask from './task-bg-item/inputMethod-task.vue';
+  import ArrowTask from './task-bg-item/arrow-task.vue';
+  import WifiTask from './task-bg-item/wifi-task.vue';
+  import VolumeTask from './task-bg-item/volume-task.vue';
 </script>
 
 <template>
   <div class="background-task-wrapper">
-    <Popover v-for="item in systemTaskIconList" :key="item.className">
-      <component :is="item.comp"></component>
-      <template #reference>
-        <div class="system-task task-bg-item">
-          <Icon :width="18" :height="18" v-if="item.tp">
-            <img :src="item.tp" alt="" />
-          </Icon>
-          <div v-else style="font-size: 17px; color: #fff">英</div>
-        </div>
-      </template>
-    </Popover>
+    <ArrowTask></ArrowTask>
+
+    <PowerTask></PowerTask>
+
+    <WifiTask></WifiTask>
+
+    <VolumeTask></VolumeTask>
+
+    <div class="system-task task-bg-item">
+      <div style="font-size: 17px; color: #fff">英</div>
+    </div>
+
+    <InputMethodTask></InputMethodTask>
 
     <TimeTask></TimeTask>
 
