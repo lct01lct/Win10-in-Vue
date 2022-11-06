@@ -3,41 +3,21 @@
 
   const props = defineProps(progessProps);
   const emits = defineEmits(progessEmits);
-
-  const getLineStyles = () => {
-    return { width: `${props.width}px` };
-  };
-
-  const progessValue = ref(props.modelValue);
-
   const stepsLen = props.steps.length;
-
-  const getSectionStyles = (index: number) => ({
-    left: `${(props.width / (stepsLen - 1)) * index}px`,
-  });
-
-  const getStepStyles = (index: number, dom: HTMLElement) => {
-    let leftVal = (props.width / (stepsLen - 1)) * index;
-
-    return {
-      left: `${leftVal}px`,
-    };
-  };
   const stepChild = reactive<HTMLElement[]>([]);
 
-  const sliderRef = ref<HTMLElement | null>(null);
-
-  onMounted(() => {
-    sliderRef.value!.style.left = `${x}px`;
+  onMounted(async () => {
+    await nextTick(); // 确保父元素更新完毕
 
     stepChild.forEach((dom, index) => {
       let leftOffset = 0;
-      const leftVal = parseInt(window.getComputedStyle(dom, null).left);
+      const leftVal = (props.width / (stepsLen - 1)) * index;
       if (index === stepsLen - 1) {
         leftOffset = Number(dom.clientWidth);
       } else if (index !== 0) {
         leftOffset = Number(dom.clientWidth) / 2;
       }
+
       dom.style.left = `${leftVal - leftOffset}px`;
     });
   });
@@ -60,9 +40,6 @@
       tar.classList.remove('active');
     });
   };
-
-  // initial pos
-  let x: number = (props.width / props.modelValue) * 100;
 
   const onSliderMouseDown = (e: MouseEvent) => {
     checkMouseTarIsSlider(e, (tar) => {
@@ -106,13 +83,15 @@
 
 <template>
   <div class="progess-wrapper">
-    <div class="progess-line" :style="getLineStyles()">
+    <div class="progess-line" :style="{ width: `${width}px` }">
       <div class="progess-section" v-if="stepsLen">
         <div
           class="progess-section-item"
           v-for="(item, index) in steps"
           :key="index"
-          :style="getSectionStyles(index)"
+          :style="{
+            left: `${(width / (stepsLen - 1)) * index}px`,
+          }"
         ></div>
       </div>
       <div class="progess-outer">
@@ -122,7 +101,6 @@
             @mouseenter="onSliderMouseEnter($event)"
             @mouseleave="onSliderMouseLeave($event)"
             @mousedown.stop="onSliderMouseDown($event)"
-            ref="sliderRef"
           ></div>
         </div>
       </div>
@@ -132,7 +110,6 @@
         class="progess-step-item"
         v-for="(item, index) in steps"
         :key="index"
-        :style="getStepStyles(index, stepChild[index])"
         :ref="(el) => stepChild[index] = (el as HTMLElement)"
       >
         {{ item }}
@@ -142,6 +119,9 @@
 </template>
 
 <style scoped lang="scss">
+  .progess-wrapper {
+    padding: 5px;
+  }
   .progess-line {
     position: relative;
     height: 3px;
@@ -166,6 +146,7 @@
         .slider {
           position: absolute;
           top: -12px;
+          left: v-bind('`${(props.modelValue / 100) * props.width}px`');
           width: 8px;
           height: 26px;
           background-color: #0078d7;
