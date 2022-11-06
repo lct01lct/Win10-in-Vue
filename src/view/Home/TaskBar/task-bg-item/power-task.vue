@@ -20,7 +20,7 @@
 <template>
   <Popover animation-dir="top" :left-margin="-165">
     <div class="task-bg-detail power-task">
-      power
+      电池使用模式：{{ powerStatus[(percent / 100) * (powerStatus.length - 1)] }}
       <Progess
         :steps="['节点模式', '', '', '最佳性能']"
         :show-text="true"
@@ -39,6 +39,8 @@
 
 <style scoped lang="scss">
   .power-task {
+    color: #fff;
+    font-size: 14px;
     width: 365px !important;
     height: 250px !important;
     background-color: #1e1e1e !important;
