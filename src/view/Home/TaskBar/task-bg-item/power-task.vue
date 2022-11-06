@@ -11,10 +11,9 @@
   const powerStatus = ['节点模式', '最长的续航', '更好的性能', '最佳性能'];
 
   const percent = ref(100);
-  const onProgessMove = () => {};
 
   watch(percent, (val) => {
-    // console.log(val);
+    console.log(val);
   });
 </script>
 
@@ -26,7 +25,6 @@
         :steps="['节点模式', '', '', '最佳性能']"
         :show-text="true"
         v-model="percent"
-        @move="onProgessMove"
       ></Progess>
     </div>
     <template #reference>

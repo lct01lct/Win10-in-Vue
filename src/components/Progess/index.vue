@@ -5,6 +5,7 @@
   const emits = defineEmits(progessEmits);
   const stepsLen = props.steps.length;
   const stepChild = reactive<HTMLElement[]>([]);
+  const progessWidth = ref((props.modelValue / 100) * props.width);
 
   onMounted(async () => {
     await nextTick(); // 确保父元素更新完毕
@@ -20,6 +21,10 @@
 
       dom.style.left = `${leftVal - leftOffset}px`;
     });
+  });
+
+  watch(progessWidth, (val) => {
+    emits('update:modelValue', (val / props.width) * 100);
   });
 
   const checkMouseTarIsSlider = (e: MouseEvent, fn: (tar: HTMLElement) => void) => {
@@ -43,11 +48,12 @@
 
   const onSliderMouseDown = (e: MouseEvent) => {
     checkMouseTarIsSlider(e, (tar) => {
+      let moveX = 0;
       const x = e.clientX - parseInt(window.getComputedStyle(tar, null).left);
       tar.classList.add('focus');
 
       const ondocMouseMove = (e: MouseEvent) => {
-        let moveX = e.clientX - x;
+        moveX = e.clientX - x;
         const edgeX = props.width;
 
         if (moveX <= 0) {
@@ -56,15 +62,16 @@
           moveX = edgeX;
         }
 
-        tar.style.left = moveX + 'px';
+        progessWidth.value = moveX;
         emits('move');
-        emits('update:modelValue', (moveX / props.width) * 100);
       };
 
       const ondocMouseUp = (e: MouseEvent) => {
         document.removeEventListener('mousemove', ondocMouseMove);
         document.removeEventListener('mouseup', ondocMouseUp);
+        progessWidth.value = handleMoveXByType(moveX);
 
+        tar.classList.remove('focus');
         emits('down');
       };
 
@@ -79,28 +86,49 @@
       document.addEventListener('click', cancelBubble, true);
     });
   };
+
+  const lineRef = ref<HTMLElement | null>(null);
+  const sliderRef = ref<HTMLElement | null>(null);
+
+  const onWrapperClick = (e: MouseEvent) => {
+    const lineOffsetX = lineRef.value!.getBoundingClientRect().left;
+    progessWidth.value = handleMoveXByType(e.clientX - lineOffsetX);
+  };
+
+  const handleMoveXByType = (moveX: number) => {
+    if (props.type === 'step') {
+      const stepLen = props.width / (stepsLen - 1);
+
+      moveX = Math.round(moveX / stepLen) * stepLen;
+    }
+
+    return moveX;
+  };
 </script>
 
 <template>
-  <div class="progess-wrapper">
-    <div class="progess-line" :style="{ width: `${width}px` }">
+  <div class="progess-wrapper" @click.stop="onWrapperClick($event)">
+    <div class="progess-line" :style="{ width: `${width}px` }" ref="lineRef">
       <div class="progess-section" v-if="stepsLen">
         <div
           class="progess-section-item"
           v-for="(item, index) in steps"
           :key="index"
           :style="{
-            left: `${(width / (stepsLen - 1)) * index}px`,
+            left: `${(props.width / (stepsLen - 1)) * index}px`,
           }"
         ></div>
       </div>
       <div class="progess-outer">
-        <div class="progess-inner">
+        <div class="progess-inner" :style="{ width: `${progessWidth}px` }">
           <div
             class="slider"
             @mouseenter="onSliderMouseEnter($event)"
             @mouseleave="onSliderMouseLeave($event)"
             @mousedown.stop="onSliderMouseDown($event)"
+            @click.stop
+            ref="sliderRef"
+            :style="{ left: `${progessWidth}px` }"
           ></div>
         </div>
       </div>
@@ -120,7 +148,8 @@
 
 <style scoped lang="scss">
   .progess-wrapper {
-    padding: 5px;
+    padding: 5px 0;
+    cursor: pointer;
   }
   .progess-line {
     position: relative;
@@ -143,6 +172,7 @@
       .progess-inner {
         height: 100%;
         position: relative;
+        background-color: #0078d7;
         .slider {
           position: absolute;
           top: -12px;
@@ -151,7 +181,6 @@
           height: 26px;
           background-color: #0078d7;
           border-radius: 4px;
-          cursor: pointer;
         }
 
         .slider.active {
