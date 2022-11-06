@@ -6,6 +6,8 @@
   const stepsLen = props.steps.length;
   const stepChild = reactive<HTMLElement[]>([]);
   const progessWidth = ref((props.modelValue / 100) * props.width);
+  const lineRef = ref<HTMLElement | null>(null);
+  const sliderRef = ref<HTMLElement | null>(null);
 
   onMounted(async () => {
     await nextTick(); // 确保父元素更新完毕
@@ -27,68 +29,53 @@
     emits('update:modelValue', (val / props.width) * 100);
   });
 
-  const checkMouseTarIsSlider = (e: MouseEvent, fn: (tar: HTMLElement) => void) => {
-    const tar = e.target as HTMLElement;
-    if (tar.classList.contains('slider')) {
-      fn(tar);
-    }
-  };
-
   const onSliderMouseEnter = (e: MouseEvent) => {
-    checkMouseTarIsSlider(e, (tar) => {
-      tar.classList.add('active');
-    });
+    sliderRef.value!.classList.add('active');
   };
 
   const onSliderMouseLeave = (e: MouseEvent) => {
-    checkMouseTarIsSlider(e, (tar) => {
-      tar.classList.remove('active');
-    });
+    sliderRef.value!.classList.remove('active');
   };
 
   const onSliderMouseDown = (e: MouseEvent) => {
-    checkMouseTarIsSlider(e, (tar) => {
-      let moveX = 0;
-      const x = e.clientX - parseInt(window.getComputedStyle(tar, null).left);
-      tar.classList.add('focus');
+    const tar = sliderRef.value!;
+    let moveX = 0;
+    const x = e.clientX - parseInt(window.getComputedStyle(tar, null).left);
+    tar.classList.add('focus');
 
-      const ondocMouseMove = (e: MouseEvent) => {
-        moveX = e.clientX - x;
-        const edgeX = props.width;
+    const ondocMouseMove = (e: MouseEvent) => {
+      moveX = e.clientX - x;
+      const edgeX = props.width;
 
-        if (moveX <= 0) {
-          moveX = 0;
-        } else if (moveX >= edgeX) {
-          moveX = edgeX;
-        }
+      if (moveX <= 0) {
+        moveX = 0;
+      } else if (moveX >= edgeX) {
+        moveX = edgeX;
+      }
 
-        progessWidth.value = moveX;
-        emits('move');
-      };
+      progessWidth.value = moveX;
+      emits('move');
+    };
 
-      const ondocMouseUp = (e: MouseEvent) => {
-        document.removeEventListener('mousemove', ondocMouseMove);
-        document.removeEventListener('mouseup', ondocMouseUp);
-        progessWidth.value = handleMoveXByType(moveX);
+    const ondocMouseUp = (e: MouseEvent) => {
+      document.removeEventListener('mousemove', ondocMouseMove);
+      document.removeEventListener('mouseup', ondocMouseUp);
+      progessWidth.value = handleMoveXByType(moveX);
 
-        tar.classList.remove('focus');
-        emits('down');
-      };
+      tar.classList.remove('focus');
+      emits('down');
+    };
 
-      const cancelBubble = (e: Event) => {
-        e.stopPropagation();
-        document.removeEventListener('click', cancelBubble, true);
-        document.removeEventListener('mousemove', ondocMouseMove);
-      };
+    const cancelBubble = (e: Event) => {
+      e.stopPropagation();
+      document.removeEventListener('click', cancelBubble, true);
+      document.removeEventListener('mousemove', ondocMouseMove);
+    };
 
-      document.addEventListener('mousemove', ondocMouseMove);
-      document.addEventListener('mouseup', ondocMouseUp);
-      document.addEventListener('click', cancelBubble, true);
-    });
+    document.addEventListener('mousemove', ondocMouseMove);
+    document.addEventListener('mouseup', ondocMouseUp);
+    document.addEventListener('click', cancelBubble, true);
   };
-
-  const lineRef = ref<HTMLElement | null>(null);
-  const sliderRef = ref<HTMLElement | null>(null);
 
   const onWrapperClick = (e: MouseEvent) => {
     const lineOffsetX = lineRef.value!.getBoundingClientRect().left;
@@ -107,7 +94,12 @@
 </script>
 
 <template>
-  <div class="progess-wrapper" @click.stop="onWrapperClick($event)">
+  <div
+    class="progess-wrapper"
+    @click.stop="onWrapperClick($event)"
+    @mouseenter="onSliderMouseEnter($event)"
+    @mouseleave="onSliderMouseLeave($event)"
+  >
     <div class="progess-line" :style="{ width: `${width}px` }" ref="lineRef">
       <div class="progess-section" v-if="stepsLen">
         <div
@@ -123,8 +115,6 @@
         <div class="progess-inner" :style="{ width: `${progessWidth}px` }">
           <div
             class="slider"
-            @mouseenter="onSliderMouseEnter($event)"
-            @mouseleave="onSliderMouseLeave($event)"
             @mousedown.stop="onSliderMouseDown($event)"
             @click.stop
             ref="sliderRef"
