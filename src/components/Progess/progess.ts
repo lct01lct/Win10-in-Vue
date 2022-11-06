@@ -31,3 +31,6 @@ export const progessProps = {
     default: false,
   },
 };
+
+type EmitType = 'move' | 'down' | 'update:modelValue';
+export const progessEmits: EmitType[] = ['move', 'down', 'update:modelValue'];
