@@ -67,12 +67,5 @@
         background-color: #373838;
       }
     }
-
-    .task-bg-detail {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
   }
 </style>

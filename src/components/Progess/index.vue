@@ -140,6 +140,7 @@
   .progess-wrapper {
     padding: 5px 0;
     cursor: pointer;
+    margin: 20px;
   }
   .progess-line {
     position: relative;
@@ -186,7 +187,7 @@
   .progess-steps {
     position: relative;
     display: flex;
-    color: #7c7c7c;
+    color: #9f9f9f;
     margin-top: 20px;
     font-size: 10px;
     .progess-step-item {
