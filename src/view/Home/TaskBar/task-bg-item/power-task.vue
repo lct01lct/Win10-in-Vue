@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { Popover, Icon, Progess, Btn } from '@/components';
+  import { Popover, Icon, Progess } from '@/components';
 
   enum PowerStatus {
     '节电模式',
@@ -19,7 +19,10 @@
           <img src="@/assets/images/homePage/taskBar-img/power.png" />
         </Icon>
         <span class="power-value">80%</span>
-        <span class="power-full-tip">10分钟 后电池将充满</span>
+        <span class="power-full-tip">
+          <span>剩下</span>
+          <span>2 小时 24 分钟</span>
+        </span>
       </div>
       <div class="power-curr-status">
         电池使用模式：{{
@@ -65,9 +68,14 @@
       }
 
       .power-full-tip {
-        width: 80px;
+        width: 130px;
         margin-left: 20px;
         color: #9f9f9f;
+        display: flex;
+        flex-direction: column;
+        > span {
+          margin-bottom: 6px;
+        }
       }
     }
     .power-curr-status {
