@@ -2,13 +2,11 @@
   import { Popover, Icon, Progess, Btn } from '@/components';
 
   enum PowerStatus {
-    LEVEL1 = '节电模式',
-    LEVEL2 = '最长的续航',
-    LEVEL3 = '更好的性能',
-    LEVEL4 = '最佳性能',
+    '节电模式',
+    '最长的续航',
+    '更好的性能',
+    '最佳性能',
   }
-
-  const powerStatus: PowerStatus[] = Object.values(PowerStatus);
 
   const percent = ref(100);
 </script>
@@ -24,7 +22,9 @@
         <span class="power-full-tip">10分钟 后电池将充满</span>
       </div>
       <div class="power-curr-status">
-        电池使用模式：{{ powerStatus[Math.round((percent / 100) * (powerStatus.length - 1))] }}
+        电池使用模式：{{
+          PowerStatus[Math.round((percent / 100) * (Object.keys(PowerStatus).length / 2 - 1))]
+        }}
       </div>
       <Progess
         :steps="['节点模式', '', '', '最佳性能']"
