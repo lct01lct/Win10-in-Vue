@@ -139,6 +139,7 @@
 <style scoped lang="scss">
   .popover-content-wrapper {
     position: absolute;
+    bottom: 0px;
     z-index: 999;
   }
 </style>

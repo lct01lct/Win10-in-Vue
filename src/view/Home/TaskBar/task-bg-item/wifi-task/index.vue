@@ -1,10 +1,11 @@
 <script lang="ts" setup>
   import { Popover, Icon } from '@/components';
+  import Container from './container.vue';
 </script>
 
 <template>
-  <Popover animation-dir="top">
-    <div class="task-bg-detail power-task">power</div>
+  <Popover animation-dir="top" :left-margin="-118">
+    <Container></Container>
     <template #reference>
       <div class="system-task task-bg-item">
         <Icon :width="18" :height="18">

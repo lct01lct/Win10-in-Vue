@@ -4,7 +4,7 @@
   import PowerTask from './task-bg-item/power-task.vue';
   import InputMethodTask from './task-bg-item/inputMethod-task.vue';
   import ArrowTask from './task-bg-item/arrow-task.vue';
-  import WifiTask from './task-bg-item/wifi-task.vue';
+  import WifiTask from './task-bg-item/wifi-task/index.vue';
   import VolumeTask from './task-bg-item/volume-task.vue';
 
   const inputMethodType = ref<'英' | '中'>('英');
