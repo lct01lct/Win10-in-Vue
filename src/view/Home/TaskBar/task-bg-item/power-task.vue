@@ -54,8 +54,6 @@
     font-size: 14px;
     width: 365px !important;
     height: 250px !important;
-    background-color: #1e1e1e !important;
-    opacity: 0.9;
     .remaining-power {
       display: flex;
       align-items: center;

@@ -67,5 +67,10 @@
         background-color: #373838;
       }
     }
+    .task-bg-detail {
+      background-color: #1e1e1e;
+      opacity: 0.9;
+      color: #fff;
+    }
   }
 </style>

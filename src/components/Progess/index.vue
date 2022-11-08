@@ -99,6 +99,7 @@
     @click.stop="onWrapperClick($event)"
     @mouseenter="onSliderMouseEnter($event)"
     @mouseleave="onSliderMouseLeave($event)"
+    :style="{ width: `${width}px` }"
   >
     <div class="progess-line" :style="{ width: `${width}px` }" ref="lineRef">
       <div class="progess-section" v-if="stepsLen">

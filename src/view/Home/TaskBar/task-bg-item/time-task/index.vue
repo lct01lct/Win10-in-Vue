@@ -32,6 +32,7 @@
     width: 100px !important;
     color: #fff;
     font-size: 13px;
+    cursor: default;
     > span {
       &:nth-child(2) {
         margin-top: 5px;
