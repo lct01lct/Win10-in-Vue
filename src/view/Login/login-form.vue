@@ -49,7 +49,16 @@
     </div>
     <div class="passwordIsErrorTip" v-else>
       <span>密码不正确，请再试一次</span>
-      <WinBtn class="check-btn" @click="checkError">确认</WinBtn>
+      <WinBtn
+        class="check-btn"
+        @click="checkError"
+        bgColor="#99977e"
+        borderStyle="2px solid #e6e6e6"
+        :height="34"
+        :width="180"
+      >
+        确认
+      </WinBtn>
     </div>
   </div>
 </template>

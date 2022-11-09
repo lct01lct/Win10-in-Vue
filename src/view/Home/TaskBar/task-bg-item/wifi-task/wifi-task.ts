@@ -11,8 +11,8 @@ interface WifiItem {
 }
 
 export const wifiInfo: WifiItem[] = [
-  { name: 'Nuc-student', type: '开放式' },
-  { name: 'Nuc-student-auto', type: '安全' },
-  { name: 'Nuc-teacher', type: '开放式' },
-  { name: 'Nuc-student-auto', type: '安全' },
+  { name: 'Nuc-Student', type: '开放式' },
+  { name: 'Nuc-Student-Auto', type: '安全' },
+  { name: 'Nuc-Teacher', type: '开放式' },
+  { name: 'Nuc-Student-Auto', type: '安全' },
 ];
