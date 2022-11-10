@@ -4,7 +4,7 @@
 
 <template>
   <Popover animation-dir="top">
-    <div class="task-bg-detail power-task">power</div>
+    <div class="task-bg-detail arrow-task">window 安全中心</div>
     <template #reference>
       <div class="system-task task-bg-item">
         <Icon :width="18" :height="18">
@@ -15,4 +15,8 @@
   </Popover>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+  .arrow-task {
+    padding: 5px;
+  }
+</style>
