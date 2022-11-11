@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { Icon } from '@/components';
-  import { wifiInfo, isSelectFlyMode, waitWifiInfo, isSelectWifi } from './wifi-task';
+  import { wifiInfo, waitWifiInfo, wifiStatus } from './wifi-task';
   import './animate.scss';
   import anime from 'animejs';
 
@@ -57,48 +57,60 @@
     observer.disconnect();
   });
 
-  watch(isSelectWifi, (val) => {
+  watch(wifiStatus, (val) => {
     if (val) {
+      observer.observe(listRef.value!, {
+        subtree: true,
+        childList: true,
+      });
       autoFullWifiInfo();
     }
   });
 </script>
 
 <template>
-  <div>
-    <div class="wifi-list-wrapper" ref="listRef">
-      <div
-        class="wifi-list-item"
-        v-for="item in wifiInfo"
-        :key="item.name"
-        :class="[curFocus === item.name ? 'focus' : '']"
-        @click="onItemClick(item.name)"
-        v-if="!isSelectFlyMode"
+  <div class="wifi-list-wrapper" ref="listRef">
+    <div
+      class="wifi-list-item wifi-open"
+      v-for="item in wifiInfo"
+      :key="item.name"
+      :class="[curFocus === item.name ? 'focus' : '']"
+      @click="onItemClick(item.name)"
+      v-if="wifiStatus"
+    >
+      <Icon>
+        <img v-if="item.type === '开放'" src="@/assets/images/homePage/taskBar-img/wifi.png" />
+        <img v-else src="@/assets/images/homePage/taskBar-img/wifi-lock.png" />
+      </Icon>
+      <div class="wifi-item-info">{{ item.name }}</div>
+      <Transition name="bounce">
+        <div class="wifi-type" v-if="curFocus === item.name">
+          <span>已连接</span>
+          <span>，{{ item.type }}</span>
+        </div>
+      </Transition>
+      <Transition name="bounce">
+        <div class="wifi-detail" v-if="curFocus === item.name">属性</div>
+      </Transition>
+      <WinBtn
+        v-if="curFocus === item.name"
+        class="wifi-connect-btn"
+        :width="120"
+        :height="30"
+        style="font-size: 14px"
       >
-        <Icon>
-          <img v-if="item.type === '开放'" src="@/assets/images/homePage/taskBar-img/wifi.png" />
-          <img v-else src="@/assets/images/homePage/taskBar-img/wifi-lock.png" />
-        </Icon>
-        <div class="wifi-item-info">{{ item.name }}</div>
-        <Transition name="bounce">
-          <div class="wifi-type" v-if="curFocus === item.name">
-            <span>已连接</span>
-            <span>，{{ item.type }}</span>
-          </div>
-        </Transition>
-        <Transition name="bounce">
-          <div class="wifi-detail" v-if="curFocus === item.name">属性</div>
-        </Transition>
-        <WinBtn
-          v-if="curFocus === item.name"
-          class="wifi-connect-btn"
-          :width="120"
-          :height="30"
-          style="font-size: 14px"
-        >
-          断开连接
-        </WinBtn>
+        断开连接
+      </WinBtn>
+    </div>
+    <div class="wifi-list-item wifi-close" v-else>
+      <Icon>
+        <img src="@/assets/images/homePage/taskBar-img/wifi.png" />
+      </Icon>
+      <div class="wifi-item-info">WLAN</div>
+      <div class="wifi-type">
+        <span>已关闭</span>
       </div>
+      <div class="wifi-close-tip">需要重新打开 Wi-Fi</div>
     </div>
   </div>
 </template>
@@ -124,7 +136,8 @@
         margin-top: 5px;
         font-weight: 300;
       }
-
+    }
+    .wifi-open {
       &:hover {
         background-color: #3b3b3b;
       }
@@ -158,6 +171,22 @@
         right: 10px;
         bottom: 10px;
       }
+    }
+  }
+
+  .wifi-close {
+    position: relative;
+    .wifi-type {
+      position: absolute;
+      top: 30px;
+      left: 45px;
+      font-size: 14px;
+      color: #9f9f9f;
+    }
+    .wifi-close-tip {
+      position: absolute;
+      top: 70px;
+      left: 15px;
     }
   }
 </style>

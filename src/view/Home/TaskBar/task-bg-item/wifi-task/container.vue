@@ -5,9 +5,8 @@
 </script>
 
 <template>
-  <div class="task-bg-detail power-task" :style="{ height: !wifiStatus ? '400px' : '580px' }">
-    <div class="wifi-closed" v-if="!wifiStatus"></div>
-    <wifiList v-else></wifiList>
+  <div class="task-bg-detail power-task" :style="{ height: !wifiStatus ? '250px' : '580px' }">
+    <wifiList></wifiList>
     <wifiSetting></wifiSetting>
   </div>
 </template>
