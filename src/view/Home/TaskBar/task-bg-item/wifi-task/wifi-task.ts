@@ -1,3 +1,5 @@
+import anime from 'animejs';
+
 export type NetSetType = 'wifi' | 'flyMode' | 'hotspot';
 
 export const isSelectWifi = ref(true);
@@ -12,7 +14,7 @@ interface WifiItem {
 
 export const wifiInfo: WifiItem[] = reactive([{ name: 'Nuc-Student', type: '开放' }]);
 
-const waitWifiInfo: WifiItem[] = [
+export const waitWifiInfo: WifiItem[] = [
   { name: 'Nuc-Student-Auto', type: '安全' },
   { name: 'Nuc-Teacher', type: '开放' },
   { name: 'Nuc-Ttudent-Auto', type: '安全' },
@@ -20,15 +22,3 @@ const waitWifiInfo: WifiItem[] = [
   { name: 'Nuc-Teacher1', type: '开放' },
   { name: 'Nuc-Ttudent1-Auto', type: '安全' },
 ];
-
-let waitIndex = 0;
-let waitLen = waitWifiInfo.length;
-let timer = setInterval(() => {
-  if (waitIndex === waitLen) {
-    clearInterval(timer);
-  } else {
-    for (let i = 0; i < 2; i++) {
-      wifiInfo.push(waitWifiInfo[waitIndex++]);
-    }
-  }
-}, 1000);

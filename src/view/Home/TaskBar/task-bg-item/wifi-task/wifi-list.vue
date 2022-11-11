@@ -1,7 +1,8 @@
 <script lang="ts" setup>
   import { Icon } from '@/components';
-  import { wifiInfo } from './wifi-task';
+  import { wifiInfo, isSelectFlyMode, waitWifiInfo, isSelectWifi } from './wifi-task';
   import './animate.scss';
+  import anime from 'animejs';
 
   const currWLAN = ref('Nuc-Student');
   const curFocus = ref('Nuc-Student');
@@ -9,17 +10,70 @@
   const onItemClick = (name: string) => {
     curFocus.value = name;
   };
+
+  const autoFullWifiInfo = () => {
+    wifiInfo.length = 1;
+    let waitIndex = 0;
+    let waitLen = waitWifiInfo.length;
+    let timer = setInterval(() => {
+      if (waitIndex === waitLen) {
+        clearInterval(timer);
+        observer.disconnect();
+      } else {
+        wifiInfo.push(waitWifiInfo[waitIndex++]);
+      }
+    }, 500);
+  };
+  autoFullWifiInfo();
+
+  const listRef = ref<HTMLElement | null>(null);
+
+  let observer: MutationObserver;
+  onMounted(() => {
+    observer = new MutationObserver((mutationRecord) => {
+      const currRecord = mutationRecord[mutationRecord.length - 1]; // 最新的记录
+      const newNode = currRecord.addedNodes[currRecord.addedNodes.length - 1] as HTMLElement; // 新添加的节点
+
+      if (newNode?.classList?.contains('wifi-list-item')) {
+        anime({
+          targets: newNode,
+          opacity: ['.5', '1'],
+          translateX: [20, 0],
+          duration: 300,
+          loop: false,
+          direction: 'alternate',
+          easing: 'easeInCubic',
+        });
+      }
+    });
+
+    observer.observe(listRef.value!, {
+      subtree: true,
+      childList: true,
+    });
+  });
+
+  onUnmounted(() => {
+    observer.disconnect();
+  });
+
+  watch(isSelectWifi, (val) => {
+    if (val) {
+      autoFullWifiInfo();
+    }
+  });
 </script>
 
 <template>
-  <div class="wifi-list-wrapper">
-    <TransitionGroup name="fade" class="container">
+  <div>
+    <div class="wifi-list-wrapper" ref="listRef">
       <div
         class="wifi-list-item"
         v-for="item in wifiInfo"
         :key="item.name"
         :class="[curFocus === item.name ? 'focus' : '']"
         @click="onItemClick(item.name)"
+        v-if="!isSelectFlyMode"
       >
         <Icon>
           <img v-if="item.type === '开放'" src="@/assets/images/homePage/taskBar-img/wifi.png" />
@@ -45,7 +99,7 @@
           断开连接
         </WinBtn>
       </div>
-    </TransitionGroup>
+    </div>
   </div>
 </template>
 
