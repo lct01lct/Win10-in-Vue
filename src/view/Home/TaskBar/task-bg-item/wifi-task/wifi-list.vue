@@ -9,14 +9,19 @@
   const onItemClick = (name: string) => {
     curFocus.value = name;
   };
-
+  let timer: NodeJS.Timer | null = null;
   const autoFullWifiInfo = () => {
     wifiInfo.length = 1;
     let waitIndex = 0;
     let waitLen = waitWifiInfo.length;
-    let timer = setInterval(() => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+    timer = setInterval(() => {
       if (waitIndex === waitLen) {
-        clearInterval(timer);
+        clearInterval(timer!);
+        timer = null;
         observer.disconnect();
       } else {
         wifiInfo.push(waitWifiInfo[waitIndex++]);
