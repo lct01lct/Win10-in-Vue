@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import { Icon } from '@/components';
   import { wifiInfo } from './wifi-task';
+  import './animate.scss';
 
   const currWLAN = ref('Nuc-Student');
   const curFocus = ref('Nuc-Student');
@@ -12,58 +13,52 @@
 
 <template>
   <div class="wifi-list-wrapper">
-    <div
-      class="wifi-list-item"
-      v-for="item in wifiInfo"
-      :key="item.name"
-      :class="[curFocus === item.name ? 'focus' : '']"
-      @click="onItemClick(item.name)"
-    >
-      <Icon>
-        <img v-if="item.type === '开放'" src="@/assets/images/homePage/taskBar-img/wifi.png" />
-        <img v-else src="@/assets/images/homePage/taskBar-img/wifi-lock.png" />
-      </Icon>
-      <div class="wifi-item-info">{{ item.name }}</div>
-      <Transition name="bounce">
-        <div class="wifi-type" v-if="curFocus === item.name">
-          <span>已连接</span>
-          <span>，{{ item.type }}</span>
-        </div>
-      </Transition>
-      <Transition name="bounce">
-        <div class="wifi-detail" v-if="curFocus === item.name">属性</div>
-      </Transition>
-      <WinBtn
-        v-if="curFocus === item.name"
-        class="wifi-connect-btn"
-        :width="120"
-        :height="30"
-        style="font-size: 14px"
+    <TransitionGroup name="fade" class="container">
+      <div
+        class="wifi-list-item"
+        v-for="item in wifiInfo"
+        :key="item.name"
+        :class="[curFocus === item.name ? 'focus' : '']"
+        @click="onItemClick(item.name)"
       >
-        断开连接
-      </WinBtn>
-    </div>
+        <Icon>
+          <img v-if="item.type === '开放'" src="@/assets/images/homePage/taskBar-img/wifi.png" />
+          <img v-else src="@/assets/images/homePage/taskBar-img/wifi-lock.png" />
+        </Icon>
+        <div class="wifi-item-info">{{ item.name }}</div>
+        <Transition name="bounce">
+          <div class="wifi-type" v-if="curFocus === item.name">
+            <span>已连接</span>
+            <span>，{{ item.type }}</span>
+          </div>
+        </Transition>
+        <Transition name="bounce">
+          <div class="wifi-detail" v-if="curFocus === item.name">属性</div>
+        </Transition>
+        <WinBtn
+          v-if="curFocus === item.name"
+          class="wifi-connect-btn"
+          :width="120"
+          :height="30"
+          style="font-size: 14px"
+        >
+          断开连接
+        </WinBtn>
+      </div>
+    </TransitionGroup>
   </div>
 </template>
 
 <style scoped lang="scss">
-  .bounce-enter-active {
-    animation: bounce-in 0.15s;
-  }
-  @keyframes bounce-in {
-    0% {
-      transform: scale(0);
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
   .wifi-list-wrapper {
     height: 450px;
     padding-top: 10px;
+    overflow: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: #4c4c4c;
+    }
     .wifi-list-item {
       padding-top: 5px;
       display: flex;
