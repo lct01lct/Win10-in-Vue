@@ -1,7 +1,6 @@
 <script lang="ts" setup>
   import { Icon } from '@/components';
   import { wifiInfo, waitWifiInfo, wifiStatus } from './wifi-task';
-  import './animate.scss';
   import anime from 'animejs';
 
   const currWLAN = ref('Nuc-Student');
@@ -66,6 +65,14 @@
       autoFullWifiInfo();
     }
   });
+
+  const onConnectBtnClick = (name: string) => {
+    if (currWLAN.value === name) {
+      currWLAN.value = '';
+    } else {
+      currWLAN.value = name;
+    }
+  };
 </script>
 
 <template>
@@ -83,23 +90,25 @@
         <img v-else src="@/assets/images/homePage/taskBar-img/wifi-lock.png" />
       </Icon>
       <div class="wifi-item-info">{{ item.name }}</div>
-      <Transition name="bounce">
-        <div class="wifi-type" v-if="curFocus === item.name">
-          <span>已连接</span>
-          <span>，{{ item.type }}</span>
-        </div>
-      </Transition>
-      <Transition name="bounce">
-        <div class="wifi-detail" v-if="curFocus === item.name">属性</div>
-      </Transition>
+      <div class="wifi-type">
+        <span v-if="currWLAN === item.name">已连接</span>
+        <span v-if="currWLAN === item.name && curFocus === item.name">，</span>
+        <span v-if="curFocus === item.name">{{ item.type }}</span>
+      </div>
+      <div class="wifi-auto-connect" v-if="curFocus === item.name && currWLAN !== item.name">
+        <input class="wifi-auto-ipt" type="checkbox" />
+        <span>自动连接</span>
+      </div>
+      <div class="wifi-detail" v-if="curFocus === item.name && currWLAN === item.name">属性</div>
       <WinBtn
         v-if="curFocus === item.name"
         class="wifi-connect-btn"
         :width="120"
         :height="30"
         style="font-size: 14px"
+        @click="onConnectBtnClick(item.name)"
       >
-        断开连接
+        {{ currWLAN === item.name ? '断开连接' : '连接' }}
       </WinBtn>
     </div>
     <div class="wifi-list-item wifi-close" v-else>
@@ -131,6 +140,7 @@
       height: 50px;
       padding-left: 10px;
       cursor: default;
+      position: relative;
       .wifi-item-info {
         margin-left: 10px;
         margin-top: 5px;
@@ -142,18 +152,26 @@
         background-color: #3b3b3b;
       }
     }
+    .wifi-auto-connect {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 70px;
+      left: 45px;
+      font-size: 14px;
+      font-weight: 100;
+    }
+    .wifi-type {
+      position: absolute;
+      top: 30px;
+      left: 45px;
+      font-size: 14px;
+      color: #9f9f9f;
+    }
     .wifi-list-item.focus {
-      position: relative;
       height: 160px;
       background-color: #115992;
 
-      .wifi-type {
-        position: absolute;
-        top: 30px;
-        left: 45px;
-        font-size: 14px;
-        color: #93b6d1;
-      }
       .wifi-detail {
         position: absolute;
         top: 70px;
