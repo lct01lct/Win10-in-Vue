@@ -30,13 +30,9 @@
 </script>
 
 <template>
-  <div class="win-radio-wrapper">
+  <div class="win-radio-wrapper" @click="onRadioClick">
     <input type="checkbox" name="check" class="radio-original" />
-    <span
-      class="radio-inner"
-      :style="{ width: size + 'px', height: size + 'px' }"
-      @click="onRadioClick"
-    >
+    <span class="radio-inner" :style="{ width: size + 'px', height: size + 'px' }">
       <i class="iconfont icon-duigou" :style="{ fontSize: size + 'px' }" v-if="value"></i>
     </span>
     <span class="radio-label" v-if="label">{{ label }}</span>

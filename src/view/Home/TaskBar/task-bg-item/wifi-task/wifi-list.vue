@@ -9,6 +9,7 @@
   const onItemClick = (name: string) => {
     curFocus.value = name;
   };
+
   let timer: NodeJS.Timer | null = null;
   const autoFullWifiInfo = () => {
     resetWifiInfo();
@@ -87,24 +88,34 @@
     }
   };
 
-  const toggleRef = ref<HTMLElement[]>([]);
-  onMounted(async () => {
-    await nextTick();
-    console.log(toggleRef.value);
-  });
+  const childRef = ref<HTMLElement[]>([]);
 
-  watch(toggleRef, () => {});
+  watch(curFocus, (val) => {
+    nextTick(() => {
+      const oItem = childRef.value[wifiInfo.value.findIndex((item) => val === item.name)];
+      anime({
+        targets: oItem,
+        opacity: ['.5', '1'],
+        scale: [0.98, 1],
+        duration: 300,
+        loop: false,
+        direction: 'alternate',
+        easing: 'easeInCubic',
+      });
+    });
+  });
 </script>
 
 <template>
   <div class="wifi-list-wrapper" ref="listRef">
     <div
       class="wifi-list-item wifi-open"
-      v-for="item in wifiInfo"
+      v-for="(item, index) in wifiInfo"
       :key="item.name"
       :class="[curFocus === item.name ? 'focus' : '']"
       @click="onItemClick(item.name)"
       v-if="wifiStatus"
+      :ref="(el) => childRef[index] = (el as HTMLElement)"
     >
       <Icon>
         <img v-if="item.type === '开放'" src="@/assets/images/homePage/taskBar-img/wifi.png" />
