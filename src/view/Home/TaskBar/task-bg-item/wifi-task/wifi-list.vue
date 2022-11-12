@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { Icon } from '@/components';
-  import { wifiInfo, waitWifiInfo, wifiStatus } from './wifi-task';
+  import { wifiInfo, waitWifiInfo, wifiStatus, WifiItem } from './wifi-task';
   import anime from 'animejs';
 
   const currWLAN = ref('Nuc-Student');
@@ -76,6 +76,12 @@
       currWLAN.value = '';
     } else {
       currWLAN.value = name;
+      wifiInfo.unshift(
+        ...wifiInfo.splice(
+          wifiInfo.findIndex((item) => item.name === name),
+          1
+        )
+      );
     }
   };
 </script>
@@ -101,8 +107,7 @@
         <span v-if="curFocus === item.name">{{ item.type }}</span>
       </div>
       <div class="wifi-auto-connect" v-if="curFocus === item.name && currWLAN !== item.name">
-        <input class="wifi-auto-ipt" type="checkbox" />
-        <span>自动连接</span>
+        <WinRadio label="自动连接" v-model="item.auto"></WinRadio>
       </div>
       <div class="wifi-detail" v-if="curFocus === item.name && currWLAN === item.name">属性</div>
       <WinBtn
