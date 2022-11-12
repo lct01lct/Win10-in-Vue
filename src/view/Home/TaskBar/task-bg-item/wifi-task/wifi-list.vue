@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { Icon } from '@/components';
-  import { wifiInfo, waitWifiInfo, wifiStatus, WifiItem } from './wifi-task';
+  import { wifiInfo, waitWifiInfo, wifiStatus, dao, resetWifiInfo } from './wifi-task';
   import anime from 'animejs';
 
   const currWLAN = ref('Nuc-Student');
@@ -11,7 +11,8 @@
   };
   let timer: NodeJS.Timer | null = null;
   const autoFullWifiInfo = () => {
-    wifiInfo.length = 1;
+    resetWifiInfo();
+    wifiInfo.value.length = 1;
     let waitIndex = 0;
     let waitLen = waitWifiInfo.length;
     if (timer) {
@@ -24,7 +25,7 @@
         timer = null;
         observer.disconnect();
       } else {
-        wifiInfo.push(waitWifiInfo[waitIndex++]);
+        wifiInfo.value.push(waitWifiInfo[waitIndex++]);
       }
     }, 500);
   };
@@ -76,12 +77,13 @@
       currWLAN.value = '';
     } else {
       currWLAN.value = name;
-      wifiInfo.unshift(
-        ...wifiInfo.splice(
-          wifiInfo.findIndex((item) => item.name === name),
+      wifiInfo.value.unshift(
+        ...wifiInfo.value.splice(
+          wifiInfo.value.findIndex((item) => item.name === name),
           1
         )
       );
+      dao.set('WIFIINFO', wifiInfo.value);
     }
   };
 </script>
