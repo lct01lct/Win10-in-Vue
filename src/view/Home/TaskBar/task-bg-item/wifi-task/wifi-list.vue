@@ -86,6 +86,14 @@
       dao.set('WIFIINFO', wifiInfo.value);
     }
   };
+
+  const toggleRef = ref<HTMLElement[]>([]);
+  onMounted(async () => {
+    await nextTick();
+    console.log(toggleRef.value);
+  });
+
+  watch(toggleRef, () => {});
 </script>
 
 <template>
