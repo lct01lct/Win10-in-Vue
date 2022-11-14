@@ -5,6 +5,7 @@ import {
   getLunar,
   getDiffDays,
   getFormatFullTime,
+  subscribeEverydayUpdate,
 } from './utils';
 import type { Dayjs } from './utils';
 
@@ -60,5 +61,6 @@ export {
   getFormatFullTime,
   isToday,
   todayStr,
+  subscribeEverydayUpdate,
 };
 export type { Dayjs };

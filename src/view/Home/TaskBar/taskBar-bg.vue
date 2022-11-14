@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import MessageTask from './task-bg-item/mess-task.vue';
+  import MessageTask from './task-bg-item/message-task/index.vue';
   import TimeTask from './task-bg-item/time-task/index.vue';
   import PowerTask from './task-bg-item/power-task.vue';
   import InputMethodTask from './task-bg-item/inputMethod-task.vue';

@@ -19,8 +19,16 @@ export const getDiffDays = (day1: string | Dayjs, day2: string | Dayjs, type = '
   return dayjs(day1).diff(day2, type as any);
 };
 
-export const getFormatFullTime = (day: Dayjs) => {
+export const getFormatFullTime = (day: Dayjs | undefined = dayjs()) => {
   return `${day.year()}-${paddingZero(day.month() + 1)}-${paddingZero(day.date())}`;
+};
+
+const everydayUpdateTask: Function[] = [];
+setInterval(() => {
+  everydayUpdateTask.forEach((fn) => fn());
+}, 24 * 60 * 60 * 1000);
+export const subscribeEverydayUpdate = (fn: Function) => {
+  everydayUpdateTask.push(fn);
 };
 
 export { getLunar } from 'chinese-lunar-calendar';
