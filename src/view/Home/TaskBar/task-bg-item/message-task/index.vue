@@ -6,7 +6,6 @@
   import { setAllMessageIsSeen, isNotSeenCount } from './messages';
 
   const onPopoverOpen = () => {
-    console.log(1);
     setAllMessageIsSeen();
   };
 </script>
@@ -20,7 +19,7 @@
     </div>
     <template #reference>
       <div class="task-bg-item message-task">
-        <Icon v-if="isNotSeenCount" :width="28" :height="20">
+        <Icon v-if="isNotSeenCount" :width="28" :height="16">
           <img src="@/assets/images/homePage/taskBar-img/hasMessage.png" alt="" />
           <i class="is-not-seen-count">{{ isNotSeenCount }}</i>
         </Icon>
