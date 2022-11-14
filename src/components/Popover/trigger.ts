@@ -47,8 +47,15 @@ export const PopoverProps = {
   },
 };
 
-type EmitType = 'onBeforeEnter' | 'onAfterEnter' | 'onBeforeLeave' | 'onAfterLeave' | 'closed';
+type EmitType =
+  | 'open'
+  | 'onBeforeEnter'
+  | 'onAfterEnter'
+  | 'onBeforeLeave'
+  | 'onAfterLeave'
+  | 'closed';
 export const PopoverEmits: EmitType[] = [
+  'open',
   'onBeforeEnter',
   'onAfterEnter',
   'onBeforeLeave',

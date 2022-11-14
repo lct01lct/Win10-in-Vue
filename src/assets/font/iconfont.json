@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1727523",
+      "name": "304错误、关闭、取消",
+      "font_class": "cuowuguanbiquxiao",
+      "unicode": "e8e7",
+      "unicode_decimal": 59623
+    },
+    {
       "icon_id": "4611765",
       "name": "对勾",
       "font_class": "duigou",

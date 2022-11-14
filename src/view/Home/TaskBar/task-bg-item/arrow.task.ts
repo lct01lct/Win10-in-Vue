@@ -13,6 +13,6 @@ export const bgProesses = reactive<BgProcess[]>([
 
 export const bgProessesLen = computed(() => bgProesses.length);
 
-export const registerBgProcesses = (bgProcess: BgProcess) => {
+export const createBgProcesses = (bgProcess: BgProcess) => {
   bgProesses.push(bgProcess);
 };

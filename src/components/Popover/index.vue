@@ -76,6 +76,7 @@
 
   const afterEnter = () => {
     emits('onAfterEnter');
+    emits('open');
   };
 
   const beforeLeave = () => {
@@ -119,7 +120,7 @@
     </Transition>
 
     <div
-      @click="onClick()"
+      @click.stop="onClick()"
       class="popover-reference"
       ref="triggerRef"
       @contextmenu="onContextmenu()"
