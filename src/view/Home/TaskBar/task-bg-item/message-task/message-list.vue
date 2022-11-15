@@ -86,8 +86,8 @@
       padding: 0 20px;
       .message-item-title {
         position: relative;
-        height: 60px;
-        line-height: 60px;
+        height: 40px;
+        line-height: 40px;
         text-align: center;
         font-size: 14px;
         font-weight: 700;
@@ -95,7 +95,7 @@
           background-color: #373838;
         }
         .close-btn {
-          top: -10px;
+          top: 0px;
         }
       }
       .message-item-content {

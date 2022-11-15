@@ -8,6 +8,8 @@ export interface SettingItem extends Setting {
   isFocus: boolean;
 }
 
+export const progessVal = ref(100);
+
 export const allSettings: Setting[] = [
   { name: '定位', icon: '/src/assets/images/homePage/taskBar-img/position.png' },
   { name: '节电模式', icon: '/src/assets/images/homePage/taskBar-img/lightning.png' },

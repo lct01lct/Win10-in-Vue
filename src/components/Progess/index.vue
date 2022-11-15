@@ -26,7 +26,8 @@
   });
 
   watch(progessWidth, (val) => {
-    emits('update:modelValue', (val / props.width) * 100);
+    emits('update:modelValue', Math.round((val / props.width) * 100));
+    emits('move', Math.round((val / props.width) * 100));
   });
 
   const onSliderMouseEnter = (e: MouseEvent) => {
@@ -54,7 +55,6 @@
       }
 
       progessWidth.value = moveX;
-      emits('move');
     };
 
     const ondocMouseUp = (e: MouseEvent) => {

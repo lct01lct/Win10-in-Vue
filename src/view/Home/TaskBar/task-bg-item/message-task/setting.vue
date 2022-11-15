@@ -1,8 +1,7 @@
 <script lang="ts" setup>
   import { Progess, Icon } from '@/components';
-  import { settingList, SettingItem } from './setting';
-
-  const progessVal = ref(100);
+  import { settingList, SettingItem, progessVal } from './setting';
+  import { setBrightnessVal } from '@/view/Home/Modal';
 
   const onItemClick = (item: SettingItem) => {
     if (item.onTrigger) {
@@ -10,6 +9,10 @@
     } else {
       item.isFocus = !item.isFocus;
     }
+  };
+
+  const onProgessMove = (val: number) => {
+    setBrightnessVal(val);
   };
 </script>
 
@@ -37,9 +40,9 @@
         {{ item }}
       </div>
     </div>
-    <!-- <div class="setting-brightness">
-      <Progess v-model="progessVal" type="percent" :width="250"></Progess>
-    </div> -->
+    <div class="setting-brightness">
+      <Progess v-model="progessVal" type="percent" :width="250" @move="onProgessMove"></Progess>
+    </div>
   </div>
 </template>
 
