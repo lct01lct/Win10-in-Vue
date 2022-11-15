@@ -120,7 +120,7 @@
     </Transition>
 
     <div
-      @click.stop="onClick()"
+      @click="onClick()"
       class="popover-reference"
       ref="triggerRef"
       @contextmenu="onContextmenu()"

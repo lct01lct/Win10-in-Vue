@@ -8,6 +8,10 @@
   const onPopoverOpen = () => {
     setAllMessageIsSeen();
   };
+
+  const show = () => {
+    console.log(1);
+  };
 </script>
 
 <template>
