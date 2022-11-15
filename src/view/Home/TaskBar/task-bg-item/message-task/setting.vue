@@ -1,22 +1,80 @@
 <script lang="ts" setup>
-  import { Progess } from '@/components';
+  import { Progess, Icon } from '@/components';
+  import { settingList, SettingItem } from './setting';
 
   const progessVal = ref(100);
+
+  const onItemClick = (item: SettingItem) => {
+    if (item.onTrigger) {
+      item.onTrigger();
+    } else {
+      item.isFocus = !item.isFocus;
+    }
+  };
 </script>
 
 <template>
   <div class="setting-wrapper">
     <div class="setting-header">折叠</div>
-    <div class="setting-list"></div>
-    <div class="setting-brightness">
-      <!-- <Progess v-model="progessVal"></Progess> -->
+    <div class="setting-list">
+      <div
+        class="setting-item"
+        :class="[item.isFocus ? 'focus' : '']"
+        v-for="item in settingList"
+        :key="item.name"
+        @click="onItemClick(item)"
+      >
+        <Icon :width="18" :height="18">
+          <img :src="item.icon" alt="" />
+        </Icon>
+        <span class="setting-item-name">{{ item.name }}</span>
+      </div>
+      <div
+        class="setting-item"
+        v-for="item in settingList.length % 4 ? 4 - (settingList.length % 4) : 0"
+        style="opacity: 0"
+      >
+        {{ item }}
+      </div>
     </div>
+    <!-- <div class="setting-brightness">
+      <Progess v-model="progessVal" type="percent" :width="250"></Progess>
+    </div> -->
   </div>
 </template>
 
 <style scoped lang="scss">
   .setting-wrapper {
-    margin-top: 20px;
-    padding: 20px;
+    padding: 0 20px;
+    .setting-header {
+      color: #99c6e9;
+      font-size: 12px;
+      height: 30px;
+      line-height: 30px;
+    }
+    .setting-list {
+      height: 260px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-content: space-between;
+
+      .setting-item {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        width: 84px;
+        height: 61px;
+        padding: 5px;
+        background-color: #4f4f4f;
+        .setting-item-name {
+          font-size: 12px;
+          margin-top: 20px;
+        }
+      }
+    }
+    .setting-item.focus {
+      background-color: #0078d7;
+    }
   }
 </style>

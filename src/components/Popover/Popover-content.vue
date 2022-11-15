@@ -27,7 +27,7 @@
   const isHide = (tar: HTMLElement, e: Event) => {
     const conditions = [
       props.triggerRef && props.triggerRef.contains(tar), // 点击元素是触发器
-      e.composedPath().includes(props.triggerRef! as HTMLElement), // 触发器可能会隐藏
+      e.composedPath().includes(props.triggerRef! as HTMLElement), // 触发对象可能会隐藏
       e.composedPath().includes(contentRef.value!), // 解决点击元素导致自身隐藏
     ];
     return conditions.includes(true);
