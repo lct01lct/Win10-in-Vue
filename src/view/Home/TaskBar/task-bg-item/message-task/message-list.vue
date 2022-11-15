@@ -75,12 +75,14 @@
 
 <style scoped lang="scss">
   .message-list {
-    height: 300px;
+    height: 280px;
+    margin-right: 4px;
     overflow: hidden;
-    overflow-y: auto;
+    overflow-y: overlay;
 
     &::-webkit-scrollbar {
-      display: none;
+      width: 4px;
+      background-color: #4c4c4c;
     }
     .message-item {
       padding: 0 20px;
@@ -133,7 +135,7 @@
     }
   }
   .message-list.empty {
-    line-height: 300px;
+    line-height: 280px;
     text-align: center;
     font-weight: 700;
     color: #9f9f9f;

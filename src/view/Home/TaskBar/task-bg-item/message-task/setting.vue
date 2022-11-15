@@ -41,6 +41,9 @@
       </div>
     </div>
     <div class="setting-brightness">
+      <Icon :width="20" :height="20">
+        <img src="@/assets/images/homePage/taskBar-img/nightmode.png" alt="" />
+      </Icon>
       <Progess v-model="progessVal" type="percent" :width="250" @move="onProgessMove"></Progess>
     </div>
   </div>
@@ -78,6 +81,11 @@
     }
     .setting-item.focus {
       background-color: #0078d7;
+    }
+    .setting-brightness {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
     }
   }
 </style>
