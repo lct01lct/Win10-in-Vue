@@ -2,7 +2,7 @@
   import Test from './test.vue';
   import { message, Message } from '@/components';
 
-  let mess: Message | null = null;
+  let mess: Message;
   const onClick = () => {
     mess = message(h(Test));
   };

@@ -1,4 +1,5 @@
 import Message from './message.vue';
+import { createNewMessage } from '@/share/win';
 import {
   MessageContent,
   currMessage,
@@ -15,6 +16,7 @@ type Message = Promise<MessageInstance>;
 
 const message = async (content: MessageContent): Message => {
   await sleep(500);
+  createNewMessage({ content });
 
   const { messageApp, vm } = createMessage(content);
 

@@ -21,7 +21,7 @@ interface IOption {
 }
 
 type NewMessage = Omit<Omit<Omit<Message, 'option'>, 'dom'>, 'isSeen'> & {
-  option: Partial<IOption>;
+  option?: Partial<IOption>;
 };
 
 export const messageList = reactive<Message[]>([
@@ -83,14 +83,15 @@ export const createNewMessage = (opt?: NewMessage) => {
   messageList.unshift(newMessage);
 };
 
-createNewMessage({
-  title: { text: '截图和草稿1', icon: '' },
-  content: '123',
-  option: {
-    tip: '截图已经保存到剪切板',
-    todo: '选择此处标记并共享图版',
-  },
-});
+// 测试用例
+// createNewMessage({
+//   title: { text: '截图和草稿1', icon: '' },
+//   content: '123',
+//   option: {
+//     tip: '截图已经保存到剪切板',
+//     todo: '选择此处标记并共享图版',
+//   },
+// });
 
 export const resolveMessageContent = (content: string | VNode) => {
   if (typeof content === 'string') {
