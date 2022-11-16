@@ -68,19 +68,22 @@ subscribeEverydayUpdate(() => {
   });
 });
 
-export const createNewMessage = (opt?: NewMessage) => {
+export const createNewMessage = (opt?: NewMessage): string => {
   const publicTime = `${getFormatFullTime()} ${paddingZero(dayjs().hour())}:${paddingZero(
     dayjs().minute()
   )}`;
   const time = publicTime.slice(-5);
 
-  const newMessage = (opt || { option: {} }) as Message;
+  const newMessage = (opt || {}) as Message;
+  newMessage.option = newMessage.option || {};
   newMessage.option.time = time;
   newMessage.option.publicTime = publicTime;
   newMessage.isSeen = false;
   typeof newMessage.content === 'object' && markRaw(newMessage.content);
 
   messageList.unshift(newMessage);
+
+  return publicTime;
 };
 
 // 测试用例

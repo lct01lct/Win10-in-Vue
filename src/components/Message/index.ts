@@ -6,21 +6,23 @@ import {
   createMessage,
   autoDestroyMessage,
   messageClose,
+  SCOPE,
 } from './message';
-import type { MessageInstance } from './message';
+import type { MessageInstance, MessageOption } from './message';
 import { sleep } from '@/utils/async';
 
 const MESSAGE_DELAY = 2000;
 
 type Message = Promise<MessageInstance>;
 
-const message = async (content: MessageContent): Message => {
+const message = async (content: MessageContent, opt?: MessageOption): Message => {
   await sleep(500);
-  createNewMessage({ content });
+  const publicTime = createNewMessage({ content });
+  let messageInstance: MessageInstance;
 
-  const { messageApp, vm } = createMessage(content);
+  const { messageApp, vm } = createMessage(content, opt);
 
-  const messageInstance: MessageInstance = {
+  messageInstance = {
     isClose: false,
     close() {
       messageClose(vm, () => {
@@ -34,6 +36,7 @@ const message = async (content: MessageContent): Message => {
   };
 
   currMessage.value = messageInstance;
+  vm.messageRef[SCOPE] = { messageInstance, publicTime };
 
   autoDestroyMessage(messageInstance, MESSAGE_DELAY);
 

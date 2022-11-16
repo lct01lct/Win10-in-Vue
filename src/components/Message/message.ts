@@ -10,17 +10,30 @@ export interface MessageInstance {
 }
 export type MessageContent = string | VNode;
 
+export const SCOPE = '__SCOPE__';
+export type MessageEL = HTMLElement & {
+  [SCOPE]: {
+    messageInstance: MessageInstance;
+    publicTime: string;
+  };
+};
+
 export let currMessage = ref<MessageInstance | null>(null);
+
+export interface MessageOption {
+  click: () => void;
+}
 
 watch(currMessage, (newMessage, oldMessage) => {
   oldMessage && oldMessage.destroy();
 });
 
 export const createMessage = (
-  content: MessageContent
+  content: MessageContent,
+  opt?: MessageOption
 ): { messageApp: App<Element>; vm: CompType<typeof Message> } => {
   const oMessage = document.createDocumentFragment() as unknown as HTMLElement;
-  const messageApp = createApp(Message, { content });
+  const messageApp = createApp(Message, { content, ...opt });
 
   const vm: CompType<typeof Message> = messageApp.mount(oMessage);
 

@@ -4,7 +4,11 @@
 
   let mess: Message;
   const onClick = () => {
-    mess = message(h(Test));
+    mess = message(h(Test), {
+      click() {
+        console.log(1);
+      },
+    });
   };
   const onClose = async () => {
     (await mess)!.close();
