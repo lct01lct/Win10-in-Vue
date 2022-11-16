@@ -2,6 +2,7 @@
   import { Progess, Icon } from '@/components';
   import { settingList, SettingItem, progessVal } from './setting';
   import { setBrightnessVal } from '@/view/Home/Modal';
+  import anime from 'animejs';
 
   const onItemClick = (item: SettingItem) => {
     if (item.onTrigger) {
@@ -14,11 +15,34 @@
   const onProgessMove = (val: number) => {
     setBrightnessVal(val);
   };
+
+  const isShowFlod = ref<boolean>(true);
+  const settingWrapperRef = ref<HTMLElement>();
+
+  const foldSettingWrapper = () => {
+    const height = [280, 280 + 280];
+    if (isShowFlod.value) {
+      height[0] = 280;
+      height[1] = 280 + 280;
+    } else {
+      height[1] = 280;
+      height[0] = 280 + 280;
+    }
+    anime({
+      targets: document.querySelector('.message-list')!,
+      duration: 300,
+      height,
+      loop: false,
+      direction: 'alternate',
+      easing: 'easeInCubic',
+    });
+    isShowFlod.value = !isShowFlod.value;
+  };
 </script>
 
 <template>
-  <div class="setting-wrapper">
-    <div class="setting-header">折叠</div>
+  <div class="setting-wrapper" ref="settingWrapperRef">
+    <div class="setting-header" @click="foldSettingWrapper">{{ isShowFlod ? '折叠' : '展开' }}</div>
     <div class="setting-list">
       <div
         class="setting-item"
@@ -52,11 +76,15 @@
 <style scoped lang="scss">
   .setting-wrapper {
     padding: 0 20px;
+    cursor: default;
     .setting-header {
       color: #99c6e9;
       font-size: 12px;
       height: 30px;
       line-height: 30px;
+      &:hover {
+        color: #fff;
+      }
     }
     .setting-list {
       height: 260px;
