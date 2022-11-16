@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import Icon from '@/components/Icon/index.vue';
+  import { Icon, Popover } from '@/components';
   import {
     systemTaskImgList,
     sysytmTaskIconMouseenterHandler,
@@ -9,22 +9,25 @@
 
 <template>
   <div class="system-task-wrapper">
-    <div
-      class="system-task-item"
-      v-for="(item, index) in systemTaskImgList"
-      :key="item.className"
-      @mouseenter="sysytmTaskIconMouseenterHandler(index)"
-      @mouseleave="sysytmTaskIconMouseleaveHandler(index)"
-    >
-      <Icon :width="20" :height="20">
-        <img :src="item.tp" alt="" v-if="item.show" />
-        <img :src="item.tp1" alt="" v-if="!item.show" />
-      </Icon>
-    </div>
+    <Popover v-for="(item, index) in systemTaskImgList" :key="item.className">
+      <component :is="item.contentComp" v-if="item.contentComp"></component>
+      <template #reference>
+        <div
+          class="system-task-item"
+          @mouseenter="sysytmTaskIconMouseenterHandler(index)"
+          @mouseleave="sysytmTaskIconMouseleaveHandler(index)"
+        >
+          <Icon :width="20" :height="20">
+            <img :src="item.tp" alt="" v-if="item.show" />
+            <img :src="item.tp1" alt="" v-if="!item.show" />
+          </Icon>
+        </div>
+      </template>
+    </Popover>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
   .system-task-wrapper {
     display: flex;
     align-items: center;
@@ -46,5 +49,10 @@
         margin-left: 3px;
       }
     }
+  }
+  .system-task-detail {
+    background-color: #1e1e1e;
+    opacity: 0.8;
+    color: #fff;
   }
 </style>
