@@ -6,7 +6,7 @@
 
 <style scoped lang="scss">
   .win-task-wrapper {
-    width: 400px;
-    height: 200px;
+    width: 780px;
+    height: 600px;
   }
 </style>

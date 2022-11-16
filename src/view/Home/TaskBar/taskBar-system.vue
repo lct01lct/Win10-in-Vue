@@ -9,7 +9,7 @@
 
 <template>
   <div class="system-task-wrapper">
-    <Popover v-for="(item, index) in systemTaskImgList" :key="item.className">
+    <Popover v-for="(item, index) in systemTaskImgList" :key="item.className" animation-dir="top">
       <component :is="item.contentComp" v-if="item.contentComp"></component>
       <template #reference>
         <div
