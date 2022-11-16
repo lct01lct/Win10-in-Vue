@@ -60,7 +60,7 @@
       opacity: 0.8;
       border: 1px solid #fff;
       border-radius: 50%;
-      text-indent: 2px;
+      text-align: center;
       font-size: 14px;
       font-weight: 700;
     }
