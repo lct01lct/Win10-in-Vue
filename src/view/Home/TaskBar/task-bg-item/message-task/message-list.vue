@@ -48,6 +48,7 @@
       <div
         class="message-item-content"
         v-if="item.content"
+        @click="onCloseBtnClick(item.option.publicTime, item.dom)"
         @mouseenter="closeBtnVisible = !closeBtnVisible"
         @mouseleave="closeBtnVisible = !closeBtnVisible"
       >
