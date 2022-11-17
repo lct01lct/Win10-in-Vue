@@ -1,5 +1,7 @@
 import { Files, Folder, Desc } from '.';
 
+export type BinType = Desc | Folder | Files;
+
 const units = ['B', 'KB', 'MB', 'GB', 'TB'];
 const baseRadix = 1024;
 

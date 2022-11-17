@@ -1,4 +1,6 @@
-export default [
+import { Desc } from '@/share/file';
+
+const ORIGIN_DATA = [
   {
     name: 'Windows (C:)',
     memory: '16GB',
@@ -176,3 +178,5 @@ export default [
     ],
   },
 ];
+
+export default ORIGIN_DATA.map((item) => new Desc(item as any));

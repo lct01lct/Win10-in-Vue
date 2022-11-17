@@ -1,10 +1,4 @@
-<script lang="ts" setup>
-  import binData from '@/config/bin-data';
-  import { Desc } from '@/share/file';
-
-  const f = new Desc(binData[0] as any);
-  console.log(f);
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <div class="deskTop-wrapper"></div>
