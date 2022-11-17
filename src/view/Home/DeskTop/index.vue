@@ -1,26 +1,13 @@
 <script lang="ts" setup>
-  import Test from './test.vue';
-  import { message, Message } from '@/components';
+  import binData from '@/config/bin-data';
+  import { Desc } from '@/share/file';
 
-  let mess: Message;
-  const onClick = () => {
-    mess = message(h(Test), {
-      click() {
-        console.log(1);
-      },
-    });
-  };
-  const onClose = async () => {
-    (await mess)!.close();
-  };
+  const f = new Desc(binData[0] as any);
+  console.log(f);
 </script>
 
 <template>
-  <div class="deskTop-wrapper">
-    loading...
-    <button @click="onClick">btn</button>
-    <button @click="onClose">close</button>
-  </div>
+  <div class="deskTop-wrapper"></div>
 </template>
 
 <style scoped></style>
