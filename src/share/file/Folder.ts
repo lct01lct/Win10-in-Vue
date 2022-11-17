@@ -1,6 +1,16 @@
-import { Files, addStorageUnit, showProperUnit, Desc, isFile } from '.';
+import {
+  Files,
+  addStorageUnit,
+  showProperUnit,
+  Desc,
+  isFile,
+  getBytes,
+  isRepeatFolder,
+  isRepeatFile,
+} from '.';
 import type { InitFileOpt, BinType } from '.';
 import binData from '@/config/bin-data';
+import { resolve } from 'path';
 
 export interface InitFolderOpt {
   name: string;
@@ -39,6 +49,55 @@ class Folder {
         return addStorageUnit(initVal, item.size);
       }, '0KB')
     );
+  }
+
+  addFolder(content: string | Folder = '新建文件夹') {
+    const resolveName = (name: string): string => {
+      if (isRepeatFolder(this.children, name)) {
+        name = reSetBinName(name);
+      }
+      return name;
+    };
+
+    if (content instanceof Folder) {
+      if (isOverMemory(this, content.size)) return `超出当前磁盘内存`;
+
+      content.name = resolveName(content.name);
+
+      this.children.push(content);
+    } else {
+      content = resolveName(content);
+
+      this.children.push(new Folder({ name: content, children: [] }, this));
+    }
+  }
+
+  addFile(content: string | Files, size: string = '0KB') {
+    if (isOverMemory(this, size)) {
+      return `超出当前磁盘内存`;
+    }
+
+    const resolveName = (name: string): string => {
+      if (isRepeatFile(this.children, name)) {
+        name = reSetBinName(name);
+      }
+      return name;
+    };
+
+    if (content instanceof Files) {
+      content.name = resolveName(content.name);
+
+      this.children.push(content);
+    } else {
+      const file = new Files({
+        name: '',
+        extension: '',
+        size,
+      });
+      file.fullName = content;
+      file.name = resolveName(file.name);
+      this.children.push(file);
+    }
   }
 
   get path(): string {
@@ -85,5 +144,21 @@ class Folder {
     return pointer;
   }
 }
+
+const isOverMemory = (curr: Folder | Desc, size: string): boolean => {
+  let pointer: Folder | Desc = curr;
+  while (pointer.parent) {
+    pointer = pointer.parent;
+  }
+
+  if (getBytes(addStorageUnit(pointer.size, size)) > getBytes((pointer as Desc).memory)) {
+    return true;
+  }
+  return false;
+};
+
+const reSetBinName = (name: string) => {
+  return `${name} - 副本`;
+};
 
 export default Folder;

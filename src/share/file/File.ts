@@ -1,5 +1,5 @@
-export type Extension = 'mp4' | 'mp3' | 'html' | 'js' | 'ts' | 'css' | '';
-export const extensions: Extension[] = ['mp4', 'mp3', 'html', 'js', 'ts', 'css', ''];
+export type Extension = 'mp4' | 'mp3' | 'html' | 'txt' | 'js' | 'ts' | 'css' | '';
+export const extensions: Extension[] = ['mp4', 'mp3', 'html', 'txt', 'js', 'ts', 'css', ''];
 
 export interface InitFileOpt {
   name: string;

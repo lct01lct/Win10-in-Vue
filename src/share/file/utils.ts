@@ -67,12 +67,34 @@ export function separateUnit(num: string) {
  * @param {String} num 任意类型的单位
  * @returns {Number} 没有单位的数据
  */
-export function getBytes(num: string) {
+export function getBytes(num: string): number {
   const res = separateUnit(num);
   const index = units.indexOf(res.unit);
 
   return res.size * Math.pow(baseRadix, index);
 }
+
+export const isRepeatFolder = (tarNodes: (Files | Folder)[], name: string) => {
+  return (
+    tarNodes.findIndex((item) => {
+      if (item instanceof Folder) {
+        return item.name === name;
+      }
+      return false;
+    }) > -1
+  );
+};
+
+export const isRepeatFile = (tarNodes: (Files | Folder)[], name: string) => {
+  return (
+    tarNodes.findIndex((item) => {
+      if (item instanceof Files) {
+        return item.name === name;
+      }
+      return false;
+    }) > -1
+  );
+};
 
 export const isFile = (data: any) => {
   return data instanceof Files;
