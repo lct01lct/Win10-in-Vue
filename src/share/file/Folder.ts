@@ -10,7 +10,6 @@ import {
 } from '.';
 import type { InitFileOpt, BinType } from '.';
 import binData from '@/config/bin-data';
-import { resolve } from 'path';
 
 export interface InitFolderOpt {
   name: string;
@@ -98,6 +97,36 @@ class Folder {
       file.name = resolveName(file.name);
       this.children.push(file);
     }
+  }
+
+  removeFolder(content: string | Folder) {
+    let index = -1;
+    if (content instanceof Folder) {
+      index = this.children.findIndex((item) => item === content);
+    } else {
+      index = this.children.findIndex((item) => {
+        if (item instanceof Folder) {
+          return item.name === content;
+        }
+      });
+    }
+
+    index > -1 && this.children.splice(index, 1);
+  }
+
+  removeFile(content: string | Files) {
+    let index = -1;
+    if (content instanceof Files) {
+      index = this.children.findIndex((item) => item === content);
+    } else {
+      index = this.children.findIndex((item) => {
+        if (item instanceof Files) {
+          return item.name === content;
+        }
+      });
+    }
+
+    index > -1 && this.children.splice(index, 1);
   }
 
   get path(): string {
