@@ -3,11 +3,17 @@
   import { Icon } from '@/components';
   import { maxAppWidth, maxAppHeight } from './base';
   import type { AppViewSizeOpt } from './base';
+  import type { WinApp } from '../.';
+  import { getWinAppScope } from '../.';
+  import animation from '@/share/anime';
 
   const props = defineProps({
     appViewSize: {
       type: Object as PropType<AppViewSizeOpt>,
       required: true,
+    },
+    appRef: {
+      type: Object as PropType<WinApp>,
     },
   });
 
@@ -46,6 +52,19 @@
       });
     }
   };
+
+  const closeWinApp = () => {
+    animation({
+      targets: props.appRef,
+      opacity: [1, 0],
+      scale: [1.0, 0.6],
+      duration: 100,
+      complete() {
+        const { close } = getWinAppScope(props.appRef!);
+        close();
+      },
+    });
+  };
 </script>
 
 <template>
@@ -67,6 +86,7 @@
       </div>
       <div
         class="app-view-opt-item close-btn"
+        @click="closeWinApp"
         @mouseenter="closeBtnIsActive = !closeBtnIsActive"
         @mouseleave="closeBtnIsActive = !closeBtnIsActive"
       >

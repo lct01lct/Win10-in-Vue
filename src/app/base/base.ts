@@ -1,3 +1,6 @@
+import { WIN_APP_SCOPE } from '../.';
+import { WinApp } from '..';
+
 export interface AppViewSizeOpt {
   width?: number;
   height?: number;

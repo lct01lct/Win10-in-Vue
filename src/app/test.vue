@@ -3,12 +3,10 @@
 </script>
 
 <template>
-  <div>
-    <Base>
-      <template #header>1</template>
-      <template #body>1</template>
-    </Base>
-  </div>
+  <Base>
+    <template #header>1</template>
+    <template #body>1</template>
+  </Base>
 </template>
 
 <style scoped></style>
