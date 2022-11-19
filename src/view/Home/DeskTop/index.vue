@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-  import { createApplications } from '@/app';
+  import { testApp } from '@/app';
+
+  const click = () => {
+    testApp.open();
+  };
 </script>
 
 <template>
   <div class="deskTop-wrapper">
-    <button @click="createApplications(['test'])" style="position: absolute">btn</button>
+    <button @click="click()" style="position: absolute">btn</button>
   </div>
 </template>
 

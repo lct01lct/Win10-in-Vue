@@ -3,9 +3,9 @@
   import BaseHeader from './base-header.vue';
   import type { AppViewSizeOpt } from './base';
   import animation from '@/share/anime';
-  import type { WinApp } from '../.';
+  import type { WinAppDOM } from '../.';
 
-  const appRef = ref<WinApp>();
+  const appRef = ref<WinAppDOM>();
 
   const appViewSize = reactive<AppViewSizeOpt>({
     width: 1000,
@@ -24,20 +24,23 @@
   };
 
   const setAppViewSize = ({ width, height, left, top }: AppViewSizeOpt) => {
-    animation({
+    const animationOpt = {
       targets: appRef.value!,
-      width: [appViewSize.width, width ? width : appViewSize.width],
-      height: [appViewSize.height, height ? height : appViewSize.height],
+      width: [appViewSize.width, width !== undefined ? width : appViewSize.width],
+      height: [appViewSize.height, height !== undefined ? height : appViewSize.height],
       left: [appViewSize.left, left !== undefined ? left : appViewSize.left],
       top: [appViewSize.top, top !== undefined ? top : appViewSize.top],
       duration: 100,
+
       complete() {
-        if (width) appViewSize.width = width;
-        if (height) appViewSize.height = height;
+        if (width !== undefined) appViewSize.width = width;
+        if (height !== undefined) appViewSize.height = height;
         if (left !== undefined) appViewSize.left = left;
         if (top !== undefined) appViewSize.top = top;
       },
-    });
+    } as any;
+
+    animation(animationOpt);
   };
 </script>
 

@@ -3,7 +3,7 @@
   import { Icon } from '@/components';
   import { maxAppWidth, maxAppHeight } from './base';
   import type { AppViewSizeOpt } from './base';
-  import type { WinApp } from '../.';
+  import type { WinAppDOM } from '../.';
   import { getWinAppScope } from '../.';
   import animation from '@/share/anime';
 
@@ -13,7 +13,7 @@
       required: true,
     },
     appRef: {
-      type: Object as PropType<WinApp>,
+      type: Object as PropType<WinAppDOM>,
     },
   });
 
@@ -36,6 +36,17 @@
     top: props.appViewSize.top,
   };
 
+  const onMinimizeBtnClick = () => {
+    animation({
+      targets: props.appRef,
+      scale: [1, 0],
+      duration: 300,
+      begin() {
+        props.appRef!.style.transformOrigin = 'bottom left';
+      },
+    });
+  };
+
   const onMaximizeBtnClick = () => {
     if (!isFullScreen.value) {
       oldAppViewSize.width = props.appViewSize.width;
@@ -53,7 +64,7 @@
     }
   };
 
-  const closeWinApp = () => {
+  const onCloseBtnClick = () => {
     animation({
       targets: props.appRef,
       opacity: [1, 0],
@@ -73,7 +84,7 @@
       <slot></slot>
     </div>
     <div class="app-header-right-wrapper">
-      <div class="app-view-opt-item minimize-btn">
+      <div class="app-view-opt-item minimize-btn" @click="onMinimizeBtnClick">
         <Icon :height="iconSize" :width="iconSize">
           <img src="@/assets/images/appPage/baseApp/minimize.png" />
         </Icon>
@@ -86,7 +97,7 @@
       </div>
       <div
         class="app-view-opt-item close-btn"
-        @click="closeWinApp"
+        @click="onCloseBtnClick"
         @mouseenter="closeBtnIsActive = !closeBtnIsActive"
         @mouseleave="closeBtnIsActive = !closeBtnIsActive"
       >
