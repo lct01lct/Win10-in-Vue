@@ -2,19 +2,18 @@
   import BaseBody from './base-body.vue';
   import BaseHeader from './base-header.vue';
   import type { AppViewSizeOpt } from './base';
+  import { compMap } from './baseApp';
   import animation from '@/share/anime';
   import type { WinAppDOM } from '../.';
   import { WIN_APP_SCOPE, getWinAppScope } from '../.';
+  import type { ComputedRef } from 'vue';
 
   const appRef = ref<WinAppDOM>();
   const isShow = ref<boolean>(true);
-  const appZIndex = ref(999);
 
   onMounted(async () => {
     await nextTick();
     appRef.value![WIN_APP_SCOPE].isShow = isShow;
-    const { appInstance } = getWinAppScope(appRef.value!);
-    appZIndex.value = appInstance._zIndex;
 
     document.addEventListener('click', HandleAppClick);
   });
@@ -39,13 +38,15 @@
     left: 100,
   });
 
+  const zIndex = inject<ComputedRef<number>>('zIndex')!;
+
   const getAppStyle = () => {
     return {
       width: appViewSize.width + 'px',
       height: appViewSize.height + 'px',
       left: `${appViewSize.left}px`,
       top: `${appViewSize.top}px`,
-      zIndex: appZIndex.value,
+      zIndex: zIndex.value,
     };
   };
 
@@ -68,10 +69,17 @@
 
     animation(animationOpt);
   };
+
+  const onAppClick = () => {
+    const { appInstance } = getWinAppScope(appRef.value!);
+    const comp = compMap.get(appInstance.name)!;
+    compMap.delete(appInstance.name);
+    compMap.set(appInstance.name, comp);
+  };
 </script>
 
 <template>
-  <div class="app-wrapper" :style="getAppStyle()" ref="appRef" v-show="isShow">
+  <div class="app-wrapper" :style="getAppStyle()" ref="appRef" v-show="isShow" @click="onAppClick">
     <BaseHeader
       :appViewSize="appViewSize"
       @setAppViewSize="setAppViewSize"

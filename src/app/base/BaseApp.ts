@@ -4,7 +4,7 @@ import { addTaskBarTriggerItem } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
 import WinApp from '../app';
 
-const compMap: { [key: string]: Component } = {};
+export const compMap: Map<string, Component> = new Map();
 
 interface BaseApp {
   _dom: WinAppDOM;
@@ -28,7 +28,6 @@ export interface BaseAppContructorOpt {
 
 class BaseApp {
   name: string;
-  _zIndex: number = 0;
   private _logo: string;
   _isRender: boolean = false;
 
@@ -41,7 +40,11 @@ class BaseApp {
   open() {
     if (!this._isRender) {
       const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
-      const vueApp = createApp(compMap[this.name]);
+      const vueApp = createApp(compMap.get(this.name)!);
+
+      const zIndex = computed(() => [...compMap.keys()].indexOf(this.name) + 1);
+      vueApp.provide('zIndex', zIndex);
+
       vueApp.mount(oContainer);
       const _dom = oContainer.querySelector('.app-wrapper')! as WinAppDOM;
       this._dom = _dom;
@@ -93,10 +96,10 @@ class BaseApp {
 }
 
 const installWinApp = (name: string, comp: Component) => {
-  if (compMap[name]) {
+  if (compMap.has(name)) {
     throw new Error('${name} already exists!');
   } else {
-    compMap[name] = comp;
+    compMap.set(name, comp);
   }
 };
 
@@ -105,8 +108,6 @@ export const getWinAppScope = (_dom: WinAppDOM) => {
 };
 
 const initWinAppStyle = async (_dom: WinAppDOM, winApp: BaseApp) => {
-  winApp._zIndex = Object.values(compMap).length;
-
   animation({
     targets: _dom,
     scale: [0, 1],
