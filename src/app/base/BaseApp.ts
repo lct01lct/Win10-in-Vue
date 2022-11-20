@@ -1,6 +1,6 @@
 import { App, Component, Ref } from 'vue';
 import animation from '@/share/anime';
-import { addTaskBarTriggerItem, removeTaskBarTriggerItem } from './taskBar';
+import { addTaskBarTriggerItem } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
 import WinApp from '../app';
 
@@ -105,8 +105,7 @@ export const getWinAppScope = (_dom: WinAppDOM) => {
 };
 
 const initWinAppStyle = async (_dom: WinAppDOM, winApp: BaseApp) => {
-  _dom.style.zIndex = '10';
-  winApp._zIndex = 10;
+  winApp._zIndex = Object.values(compMap).length;
 
   animation({
     targets: _dom,

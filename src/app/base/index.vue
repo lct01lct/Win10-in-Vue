@@ -4,14 +4,18 @@
   import type { AppViewSizeOpt } from './base';
   import animation from '@/share/anime';
   import type { WinAppDOM } from '../.';
-  import { WIN_APP_SCOPE } from '../.';
+  import { WIN_APP_SCOPE, getWinAppScope } from '../.';
 
   const appRef = ref<WinAppDOM>();
   const isShow = ref<boolean>(true);
+  const appZIndex = ref(999);
 
   onMounted(async () => {
     await nextTick();
     appRef.value![WIN_APP_SCOPE].isShow = isShow;
+    const { appInstance } = getWinAppScope(appRef.value!);
+    appZIndex.value = appInstance._zIndex;
+
     document.addEventListener('click', HandleAppClick);
   });
 
@@ -41,6 +45,7 @@
       height: appViewSize.height + 'px',
       left: `${appViewSize.left}px`,
       top: `${appViewSize.top}px`,
+      zIndex: appZIndex.value,
     };
   };
 
