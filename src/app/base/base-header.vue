@@ -80,9 +80,10 @@
       scale: [1.0, 0],
       duration: 100,
       complete() {
-        const { close, name } = getWinAppScope(props.appRef!);
+        const { close, appInstance } = getWinAppScope(props.appRef!);
         close();
-        removeTaskBarTriggerItem(name);
+        removeTaskBarTriggerItem(appInstance.name);
+        appInstance._isRender = false;
       },
     });
   };

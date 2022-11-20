@@ -10,6 +10,16 @@ interface BaseApp {
   _dom: WinAppDOM;
 }
 
+export const WIN_APP_SCOPE = '__WIN__APP__SCOPE__';
+export type WinAppDOM = HTMLElement & {
+  [WIN_APP_SCOPE]: {
+    appInstance: BaseApp;
+    close: () => void;
+    onMinimizeBtnClick: () => void;
+    isShow: Ref<boolean>;
+  };
+};
+
 export interface BaseAppContructorOpt {
   name: string;
   comp: Component;
@@ -20,7 +30,7 @@ class BaseApp {
   name: string;
   _zIndex: number = 0;
   private _logo: string;
-  private _isRender: boolean = false;
+  _isRender: boolean = false;
 
   constructor({ name, comp, icon }: BaseAppContructorOpt) {
     this.name = name;
@@ -90,16 +100,6 @@ const installWinApp = (name: string, comp: Component) => {
   }
 };
 
-export const WIN_APP_SCOPE = '__WIN__APP__SCOPE__';
-export type WinAppDOM = HTMLElement & {
-  [WIN_APP_SCOPE]: {
-    name: string;
-    close: () => void;
-    onMinimizeBtnClick: () => void;
-    isShow: Ref<boolean>;
-  };
-};
-
 export const getWinAppScope = (_dom: WinAppDOM) => {
   return _dom[WIN_APP_SCOPE];
 };
@@ -118,7 +118,7 @@ const initWinAppStyle = async (_dom: WinAppDOM, winApp: BaseApp) => {
 
 const createWinAppScope = (_dom: WinAppDOM, vueApp: App<Element>, baseApp: BaseApp) => {
   _dom[WIN_APP_SCOPE] = {
-    name: baseApp.name,
+    appInstance: baseApp,
     close: () => {
       vueApp.unmount();
     },
