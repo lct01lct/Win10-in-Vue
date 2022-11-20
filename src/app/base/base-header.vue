@@ -6,6 +6,7 @@
   import type { WinAppDOM } from '../.';
   import { getWinAppScope, WIN_APP_SCOPE } from '../.';
   import animation from '@/share/anime';
+  import { removeTaskBarTriggerItem } from './taskBar';
 
   const props = defineProps({
     appViewSize: {
@@ -79,8 +80,9 @@
       scale: [1.0, 0],
       duration: 100,
       complete() {
-        const { close } = getWinAppScope(props.appRef!);
+        const { close, name } = getWinAppScope(props.appRef!);
         close();
+        removeTaskBarTriggerItem(name);
       },
     });
   };
