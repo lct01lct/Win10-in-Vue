@@ -4,11 +4,19 @@
   const click = () => {
     testApp.open();
   };
+
+  const show = () => {
+    testApp.show();
+  };
 </script>
 
 <template>
   <div class="deskTop-wrapper">
-    <button @click="click()" style="position: absolute">btn</button>
+    <div style="position: absolute">
+      <button @click="click">btn</button>
+      <button @click="show">show</button>
+      <button @click="testApp.hide()">hide</button>
+    </div>
   </div>
 </template>
 

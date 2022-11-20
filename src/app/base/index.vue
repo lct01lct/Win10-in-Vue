@@ -4,8 +4,29 @@
   import type { AppViewSizeOpt } from './base';
   import animation from '@/share/anime';
   import type { WinAppDOM } from '../.';
+  import { WIN_APP_SCOPE } from '../.';
 
   const appRef = ref<WinAppDOM>();
+  const isShow = ref<boolean>(true);
+
+  onMounted(async () => {
+    await nextTick();
+    appRef.value![WIN_APP_SCOPE].isShow = isShow;
+    document.addEventListener('click', HandleAppClick);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener('click', HandleAppClick);
+  });
+
+  const HandleAppClick = (e: MouseEvent) => {
+    if (appRef.value!.contains(e.target as HTMLElement)) {
+      e.stopPropagation();
+      appRef.value!.style.transform = 'scale(1.002)';
+    } else {
+      appRef.value!.style.transform = 'scale(1)';
+    }
+  };
 
   const appViewSize = reactive<AppViewSizeOpt>({
     width: 1000,
@@ -45,8 +66,13 @@
 </script>
 
 <template>
-  <div class="app-wrapper" :style="getAppStyle()" ref="appRef">
-    <BaseHeader :appViewSize="appViewSize" @setAppViewSize="setAppViewSize" :appRef="appRef!">
+  <div class="app-wrapper" :style="getAppStyle()" ref="appRef" v-show="isShow">
+    <BaseHeader
+      :appViewSize="appViewSize"
+      @setAppViewSize="setAppViewSize"
+      :appRef="appRef!"
+      v-model:isShow="isShow"
+    >
       <slot name="header"></slot>
     </BaseHeader>
     <BaseBody>
@@ -58,8 +84,8 @@
 <style scoped lang="scss">
   .app-wrapper {
     position: absolute;
-    box-sizing: border-box;
     box-shadow: 0 0 4px #848383;
     background-color: #fff;
+    box-sizing: content-box;
   }
 </style>

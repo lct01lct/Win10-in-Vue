@@ -1,5 +1,5 @@
 import { Component } from 'vue';
-import BaseApp from './base/baseApp';
+import BaseApp from './base/BaseApp';
 
 export default class WinApp extends BaseApp {
   constructor(name: string, comp: Component) {

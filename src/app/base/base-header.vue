@@ -4,7 +4,7 @@
   import { maxAppWidth, maxAppHeight } from './base';
   import type { AppViewSizeOpt } from './base';
   import type { WinAppDOM } from '../.';
-  import { getWinAppScope } from '../.';
+  import { getWinAppScope, WIN_APP_SCOPE } from '../.';
   import animation from '@/share/anime';
 
   const props = defineProps({
@@ -15,9 +15,13 @@
     appRef: {
       type: Object as PropType<WinAppDOM>,
     },
+    isShow: {
+      type: Boolean,
+      required: true,
+    },
   });
 
-  const emits = defineEmits(['setAppViewSize']);
+  const emits = defineEmits(['setAppViewSize', 'update:isShow']);
 
   const iconSize = 12;
   const closeBtnIsActive = ref(false);
@@ -40,9 +44,13 @@
     animation({
       targets: props.appRef,
       scale: [1, 0],
+      opacity: [1, 0],
       duration: 300,
       begin() {
         props.appRef!.style.transformOrigin = 'bottom left';
+      },
+      complete() {
+        emits('update:isShow', !props.isShow);
       },
     });
   };
@@ -68,7 +76,7 @@
     animation({
       targets: props.appRef,
       opacity: [1, 0],
-      scale: [1.0, 0.6],
+      scale: [1.0, 0],
       duration: 100,
       complete() {
         const { close } = getWinAppScope(props.appRef!);
@@ -76,6 +84,11 @@
       },
     });
   };
+
+  onMounted(async () => {
+    await nextTick();
+    props.appRef![WIN_APP_SCOPE].onMinimizeBtnClick = onMinimizeBtnClick;
+  });
 </script>
 
 <template>

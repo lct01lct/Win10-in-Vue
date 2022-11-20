@@ -1,10 +1,11 @@
-import { App, Component } from 'vue';
+import { App, Component, ComponentPublicInstance, Ref } from 'vue';
 import animation from '@/share/anime';
 
 const compMap: { [key: string]: Component } = {};
 
 interface BaseApp {
   _dom: WinAppDOM;
+  _vm: ComponentPublicInstance;
 }
 
 class BaseApp {
@@ -18,11 +19,12 @@ class BaseApp {
   open() {
     const vueApp = createApp(compMap[this.name]);
     const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
-    vueApp.mount(oContainer);
+    const vm = vueApp.mount(oContainer);
     const _dom = oContainer.querySelector('.app-wrapper')! as WinAppDOM;
     document.querySelector('.deskTop-wrapper')!.appendChild(oContainer);
 
     this._dom = _dom;
+    this._vm = vm;
 
     initWinAppStyle(_dom, this);
     createWinAppScope(_dom, vueApp);
@@ -32,9 +34,30 @@ class BaseApp {
     getWinAppScope(this._dom).close();
   }
 
-  show() {}
+  show() {
+    animation({
+      targets: this._dom,
+      scale: [0, 1],
+      opacity: [0, 1],
+      duration: 300,
+      begin: async () => {
+        await nextTick();
+        this._dom.style.transformOrigin = 'bottom left';
+        this._dom[WIN_APP_SCOPE].isShow.value = true;
+      },
+      complete: () => {
+        this._dom.style.transformOrigin = 'center';
+      },
+    });
+  }
 
-  hide(immediate: boolean = true) {}
+  hide(immediate: boolean = true) {
+    if (immediate) {
+      this._dom[WIN_APP_SCOPE].isShow.value = false;
+    } else {
+      this._dom[WIN_APP_SCOPE].onMinimizeBtnClick();
+    }
+  }
 }
 
 const installWinApp = (name: string, comp: Component) => {
@@ -49,6 +72,8 @@ export const WIN_APP_SCOPE = '__WIN__APP__SCOPE__';
 export type WinAppDOM = HTMLElement & {
   [WIN_APP_SCOPE]: {
     close: () => void;
+    onMinimizeBtnClick: () => void;
+    isShow: Ref<boolean>;
   };
 };
 
@@ -73,7 +98,7 @@ const createWinAppScope = (_dom: WinAppDOM, vueApp: App<Element>) => {
     close: () => {
       vueApp.unmount();
     },
-  };
+  } as WinAppDOM['__WIN__APP__SCOPE__'];
 };
 
 export default BaseApp;
