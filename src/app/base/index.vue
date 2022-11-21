@@ -35,7 +35,7 @@
     width: 1000,
     height: 600,
     top: 50,
-    left: 100,
+    left: 250,
   });
 
   const zIndex = inject<ComputedRef<number>>('zIndex')!;

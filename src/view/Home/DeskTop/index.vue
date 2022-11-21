@@ -1,24 +1,16 @@
-<script lang="ts" setup>
-  import { testApp } from '@/app';
-
-  const click = () => {
-    testApp.open();
-  };
-</script>
+<script lang="ts" setup></script>
 
 <template>
-  <div class="deskTop-wrapper">
-    <div style="position: absolute">
-      <button @click="click">btn</button>
-    </div>
-  </div>
+  <div class="deskTop-wrapper"></div>
 </template>
 
 <style scoped>
   .deskTop-wrapper {
     position: relative;
+    z-index: auto;
     width: 1536px;
     height: 704px;
-    background: url('@/assets/images/homePage/wallpaper/win-default.jpg') 100%;
+    background: url('@/assets/images/homePage/wallpaper/win-default.jpg');
+    background-size: 1536px 704px;
   }
 </style>

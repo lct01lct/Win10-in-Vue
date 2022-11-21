@@ -2,7 +2,7 @@ import { Directive, DirectiveBinding } from 'vue';
 
 const name = 'drag';
 
-interface BindingValue {
+export interface BindingValue {
   tar: string;
   movedFn?: (x: number, y: number) => void;
 }
@@ -31,8 +31,9 @@ const directive: Directive = {
       };
 
       const onMouseUp = () => {
-        binding.value!.movedFn &&
-          binding.value!.movedFn(tarPos1.left + movePx.x, tarPos1.top + movePx.y);
+        binding.value &&
+          binding.value.movedFn &&
+          binding.value.movedFn(tarPos1.left + movePx.x, tarPos1.top + movePx.y);
 
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);

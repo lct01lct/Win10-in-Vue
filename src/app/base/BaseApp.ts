@@ -29,7 +29,7 @@ export interface BaseAppContructorOpt {
 
 class BaseApp {
   name: string;
-  private _logo: string;
+  _logo: string;
   _isRender: boolean = false;
 
   constructor({ name, comp, icon }: BaseAppContructorOpt) {
