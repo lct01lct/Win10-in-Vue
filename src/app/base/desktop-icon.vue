@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { PropType } from 'vue';
   import { WinApp } from '../.';
-  import { deskTopIconList } from './desktop-icon';
+  import { deskTopIconList, curFoucsItemName, resetFocusIcon } from './desktop-icon';
 
   const { appInstance } = defineProps({
     appInstance: {
@@ -18,13 +18,14 @@
     },
   });
 
+  const deskIconOpt = deskTopIconList.find((item) => item.appInstance.name === appInstance.name)!;
+
   const getStyles = () => {
-    const index = deskTopIconList.findIndex((item) => item.appInstance.name === appInstance.name);
-    const posIdx = index > -1 ? deskTopIconList[index].posIdx : 0;
+    const posIdx = deskIconOpt.posIdx;
 
     const deskTopWidth = 1536;
     const deskTopHeight = 704;
-    const deskTopPaddingTop = 4;
+    const deskTopPaddingTop = 8;
     const iconMarginX = 2;
     const iconMarginY = 10;
     const iconSize = 76.8;
@@ -36,15 +37,33 @@
         (iconMarginX + iconSize)
       }px`,
       top: `${
+        deskTopPaddingTop +
         (posIdx % colMaxCount ? (posIdx % colMaxCount) - 1 : colMaxCount - 1) *
-        (iconMarginY + iconSize)
+          (iconMarginY + iconSize)
       }px`,
     };
+  };
+
+  const onIconClick = () => {
+    resetFocusIcon();
+    deskIconOpt.isFocus = true;
+    curFoucsItemName.value = deskIconOpt.appInstance.name;
+  };
+
+  const onIconDbclick = () => {
+    appInstance.open();
+    deskIconOpt.isFocus = false;
   };
 </script>
 
 <template>
-  <div class="desktop-icon-wrapper" @dblclick="appInstance.open" :style="getStyles()">
+  <div
+    class="desktop-icon-wrapper"
+    @dblclick="onIconDbclick"
+    :style="getStyles()"
+    @click.stop="onIconClick"
+    :class="[deskIconOpt.isFocus ? 'focus' : '']"
+  >
     <img class="app-icon" :src="appIcon" alt="" draggable="false" />
     <span class="app-name">{{ appName }}</span>
   </div>
@@ -59,6 +78,9 @@
     justify-content: center;
     width: 76.8px;
     height: 76.8px;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    cursor: default;
     .app-icon {
       width: 50px;
       height: 50px;
@@ -67,5 +89,13 @@
       color: #fff;
       font-size: 12px;
     }
+
+    &:hover {
+      background-color: rgba(255, 254, 254, 0.2);
+      border: 1px solid #ccc;
+    }
+  }
+  .desktop-icon-wrapper.focus {
+    background-color: rgba(255, 254, 254, 0.3);
   }
 </style>

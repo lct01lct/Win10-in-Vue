@@ -1,7 +1,12 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import { resetFocusIcon } from '@/app';
+  const reset = () => {
+    resetFocusIcon();
+  };
+</script>
 
 <template>
-  <div class="deskTop-wrapper"></div>
+  <div class="deskTop-wrapper" @click="reset"></div>
 </template>
 
 <style scoped>

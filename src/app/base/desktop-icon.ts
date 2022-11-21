@@ -3,9 +3,17 @@ import { WinApp } from '..';
 export interface DeskTopIconItem {
   appInstance: WinApp;
   posIdx: number;
+  isFocus: boolean;
 }
 
 export const deskTopIconList = reactive<DeskTopIconItem[]>([]);
+export const curFoucsItemName = ref<string>('');
+export const resetFocusIcon = () => {
+  const index = deskTopIconList.findIndex(
+    (item) => item.appInstance.name === curFoucsItemName.value
+  );
+  if (index > -1) deskTopIconList[index].isFocus = false;
+};
 
 export const getNewlyPosIdx = (): number => {
   const nextIdx: number[] = [];
