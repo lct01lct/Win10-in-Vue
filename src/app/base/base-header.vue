@@ -95,7 +95,10 @@
 </script>
 
 <template>
-  <div class="app-header-wrapper">
+  <div
+    class="app-header-wrapper"
+    v-drag="{ tar: '.app-wrapper',movedFn(x:number,y:number){emits('setAppViewSize',{left:x,top:y}, true)} }"
+  >
     <div class="app-header-left-wrapper">
       <slot></slot>
     </div>

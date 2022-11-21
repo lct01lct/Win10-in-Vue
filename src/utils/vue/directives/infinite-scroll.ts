@@ -1,4 +1,4 @@
-import { Directive, DirectiveBinding, Ref } from 'vue';
+import { Directive, DirectiveBinding } from 'vue';
 
 const name: string = 'infinite-scroll';
 

@@ -3,6 +3,7 @@ import animation from '@/share/anime';
 import { addTaskBarTriggerItem } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
 import WinApp from '../app';
+import installDirective from '@/utils/vue/directives';
 
 export const compMap: Map<string, Component> = new Map();
 
@@ -41,6 +42,7 @@ class BaseApp {
     if (!this._isRender) {
       const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
       const vueApp = createApp(compMap.get(this.name)!);
+      installDirective(vueApp);
 
       const zIndex = computed(() => [...compMap.keys()].indexOf(this.name) + 1);
       vueApp.provide('zIndex', zIndex);

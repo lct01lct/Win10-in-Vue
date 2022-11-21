@@ -50,14 +50,17 @@
     };
   };
 
-  const setAppViewSize = ({ width, height, left, top }: AppViewSizeOpt) => {
+  const setAppViewSize = (
+    { width, height, left, top }: AppViewSizeOpt,
+    immediate: boolean = false
+  ) => {
     const animationOpt = {
       targets: appRef.value!,
       width: [appViewSize.width, width !== undefined ? width : appViewSize.width],
       height: [appViewSize.height, height !== undefined ? height : appViewSize.height],
       left: [appViewSize.left, left !== undefined ? left : appViewSize.left],
       top: [appViewSize.top, top !== undefined ? top : appViewSize.top],
-      duration: 100,
+      duration: immediate ? 0 : 100,
 
       complete() {
         if (width !== undefined) appViewSize.width = width;
