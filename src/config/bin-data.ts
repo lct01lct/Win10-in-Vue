@@ -1,4 +1,4 @@
-import { Desc } from '@/share/file';
+import { Desc, Folder } from '@/share/file';
 
 const ORIGIN_DATA = [
   {
@@ -179,4 +179,5 @@ const ORIGIN_DATA = [
   },
 ];
 
-export default ORIGIN_DATA.map((item) => new Desc(item as any));
+export const binData = ORIGIN_DATA.map((item) => new Desc(item as any));
+export const deskTopData = Desc.search('DeskTop')[0] as Folder;

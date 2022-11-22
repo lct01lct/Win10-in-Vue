@@ -15,17 +15,18 @@ export default class WinApp extends BaseApp {
   }
 
   // 创建快捷方式
-  createShortcut(appIcon: string, appName?: string) {
-    setTimeout(() => {
-      deskTopIconList.push({ appInstance: this, posIdx: getNewlyPosIdx(), isFocus: false });
-      const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
-      const vueApp = createApp(DesktopIcon, {
-        appInstance: this,
-        appIcon,
-        appName: appName ? appName : this.name,
-      });
-      vueApp.mount(oContainer);
+  createShortcut(appIcon: string, appName: string) {
+    deskTopIconList.push({ appInstance: this, posIdx: getNewlyPosIdx(), isFocus: false, appName });
 
+    const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
+    const vueApp = createApp(DesktopIcon, {
+      appInstance: this,
+      appIcon,
+      appName,
+    });
+    vueApp.mount(oContainer);
+
+    setTimeout(() => {
       document.querySelector('.deskTop-wrapper')!.appendChild(oContainer);
     });
 

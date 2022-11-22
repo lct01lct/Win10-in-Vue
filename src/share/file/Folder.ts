@@ -9,7 +9,7 @@ import {
   isRepeatFile,
 } from '.';
 import type { InitFileOpt, BinType } from '.';
-import binData from '@/config/bin-data';
+import { binData } from '@/config/bin-data';
 
 export interface InitFolderOpt {
   name: string;

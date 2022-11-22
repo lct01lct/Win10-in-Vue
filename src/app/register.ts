@@ -1,8 +1,11 @@
 import { WinApp } from './';
-import Test from './test.vue';
+import Folder from './system/folder/folder.vue';
+import { initDeskTopFolder } from './system/folder';
 
-export const testApp = new WinApp({
+export const folderApp = new WinApp({
   name: '文件夹',
-  comp: Test,
+  comp: Folder,
   icon: '/src/assets/images/appPage/system-app/folder-app/logo.png',
-}).createShortcut('/src/assets/images/appPage/system-app/folder-app/file-empty.png', '前端');
+});
+
+initDeskTopFolder(folderApp);

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
   import { PropType } from 'vue';
   import { WinApp } from '../.';
-  import { deskTopIconList, curFoucsItemName, resetFocusIcon } from './desktop-icon';
+  import { deskTopIconList, resetFocusIcon } from './desktop-icon';
 
-  const { appInstance } = defineProps({
+  const props = defineProps({
     appInstance: {
       type: Object as PropType<WinApp>,
       required: true,
@@ -18,7 +18,7 @@
     },
   });
 
-  const deskIconOpt = deskTopIconList.find((item) => item.appInstance.name === appInstance.name)!;
+  const deskIconOpt = deskTopIconList.find((item) => props.appName === item.appName)!;
 
   const getStyles = () => {
     const posIdx = deskIconOpt.posIdx;
@@ -47,11 +47,10 @@
   const onIconClick = () => {
     resetFocusIcon();
     deskIconOpt.isFocus = true;
-    curFoucsItemName.value = deskIconOpt.appInstance.name;
   };
 
   const onIconDbclick = () => {
-    appInstance.open();
+    props.appInstance.open();
     deskIconOpt.isFocus = false;
   };
 </script>
@@ -91,11 +90,12 @@
     }
 
     &:hover {
-      background-color: rgba(255, 254, 254, 0.2);
+      background-color: rgba(254, 254, 254, 0.2);
       border: 1px solid #ccc;
     }
   }
   .desktop-icon-wrapper.focus {
-    background-color: rgba(255, 254, 254, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid #ccc;
   }
 </style>

@@ -4,15 +4,17 @@ export interface DeskTopIconItem {
   appInstance: WinApp;
   posIdx: number;
   isFocus: boolean;
+  appName: string;
 }
 
 export const deskTopIconList = reactive<DeskTopIconItem[]>([]);
-export const curFoucsItemName = ref<string>('');
+
+export const isFocusIcons = computed(() => deskTopIconList.filter((item) => item.isFocus));
+
 export const resetFocusIcon = () => {
-  const index = deskTopIconList.findIndex(
-    (item) => item.appInstance.name === curFoucsItemName.value
-  );
-  if (index > -1) deskTopIconList[index].isFocus = false;
+  deskTopIconList.forEach((item) => {
+    item.isFocus = false;
+  });
 };
 
 export const getNewlyPosIdx = (): number => {
@@ -20,12 +22,12 @@ export const getNewlyPosIdx = (): number => {
 
   for (let icon of deskTopIconList) {
     const index = nextIdx.indexOf(icon.posIdx + 1);
-    if (index > -1) {
+    if (index === -1) {
       nextIdx.push(icon.posIdx + 1);
-    } else {
+    } else if (index > -1) {
       nextIdx[index] = icon.posIdx + 1;
     }
   }
 
-  return deskTopIconList.length ? Math.max(...nextIdx) : 1;
+  return deskTopIconList.length ? Math.min(...nextIdx) : 1;
 };
