@@ -111,7 +111,6 @@ const directive: Directive = {
         const pagey1 = e.pageY;
 
         const onResizeMouseMove = (e: MouseEvent) => {
-          console.log(0);
           const offsetX = e.pageX - pagex1;
           const offsetY = e.pageY - pagey1;
           switch (dir) {
@@ -120,8 +119,9 @@ const directive: Directive = {
             case 's':
               break;
             case 'w':
-              el.style.left = left1 + offsetX + 'px';
-              el.style.width = width1 - offsetX + 'px';
+              console.log(1);
+              // el.style.left = left1 + offsetX + 'px';
+              // el.style.width = width1 - offsetX + 'px';
               break;
             case 'e':
               break;
@@ -151,16 +151,14 @@ const directive: Directive = {
 
         if (!isEnterRegion) {
           isEnterRegion = true;
-          document.addEventListener('mousedown', onMouseDown);
-          console.log(1);
+          document.addEventListener('mousedown', onMouseDown, true);
         }
       } else {
         oBody.style.cursor = 'default';
 
         if (isEnterRegion) {
           isEnterRegion = false;
-          document.addEventListener('mousedown', onMouseDown);
-          console.log(2);
+          document.addEventListener('mousedown', onMouseDown, true);
         }
       }
 
