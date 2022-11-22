@@ -15,14 +15,17 @@ type ResizeEl = HTMLElement & {
 
 const directive: Directive = {
   async mounted(el: ResizeEl, { value }: DirectiveBinding<BindingValue | undefined>) {
+    await nextTick();
+
     const regionSize = 4;
     const movedFn = (value && value.moveFn) || ((width, height, left, top) => {});
-
-    await nextTick();
+    let isEnterRegion = false;
 
     el.style.position = 'absolute';
 
-    const onMouseMove = (e: MouseEvent) => {
+    const onMouseMove = async (e: MouseEvent) => {
+      await nextTick();
+
       cancelBubble(e);
 
       const elStyles = window.getComputedStyle(el, null);
@@ -35,25 +38,130 @@ const directive: Directive = {
       const offsetY = e.pageY - top1;
 
       const conditions: { cond: boolean; dir: string }[] = [
-        { dir: 'n', cond: offsetY < regionSize && offsetY > -regionSize }, // north
-        { dir: 's', cond: offsetY > height1 - regionSize && offsetY < height1 + regionSize }, // south
-        { dir: 'w', cond: offsetX < regionSize && offsetX > -regionSize }, // west
-        { dir: 'e', cond: offsetX > width1 - regionSize && offsetX < width1 + regionSize }, // east
+        {
+          dir: 'n', // north
+          cond:
+            offsetY < regionSize &&
+            offsetY > -regionSize &&
+            offsetX > regionSize &&
+            offsetX < width1 - regionSize,
+        },
+        {
+          dir: 's', // south
+          cond:
+            offsetY > height1 - regionSize &&
+            offsetY < height1 + regionSize &&
+            offsetX > regionSize &&
+            offsetX < width1 - regionSize,
+        },
+        {
+          dir: 'w', // west
+          cond:
+            offsetX < regionSize &&
+            offsetX > -regionSize &&
+            offsetY > regionSize &&
+            offsetY < height1 - regionSize,
+        },
+        {
+          dir: 'e', // east
+          cond:
+            offsetX > width1 - regionSize &&
+            offsetX < width1 + regionSize &&
+            offsetY > regionSize &&
+            offsetY < height1 - regionSize,
+        },
+        {
+          dir: 'nw',
+          cond:
+            offsetY < regionSize &&
+            offsetY > -regionSize &&
+            offsetX < regionSize &&
+            offsetX > -regionSize,
+        },
+        {
+          dir: 'ne',
+          cond:
+            offsetY < regionSize &&
+            offsetY > -regionSize &&
+            offsetX > width1 - regionSize &&
+            offsetX < width1 + regionSize,
+        },
+        {
+          dir: 'sw',
+          cond:
+            offsetY > height1 - regionSize &&
+            offsetY < height1 + regionSize &&
+            offsetX < regionSize &&
+            offsetX > -regionSize,
+        },
+        {
+          dir: 'se',
+          cond:
+            offsetY > height1 - regionSize &&
+            offsetY < height1 + regionSize &&
+            offsetX > width1 - regionSize &&
+            offsetX < width1 + regionSize,
+        },
       ];
+      const isDir = conditions.find((item) => item.cond);
+      const dir = isDir ? isDir.dir : '';
 
-      const dir = conditions.reduce((initVal, item) => {
-        if (item.cond) {
-          return initVal + item.dir;
-        }
-        return initVal;
-      }, '');
+      const onMouseDown = (e: MouseEvent) => {
+        const pagex1 = e.pageX;
+        const pagey1 = e.pageY;
+
+        const onResizeMouseMove = (e: MouseEvent) => {
+          console.log(0);
+          const offsetX = e.pageX - pagex1;
+          const offsetY = e.pageY - pagey1;
+          switch (dir) {
+            case 'n':
+              break;
+            case 's':
+              break;
+            case 'w':
+              el.style.left = left1 + offsetX + 'px';
+              el.style.width = width1 - offsetX + 'px';
+              break;
+            case 'e':
+              break;
+            case 'nw':
+              break;
+            case 'ne':
+              break;
+            case 'sw':
+              break;
+            case 'se':
+              break;
+            default:
+              break;
+          }
+        };
+
+        const onResizeMouseUp = (e: MouseEvent) => {
+          document.removeEventListener('mousemove', onResizeMouseMove);
+          document.removeEventListener('mouseup', onResizeMouseUp);
+        };
+        document.addEventListener('mouseup', onResizeMouseUp);
+        document.addEventListener('mousemove', onResizeMouseMove);
+      };
 
       if (dir) {
-        console.log(dir + 'resize');
         oBody.style.cursor = dir + '-resize';
-        document.addEventListener('mousedown', (e: MouseEvent) => {});
+
+        if (!isEnterRegion) {
+          isEnterRegion = true;
+          document.addEventListener('mousedown', onMouseDown);
+          console.log(1);
+        }
       } else {
         oBody.style.cursor = 'default';
+
+        if (isEnterRegion) {
+          isEnterRegion = false;
+          document.addEventListener('mousedown', onMouseDown);
+          console.log(2);
+        }
       }
 
       el.addEventListener('mousedown', cancelBubble);
@@ -74,7 +182,6 @@ const directive: Directive = {
   },
 };
 
-const getOffsetPos = () => {};
 const getResizeElScope = (el: ResizeEl) => {
   return el[SCOPE];
 };
