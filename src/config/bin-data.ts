@@ -179,5 +179,6 @@ const ORIGIN_DATA = [
   },
 ];
 
-export const binData = ORIGIN_DATA.map((item) => new Desc(item as any));
-export const deskTopData = Desc.search('DeskTop')[0] as Folder;
+export const binData = reactive(ORIGIN_DATA.map((item) => new Desc(item as any)));
+export const deskTopData = reactive<Folder>(Desc.search('DeskTop')[0] as Folder);
+deskTopData.addFolder();

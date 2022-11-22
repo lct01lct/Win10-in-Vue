@@ -143,7 +143,7 @@ class Folder {
       }
     };
 
-    _search(binData);
+    _search(binData as (Folder | Desc)[]);
 
     return result;
   }
@@ -158,7 +158,7 @@ class Folder {
     }
 
     let i = 1;
-    let pointer: Desc | Folder = tarDesc;
+    let pointer = tarDesc as Desc | Folder;
 
     while (i < idxs.length) {
       const tar = pointer.children.find((item) => item.name === idxs[i]);

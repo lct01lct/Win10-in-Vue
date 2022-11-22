@@ -21,7 +21,7 @@ export const getNewlyPosIdx = (): number => {
   const nextIdx: number[] = [];
 
   for (let icon of deskTopIconList) {
-    const index = nextIdx.indexOf(icon.posIdx + 1);
+    const index = nextIdx.indexOf(icon.posIdx);
     if (index === -1) {
       nextIdx.push(icon.posIdx + 1);
     } else if (index > -1) {
