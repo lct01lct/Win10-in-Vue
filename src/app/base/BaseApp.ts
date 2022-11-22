@@ -46,6 +46,7 @@ class BaseApp {
 
       const zIndex = computed(() => [...compMap.keys()].indexOf(this.name) + 1);
       vueApp.provide('zIndex', zIndex);
+      vueApp.provide('appInstance', this);
 
       vueApp.mount(oContainer);
       const _dom = oContainer.querySelector('.app-wrapper')! as WinAppDOM;

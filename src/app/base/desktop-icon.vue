@@ -90,12 +90,12 @@
     }
 
     &:hover {
-      background-color: rgba(254, 254, 254, 0.2);
-      border: 1px solid #ccc;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #ddd;
     }
   }
   .desktop-icon-wrapper.focus {
-    background-color: rgba(255, 255, 255, 0.3);
-    border: 1px solid #ccc;
+    background: rgba(195, 234, 247, 0.3);
+    border: 1px solid #ddd;
   }
 </style>
