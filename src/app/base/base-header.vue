@@ -92,13 +92,17 @@
     await nextTick();
     props.appRef![WIN_APP_SCOPE].onMinimizeBtnClick = onMinimizeBtnClick;
   });
+
+  const vDragOpt = {
+    tar: '.app-wrapper',
+    movedFn(x: number, y: number) {
+      emits('setAppViewSize', { left: x, top: y }, true);
+    },
+  };
 </script>
 
 <template>
-  <div
-    class="app-header-wrapper"
-    v-drag="{ tar: '.app-wrapper',movedFn(x:number,y:number){emits('setAppViewSize',{left:x,top:y}, true)} }"
-  >
+  <div class="app-header-wrapper" v-drag="vDragOpt">
     <div class="app-header-left-wrapper">
       <slot></slot>
     </div>

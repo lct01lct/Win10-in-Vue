@@ -82,7 +82,14 @@
 </script>
 
 <template>
-  <div class="app-wrapper" :style="getAppStyle()" ref="appRef" v-show="isShow" @click="onAppClick">
+  <div
+    class="app-wrapper"
+    :style="getAppStyle()"
+    ref="appRef"
+    v-show="isShow"
+    @click="onAppClick"
+    v-resize
+  >
     <BaseHeader
       :appViewSize="appViewSize"
       @setAppViewSize="setAppViewSize"
@@ -102,6 +109,5 @@
     position: absolute;
     box-shadow: 0 0 4px #848383;
     background-color: #fff;
-    box-sizing: content-box;
   }
 </style>
