@@ -102,7 +102,7 @@
 </script>
 
 <template>
-  <div class="app-header-wrapper" v-drag="vDragOpt">
+  <div class="app-header-wrapper">
     <div class="app-header-left-wrapper">
       <slot></slot>
     </div>
