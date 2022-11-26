@@ -19,9 +19,15 @@ const directive: Directive = {
 
     const regionSize = 4;
     const movedFn = (value && value.moveFn) || ((width, height, left, top) => {});
-    let isEnterRegion = false;
-    let isSetResizeEvent = false;
-    const resizeDir = ref<string>('');
+    let resizeDir = '';
+    let isDirChange = false;
+    let elStyles: CSSStyleDeclaration;
+    let left1: number;
+    let top1: number;
+    let width1: number;
+    let height1: number;
+    let onMouseDown: (e: MouseEvent) => void;
+    const oBody = document.body;
 
     el.style.position = 'absolute';
 
@@ -30,14 +36,13 @@ const directive: Directive = {
 
       cancelBubble(e);
 
-      const elStyles = window.getComputedStyle(el, null);
-      const left1 = parseFloat(elStyles.left);
-      const top1 = parseFloat(elStyles.top);
-      const width1 = parseFloat(elStyles.width);
-      const height1 = parseFloat(elStyles.height);
-      const oBody = document.body;
-      const offsetX = e.pageX - left1;
-      const offsetY = e.pageY - top1;
+      elStyles = window.getComputedStyle(el, null);
+      left1 = parseFloat(elStyles.left);
+      top1 = parseFloat(elStyles.top);
+      width1 = parseFloat(elStyles.width);
+      height1 = parseFloat(elStyles.height);
+      let offsetX = e.pageX - left1;
+      let offsetY = e.pageY - top1;
 
       const conditions: { cond: boolean; dir: string }[] = [
         {
@@ -108,15 +113,14 @@ const directive: Directive = {
       const isDir = conditions.find((item) => item.cond);
       const dir = isDir ? isDir.dir : '';
 
-      const onMouseDown = (e: MouseEvent) => {
+      onMouseDown = (e: MouseEvent) => {
         const pagex1 = e.pageX;
         const pagey1 = e.pageY;
 
         const onResizeMouseMove = (e: MouseEvent) => {
           const offsetX = e.pageX - pagex1;
           const offsetY = e.pageY - pagey1;
-
-          switch (dir) {
+          switch (resizeDir) {
             case 'n':
               el.style.top = top1 + offsetY + 'px';
               el.style.height = height1 - offsetY + 'px';
@@ -158,8 +162,6 @@ const directive: Directive = {
         const onResizeMouseUp = (e: MouseEvent) => {
           document.removeEventListener('mousemove', onResizeMouseMove);
           document.removeEventListener('mouseup', onResizeMouseUp);
-          document.removeEventListener('mousedown', onMouseDown);
-          isSetResizeEvent = false;
         };
 
         document.addEventListener('mousemove', onResizeMouseMove);
@@ -167,22 +169,23 @@ const directive: Directive = {
       };
 
       if (dir) {
-        resizeDir.value = dir;
+        if (dir !== resizeDir) {
+        }
+        resizeDir = dir;
+
+        if (isDirChange) {
+          document.removeEventListener('mousedown', onMouseDown);
+        }
+
         // document.addEventListener('mousedown', onMouseDown);
       } else {
-        resizeDir.value = '';
+        resizeDir = '';
       }
-      oBody.style.cursor = resizeDir.value ? `${resizeDir.value}-resize` : 'default';
+      oBody.style.cursor = resizeDir ? `${resizeDir}-resize` : 'default';
 
       el.addEventListener('mousedown', cancelBubble);
       el.addEventListener('click', cancelBubble);
     };
-
-    watch(resizeDir, (val) => {
-      if (val) {
-        // document.addEventListener
-      }
-    });
 
     el[SCOPE] = {
       onMouseMove,
