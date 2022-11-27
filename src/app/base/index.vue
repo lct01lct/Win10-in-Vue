@@ -79,6 +79,20 @@
     compMap.delete(appInstance.name);
     compMap.set(appInstance.name, comp);
   };
+
+  const vResizeOpt = {
+    movedFn: ({ width, height, left, top }: AppViewSizeOpt) => {
+      setAppViewSize(
+        {
+          width,
+          height,
+          left,
+          top,
+        },
+        true
+      );
+    },
+  };
 </script>
 
 <template>
@@ -88,7 +102,7 @@
     ref="appRef"
     v-show="isShow"
     @click="onAppClick"
-    v-resize
+    v-resize="vResizeOpt"
   >
     <BaseHeader
       :appViewSize="appViewSize"

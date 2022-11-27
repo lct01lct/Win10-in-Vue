@@ -15,6 +15,7 @@ const directive: Directive = {
     if (!tar) throw new Error('Unable to find the target node of draggable!');
 
     const onMouseDown = (e: MouseEvent) => {
+      e.stopPropagation();
       const pos1 = { x: e.pageX, y: e.pageY };
       const tarStyle = window.getComputedStyle(tar, null);
       const tarPos1 = { left: parseFloat(tarStyle.left), top: parseFloat(tarStyle.top) };

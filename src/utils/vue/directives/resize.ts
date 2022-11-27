@@ -4,7 +4,7 @@ const name = 'resize';
 const SCOPE = '__SCOPE__';
 
 interface BindingValue {
-  moveFn: (width: number, height: number, left: number, top: number) => void;
+  movedFn: (param: { width: number; height: number; left: number; top: number }) => void;
 }
 
 type ResizeEl = HTMLElement & {
@@ -18,16 +18,13 @@ const directive: Directive = {
     await nextTick();
 
     const regionSize = 4;
-    const movedFn = (value && value.moveFn) || ((width, height, left, top) => {});
+    const movedFn = (value && value.movedFn) || (() => {});
+
     let resizeDir = '';
     let isDirChange = false;
-    let elStyles: CSSStyleDeclaration;
-    let left1: number;
-    let top1: number;
-    let width1: number;
-    let height1: number;
     let onMouseDown: (e: MouseEvent) => void;
     const oBody = document.body;
+    let isTriggerResize = false;
 
     el.style.position = 'absolute';
 
@@ -36,11 +33,11 @@ const directive: Directive = {
 
       cancelBubble(e);
 
-      elStyles = window.getComputedStyle(el, null);
-      left1 = parseFloat(elStyles.left);
-      top1 = parseFloat(elStyles.top);
-      width1 = parseFloat(elStyles.width);
-      height1 = parseFloat(elStyles.height);
+      const elStyles = window.getComputedStyle(el, null);
+      const left1 = parseFloat(elStyles.left);
+      const top1 = parseFloat(elStyles.top);
+      const width1 = parseFloat(elStyles.width);
+      const height1 = parseFloat(elStyles.height);
       let offsetX = e.pageX - left1;
       let offsetY = e.pageY - top1;
 
@@ -116,10 +113,20 @@ const directive: Directive = {
       onMouseDown = (e: MouseEvent) => {
         const pagex1 = e.pageX;
         const pagey1 = e.pageY;
+        const resizeDir = oBody.style.cursor === 'default' ? '' : oBody.style.cursor.split('-')[0];
+        const elStyles = window.getComputedStyle(el, null);
+        const left1 = parseFloat(elStyles.left);
+        const top1 = parseFloat(elStyles.top);
+        const width1 = parseFloat(elStyles.width);
+        const height1 = parseFloat(elStyles.height);
+        let offsetX = 0;
+        let offsetY = 0;
+        if (resizeDir) cancelBubble(e);
 
         const onResizeMouseMove = (e: MouseEvent) => {
-          const offsetX = e.pageX - pagex1;
-          const offsetY = e.pageY - pagey1;
+          offsetX = e.pageX - pagex1;
+          offsetY = e.pageY - pagey1;
+
           switch (resizeDir) {
             case 'n':
               el.style.top = top1 + offsetY + 'px';
@@ -159,9 +166,18 @@ const directive: Directive = {
               break;
           }
         };
+
         const onResizeMouseUp = (e: MouseEvent) => {
           document.removeEventListener('mousemove', onResizeMouseMove);
           document.removeEventListener('mouseup', onResizeMouseUp);
+          isTriggerResize = false;
+
+          movedFn({
+            width: parseInt(el.style.width),
+            height: parseInt(el.style.height),
+            left: parseInt(el.style.left),
+            top: parseInt(el.style.top),
+          });
         };
 
         document.addEventListener('mousemove', onResizeMouseMove);
@@ -170,14 +186,17 @@ const directive: Directive = {
 
       if (dir) {
         if (dir !== resizeDir) {
+          isDirChange = true;
+        } else {
+          isDirChange = false;
         }
         resizeDir = dir;
 
-        if (isDirChange) {
-          document.removeEventListener('mousedown', onMouseDown);
+        if (isDirChange && !isTriggerResize) {
+          document.removeEventListener('mousedown', onMouseDown, true);
+          document.addEventListener('mousedown', onMouseDown, true);
+          isTriggerResize = true;
         }
-
-        // document.addEventListener('mousedown', onMouseDown);
       } else {
         resizeDir = '';
       }
