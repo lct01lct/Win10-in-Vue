@@ -5,6 +5,10 @@ const SCOPE = '__SCOPE__';
 
 export interface ResizeBindingValue {
   movedFn: (param: { width: number; height: number; left: number; top: number }) => void;
+  border?: {
+    minWidth: number;
+    minHeight: number;
+  };
 }
 
 type ResizeEl = HTMLElement & {
@@ -19,6 +23,7 @@ const directive: Directive = {
 
     const regionSize = 4;
     const movedFn = (value && value.movedFn) || (() => {});
+    const border = (value && value.border) || { minWidth: 0, minHeight: 0 };
 
     let resizeDir = '';
     let isDirChange = false;
@@ -34,81 +39,11 @@ const directive: Directive = {
       cancelBubble(e);
 
       const elStyles = window.getComputedStyle(el, null);
-      const left1 = parseFloat(elStyles.left);
-      const top1 = parseFloat(elStyles.top);
       const width1 = parseFloat(elStyles.width);
       const height1 = parseFloat(elStyles.height);
-      let offsetX = e.pageX - left1;
-      let offsetY = e.pageY - top1;
-
-      const conditions: { cond: boolean; dir: string }[] = [
-        {
-          dir: 'n', // north
-          cond:
-            offsetY < regionSize &&
-            offsetY > -regionSize &&
-            offsetX > regionSize &&
-            offsetX < width1 - regionSize,
-        },
-        {
-          dir: 's', // south
-          cond:
-            offsetY > height1 - regionSize &&
-            offsetY < height1 + regionSize &&
-            offsetX > regionSize &&
-            offsetX < width1 - regionSize,
-        },
-        {
-          dir: 'w', // west
-          cond:
-            offsetX < regionSize &&
-            offsetX > -regionSize &&
-            offsetY > regionSize &&
-            offsetY < height1 - regionSize,
-        },
-        {
-          dir: 'e', // east
-          cond:
-            offsetX > width1 - regionSize &&
-            offsetX < width1 + regionSize &&
-            offsetY > regionSize &&
-            offsetY < height1 - regionSize,
-        },
-        {
-          dir: 'nw',
-          cond:
-            offsetY < regionSize &&
-            offsetY > -regionSize &&
-            offsetX < regionSize &&
-            offsetX > -regionSize,
-        },
-        {
-          dir: 'ne',
-          cond:
-            offsetY < regionSize &&
-            offsetY > -regionSize &&
-            offsetX > width1 - regionSize &&
-            offsetX < width1 + regionSize,
-        },
-        {
-          dir: 'sw',
-          cond:
-            offsetY > height1 - regionSize &&
-            offsetY < height1 + regionSize &&
-            offsetX < regionSize &&
-            offsetX > -regionSize,
-        },
-        {
-          dir: 'se',
-          cond:
-            offsetY > height1 - regionSize &&
-            offsetY < height1 + regionSize &&
-            offsetX > width1 - regionSize &&
-            offsetX < width1 + regionSize,
-        },
-      ];
-      const isDir = conditions.find((item) => item.cond);
-      const dir = isDir ? isDir.dir : '';
+      const offsetX = e.pageX - parseFloat(elStyles.left);
+      const offsetY = e.pageY - parseFloat(elStyles.top);
+      const dir = getDir({ offsetX, offsetY, width: width1, height: height1, regionSize });
 
       onMouseDown = (e: MouseEvent) => {
         const pagex1 = e.pageX;
@@ -127,47 +62,21 @@ const directive: Directive = {
           offsetX = e.pageX - pagex1;
           offsetY = e.pageY - pagey1;
 
-          switch (resizeDir) {
-            case 'n':
-              el.style.top = top1 + offsetY + 'px';
-              el.style.height = height1 - offsetY + 'px';
-              break;
-            case 's':
-              el.style.height = height1 + offsetY + 'px';
-              break;
-            case 'w':
-              el.style.left = left1 + offsetX + 'px';
-              el.style.width = width1 - offsetX + 'px';
-              break;
-            case 'e':
-              el.style.width = width1 + offsetX + 'px';
-              break;
-            case 'nw':
-              el.style.top = top1 + offsetY + 'px';
-              el.style.height = height1 - offsetY + 'px';
-              el.style.left = left1 + offsetX + 'px';
-              el.style.width = width1 - offsetX + 'px';
-              break;
-            case 'ne':
-              el.style.top = top1 + offsetY + 'px';
-              el.style.height = height1 - offsetY + 'px';
-              el.style.width = width1 + offsetX + 'px';
-              break;
-            case 'sw':
-              el.style.height = height1 + offsetY + 'px';
-              el.style.left = left1 + offsetX + 'px';
-              el.style.width = width1 - offsetX + 'px';
-              break;
-            case 'se':
-              el.style.height = height1 + offsetY + 'px';
-              el.style.width = width1 + offsetX + 'px';
-              break;
-            default:
-              break;
-          }
+          resizeEl({
+            el,
+            resizeDir,
+            width: width1,
+            height: height1,
+            left: left1,
+            top: top1,
+            offsetX,
+            offsetY,
+            minWidth: border.minWidth,
+            minHeight: border.minHeight,
+          });
         };
 
-        const onResizeMouseUp = (e: MouseEvent) => {
+        const onResizeMouseUp = () => {
           document.removeEventListener('mousemove', onResizeMouseMove);
           document.removeEventListener('mouseup', onResizeMouseUp);
           isTriggerResize = false;
@@ -307,6 +216,72 @@ const getDir = ({
         offsetX < width + regionSize,
     },
   ];
+
+  const isDir = conditions.find((item) => item.cond);
+
+  return isDir ? isDir.dir : '';
+};
+
+const resizeEl = ({
+  el,
+  resizeDir,
+  width,
+  height,
+  left,
+  top,
+  offsetX,
+  offsetY,
+  minWidth,
+  minHeight,
+}: {
+  el: HTMLElement;
+  resizeDir: string;
+  width: number;
+  height: number;
+  left: number;
+  top: number;
+  offsetX: number;
+  offsetY: number;
+  minWidth: number;
+  minHeight: number;
+}) => {
+  const resizeMap = new Map<string, () => void>();
+  resizeMap.set('n', () => {
+    whenResize(height - offsetY, minHeight, () => {
+      el.style.top = top + offsetY + 'px';
+      el.style.height = height - offsetY + 'px';
+    });
+  });
+  resizeMap.set('s', () => {
+    whenResize(height + offsetY, minHeight, () => {
+      el.style.height = height + offsetY + 'px';
+    });
+  });
+  resizeMap.set('w', () => {
+    whenResize(width - offsetX, minWidth, () => {
+      el.style.left = left + offsetX + 'px';
+      el.style.width = width - offsetX + 'px';
+    });
+  });
+  resizeMap.set('e', () => {
+    whenResize(width + offsetX, minWidth, () => {
+      el.style.width = width + offsetX + 'px';
+    });
+  });
+
+  if (resizeDir.length === 1) {
+    resizeMap.get(resizeDir)!();
+  } else if (resizeDir.length === 2) {
+    for (let dir of resizeDir) {
+      resizeMap.get(dir)!();
+    }
+  }
+};
+
+const whenResize = (movePx: number, minPx: number, cb: Function) => {
+  if (movePx >= minPx) {
+    cb();
+  }
 };
 
 export { name, directive };

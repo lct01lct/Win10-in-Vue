@@ -85,6 +85,10 @@
     movedFn: ({ width, height, left, top }: AppViewSizeOpt) => {
       setAppViewSize({ width, height, left, top }, true);
     },
+    border: {
+      minWidth: 288,
+      minHeight: 248,
+    },
   };
 </script>
 
