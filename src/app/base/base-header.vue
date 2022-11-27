@@ -7,6 +7,7 @@
   import { getWinAppScope, WIN_APP_SCOPE } from '../.';
   import animation from '@/share/anime';
   import { removeTaskBarTriggerItem } from './taskBar';
+  import type { DragBindingValue } from '@/utils/vue';
 
   const props = defineProps({
     appViewSize: {
@@ -93,7 +94,7 @@
     props.appRef![WIN_APP_SCOPE].onMinimizeBtnClick = onMinimizeBtnClick;
   });
 
-  const vDragOpt = {
+  const vDragOpt: DragBindingValue = {
     tar: '.app-wrapper',
     movedFn(x: number, y: number) {
       emits('setAppViewSize', { left: x, top: y }, true);

@@ -7,6 +7,7 @@
   import type { WinAppDOM } from '../.';
   import { WIN_APP_SCOPE, getWinAppScope } from '../.';
   import type { ComputedRef } from 'vue';
+  import type { ResizeBindingValue } from '@/utils/vue';
 
   const appRef = ref<WinAppDOM>();
   const isShow = ref<boolean>(true);
@@ -80,17 +81,9 @@
     compMap.set(appInstance.name, comp);
   };
 
-  const vResizeOpt = {
+  const vResizeOpt: ResizeBindingValue = {
     movedFn: ({ width, height, left, top }: AppViewSizeOpt) => {
-      setAppViewSize(
-        {
-          width,
-          height,
-          left,
-          top,
-        },
-        true
-      );
+      setAppViewSize({ width, height, left, top }, true);
     },
   };
 </script>

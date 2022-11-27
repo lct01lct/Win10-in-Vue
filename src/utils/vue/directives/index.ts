@@ -15,3 +15,7 @@ const installDirective = (app: App) => {
 };
 
 export default installDirective;
+
+export type { DragBindingValue } from './drag';
+export type { infiniteScrollBindingValue } from './infinite-scroll';
+export type { ResizeBindingValue } from './resize';

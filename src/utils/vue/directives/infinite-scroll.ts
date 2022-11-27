@@ -12,7 +12,7 @@ type InfiniteScrollEl = HTMLElement & {
   };
 };
 
-type DirectiveOpt = {
+export type infiniteScrollBindingValue = {
   load: (dir: Dir) => void;
   initTop: number;
   scrollRate: number;
@@ -20,7 +20,10 @@ type DirectiveOpt = {
   scrollingCb: (isScrolling: boolean) => void;
 };
 
-const getScrollOptions = (el: InfiniteScrollEl, binding: DirectiveBinding<DirectiveOpt>) => {
+const getScrollOptions = (
+  el: InfiniteScrollEl,
+  binding: DirectiveBinding<infiniteScrollBindingValue>
+) => {
   const fn = binding.value.load;
   const top = binding.value.initTop || 50;
   const rate = binding.value.scrollRate || 5;

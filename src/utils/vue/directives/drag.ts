@@ -2,13 +2,13 @@ import { Directive, DirectiveBinding } from 'vue';
 
 const name = 'drag';
 
-export interface BindingValue {
+export interface DragBindingValue {
   tar: string;
   movedFn?: (x: number, y: number) => void;
 }
 
 const directive: Directive = {
-  async mounted(el: HTMLElement, binding: DirectiveBinding<BindingValue | undefined>) {
+  async mounted(el: HTMLElement, binding: DirectiveBinding<DragBindingValue | undefined>) {
     await nextTick();
     const tar = binding.value ? findParentElement(el, binding.value.tar) : el;
 

@@ -3,7 +3,7 @@ import { Directive, DirectiveBinding } from 'vue';
 const name = 'resize';
 const SCOPE = '__SCOPE__';
 
-interface BindingValue {
+export interface ResizeBindingValue {
   movedFn: (param: { width: number; height: number; left: number; top: number }) => void;
 }
 
@@ -14,7 +14,7 @@ type ResizeEl = HTMLElement & {
 };
 
 const directive: Directive = {
-  async mounted(el: ResizeEl, { value }: DirectiveBinding<BindingValue | undefined>) {
+  async mounted(el: ResizeEl, { value }: DirectiveBinding<ResizeBindingValue | undefined>) {
     await nextTick();
 
     const regionSize = 4;
@@ -226,6 +226,87 @@ const getResizeElScope = (el: ResizeEl) => {
 
 const cancelBubble = (e: MouseEvent) => {
   e.stopPropagation();
+};
+
+const getDir = ({
+  offsetX,
+  offsetY,
+  width,
+  height,
+  regionSize,
+}: {
+  offsetX: number;
+  offsetY: number;
+  width: number;
+  height: number;
+  regionSize: number;
+}) => {
+  const conditions: { cond: boolean; dir: string }[] = [
+    {
+      dir: 'n', // north
+      cond:
+        offsetY < regionSize &&
+        offsetY > -regionSize &&
+        offsetX > regionSize &&
+        offsetX < width - regionSize,
+    },
+    {
+      dir: 's', // south
+      cond:
+        offsetY > height - regionSize &&
+        offsetY < height + regionSize &&
+        offsetX > regionSize &&
+        offsetX < width - regionSize,
+    },
+    {
+      dir: 'w', // west
+      cond:
+        offsetX < regionSize &&
+        offsetX > -regionSize &&
+        offsetY > regionSize &&
+        offsetY < height - regionSize,
+    },
+    {
+      dir: 'e', // east
+      cond:
+        offsetX > width - regionSize &&
+        offsetX < width + regionSize &&
+        offsetY > regionSize &&
+        offsetY < height - regionSize,
+    },
+    {
+      dir: 'nw',
+      cond:
+        offsetY < regionSize &&
+        offsetY > -regionSize &&
+        offsetX < regionSize &&
+        offsetX > -regionSize,
+    },
+    {
+      dir: 'ne',
+      cond:
+        offsetY < regionSize &&
+        offsetY > -regionSize &&
+        offsetX > width - regionSize &&
+        offsetX < width + regionSize,
+    },
+    {
+      dir: 'sw',
+      cond:
+        offsetY > height - regionSize &&
+        offsetY < height + regionSize &&
+        offsetX < regionSize &&
+        offsetX > -regionSize,
+    },
+    {
+      dir: 'se',
+      cond:
+        offsetY > height - regionSize &&
+        offsetY < height + regionSize &&
+        offsetX > width - regionSize &&
+        offsetX < width + regionSize,
+    },
+  ];
 };
 
 export { name, directive };
