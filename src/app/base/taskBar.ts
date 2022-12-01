@@ -1,9 +1,11 @@
 import { WinApp } from '@/app';
+import { Ref } from 'vue';
 
 export interface TaskBarTriggerItem {
   name: string;
   iconPath: string;
   winApp: WinApp;
+  zIndex: number;
 }
 
 export const taskBarTriggerList = reactive<TaskBarTriggerItem[]>([]);

@@ -2,15 +2,15 @@
   import BaseBody from './base-body.vue';
   import BaseHeader from './base-header.vue';
   import type { AppViewSizeOpt } from './base';
-  import { compMap } from './baseApp';
   import animation from '@/share/anime';
   import type { WinAppDOM } from '../.';
-  import { WIN_APP_SCOPE, getWinAppScope } from '../.';
-  import type { ComputedRef } from 'vue';
+  import { WIN_APP_SCOPE } from '../.';
   import type { ResizeBindingValue } from '@/utils/vue';
+  import { taskBarTriggerList } from './taskBar';
 
   const appRef = ref<WinAppDOM>();
   const isShow = ref<boolean>(true);
+  const appName = inject<string>('appName')!;
 
   onMounted(async () => {
     await nextTick();
@@ -39,15 +39,15 @@
     left: 250,
   });
 
-  const zIndex = inject<ComputedRef<number>>('zIndex')!;
-
   const getAppStyle = () => {
+    const index = taskBarTriggerList.findIndex((item) => item.name === appName);
+
     return {
       width: appViewSize.width + 'px',
       height: appViewSize.height + 'px',
       left: `${appViewSize.left}px`,
       top: `${appViewSize.top}px`,
-      zIndex: zIndex.value,
+      zIndex: taskBarTriggerList[index].zIndex,
     };
   };
 
@@ -75,10 +75,16 @@
   };
 
   const onAppClick = () => {
-    const { appInstance } = getWinAppScope(appRef.value!);
-    const comp = compMap.get(appInstance.name)!;
-    compMap.delete(appInstance.name);
-    compMap.set(appInstance.name, comp);
+    const openedAppLen = taskBarTriggerList.length;
+    const index = taskBarTriggerList.findIndex((item) => item.name === appName);
+    const oldZIndex = taskBarTriggerList[index].zIndex;
+
+    taskBarTriggerList.forEach((item) => {
+      if (item.zIndex > oldZIndex) {
+        item.zIndex--;
+      }
+    });
+    taskBarTriggerList[index].zIndex = openedAppLen;
   };
 
   const vResizeOpt: ResizeBindingValue = {

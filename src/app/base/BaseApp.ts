@@ -40,13 +40,21 @@ class BaseApp {
 
   open() {
     if (!this._isRender) {
+      // 必须生成 taskBarList 中的 zIndex 信息
+      const zIndex = [...compMap.keys()].indexOf(this.name) + 1;
+      renderTiggerInTaskBar({
+        iconPath: this._logo,
+        name: this.name,
+        winApp: this as unknown as WinApp,
+        zIndex,
+      });
+
       const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
       const vueApp = createApp(compMap.get(this.name)!);
       installDirective(vueApp);
 
-      const zIndex = computed(() => [...compMap.keys()].indexOf(this.name) + 1);
-      vueApp.provide('zIndex', zIndex);
       vueApp.provide('appInstance', this);
+      vueApp.provide('appName', this.name);
 
       vueApp.mount(oContainer);
       const _dom = oContainer.querySelector('.app-wrapper')! as WinAppDOM;
@@ -56,11 +64,6 @@ class BaseApp {
 
       initWinAppStyle(_dom, this);
       createWinAppScope(_dom, vueApp, this);
-      renderTiggerInTaskBar({
-        iconPath: this._logo,
-        name: this.name,
-        winApp: this as unknown as WinApp,
-      });
 
       this._isRender = true;
     } else {
