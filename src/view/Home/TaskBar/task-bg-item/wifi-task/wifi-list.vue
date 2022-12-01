@@ -3,8 +3,8 @@
   import { wifiInfo, waitWifiInfo, wifiStatus, dao, resetWifiInfo } from './wifi-task';
   import anime from 'animejs';
 
-  const currWLAN = ref('Nuc-Student');
-  const curFocus = ref('Nuc-Student');
+  const currWLAN = ref<string>(wifiInfo.value[0].name);
+  const curFocus = ref<string>(wifiInfo.value[0].name);
 
   const onItemClick = (name: string) => {
     curFocus.value = name;
@@ -77,13 +77,10 @@
     if (currWLAN.value === name) {
       currWLAN.value = '';
     } else {
+      const index = wifiInfo.value.findIndex((item) => item.name === name);
+      wifiInfo.value[index].auto = true;
       currWLAN.value = name;
-      wifiInfo.value.unshift(
-        ...wifiInfo.value.splice(
-          wifiInfo.value.findIndex((item) => item.name === name),
-          1
-        )
-      );
+      wifiInfo.value.unshift(...wifiInfo.value.splice(index, 1));
       dao.set('WIFIINFO', wifiInfo.value);
     }
   };
