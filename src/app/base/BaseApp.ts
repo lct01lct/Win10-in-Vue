@@ -40,7 +40,7 @@ class BaseApp {
 
   open() {
     if (!this._isRender) {
-      // 必须生成 taskBarList 中的 zIndex 信息
+      // 必须先生成 taskBarList 中的 zIndex 信息
       const zIndex = [...compMap.keys()].indexOf(this.name) + 1;
       renderTiggerInTaskBar({
         iconPath: this._logo,
@@ -55,6 +55,7 @@ class BaseApp {
 
       vueApp.provide('appInstance', this);
       vueApp.provide('appName', this.name);
+      // vueApp.provide('initPos')
 
       vueApp.mount(oContainer);
       const _dom = oContainer.querySelector('.app-wrapper')! as WinAppDOM;

@@ -1,5 +1,4 @@
 import { WinApp } from '@/app';
-import { Ref } from 'vue';
 
 export interface TaskBarTriggerItem {
   name: string;

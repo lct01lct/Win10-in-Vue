@@ -35,8 +35,8 @@
   const appViewSize = reactive<AppViewSizeOpt>({
     width: 1000,
     height: 600,
-    top: 50,
-    left: 250,
+    top: 50 + taskBarTriggerList.length * 30,
+    left: 250 + taskBarTriggerList.length * 30,
   });
 
   const getAppStyle = () => {
