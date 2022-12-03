@@ -1,7 +1,6 @@
 import { Directive, DirectiveBinding } from 'vue';
 
 const name = 'resize';
-const SCOPE = '__SCOPE__';
 
 export interface ResizeBindingValue {
   movedFn: (param: { width: number; height: number; left: number; top: number }) => void;
@@ -11,17 +10,17 @@ export interface ResizeBindingValue {
   };
 }
 
-type ResizeEl = HTMLElement & {
-  [SCOPE]: {
-    onMouseMove: (e: MouseEvent) => void;
-  };
-};
+type ResizeEl = HTMLElement & {};
 
 const directive: Directive = {
   async mounted(el: ResizeEl, { value }: DirectiveBinding<ResizeBindingValue | undefined>) {
     await nextTick();
+    addDirectiveElArr.push(el);
 
-    const regionSize = 4;
+    if (addDirectiveElArr.length === 1) {
+      document.addEventListener('mousemove', onDocMouseMove);
+    }
+
     const movedFn = (value && value.movedFn) || (() => {});
     const border = (value && value.border) || { minWidth: 0, minHeight: 0 };
 
@@ -35,8 +34,6 @@ const directive: Directive = {
 
     const onMouseMove = async (e: MouseEvent) => {
       await nextTick();
-
-      cancelBubble(e);
 
       const elStyles = window.getComputedStyle(el, null);
       const width1 = parseFloat(elStyles.width);
@@ -109,28 +106,45 @@ const directive: Directive = {
       } else {
         resizeDir = '';
       }
-      oBody.style.cursor = resizeDir ? `${resizeDir}-resize` : 'default';
 
       el.addEventListener('mousedown', cancelBubble);
       el.addEventListener('click', cancelBubble);
     };
 
-    el[SCOPE] = {
-      onMouseMove,
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
+    subscriberDocMouseMove(onMouseMove);
   },
 
   unmounted(el: ResizeEl) {
-    const { onMouseMove } = getResizeElScope(el);
-
-    document.removeEventListener('mousemove', onMouseMove);
+    removeResizeElFromArr(el);
+    if (!addDirectiveElArr.length) {
+      document.removeEventListener('mousemove', onDocMouseMove);
+    }
   },
 };
 
-const getResizeElScope = (el: ResizeEl) => {
-  return el[SCOPE];
+const addDirectiveElArr: ResizeEl[] = [];
+const regionSize = 4;
+
+const onDocMouseMove = (e: MouseEvent) => {
+  addDirectiveElArr.some((el) => {
+    const elStyles = window.getComputedStyle(el, null);
+    const width1 = parseFloat(elStyles.width);
+    const height1 = parseFloat(elStyles.height);
+    const offsetX = e.pageX - parseFloat(elStyles.left);
+    const offsetY = e.pageY - parseFloat(elStyles.top);
+    const dir = getDir({ offsetX, offsetY, width: width1, height: height1, regionSize });
+
+    document.body.style.cursor = dir ? `${dir}-resize` : 'default';
+    return dir;
+  });
+
+  subscribers.forEach((fn) => {
+    fn(e);
+  });
+};
+const subscribers: ((e: MouseEvent) => void)[] = [];
+const subscriberDocMouseMove = (fn: (e: MouseEvent) => void) => {
+  subscribers.push(fn);
 };
 
 const cancelBubble = (e: MouseEvent) => {
@@ -282,6 +296,11 @@ const whenResize = (movePx: number, minPx: number, cb: Function) => {
   if (movePx >= minPx) {
     cb();
   }
+};
+
+const removeResizeElFromArr = (el: ResizeEl) => {
+  const index = addDirectiveElArr.indexOf(el);
+  index > -1 && addDirectiveElArr.splice(index, 1);
 };
 
 export { name, directive };

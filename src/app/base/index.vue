@@ -11,6 +11,7 @@
   const appRef = ref<WinAppDOM>();
   const isShow = ref<boolean>(true);
   const appName = inject<string>('appName')!;
+  const appClassName = inject<string>('appClassName');
 
   onMounted(async () => {
     await nextTick();
@@ -74,7 +75,7 @@
     animation(animationOpt);
   };
 
-  const onAppClick = () => {
+  const onAppMouseDown = () => {
     const openedAppLen = taskBarTriggerList.length;
     const index = taskBarTriggerList.findIndex((item) => item.name === appName);
     const oldZIndex = taskBarTriggerList[index].zIndex;
@@ -101,10 +102,11 @@
 <template>
   <div
     class="app-wrapper"
+    :class="[appClassName]"
     :style="getAppStyle()"
     ref="appRef"
     v-show="isShow"
-    @click="onAppClick"
+    @mousedown="onAppMouseDown"
     v-resize="vResizeOpt"
   >
     <BaseHeader

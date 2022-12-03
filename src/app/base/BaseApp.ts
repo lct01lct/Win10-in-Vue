@@ -55,7 +55,7 @@ class BaseApp {
 
       vueApp.provide('appInstance', this);
       vueApp.provide('appName', this.name);
-      // vueApp.provide('initPos')
+      vueApp.provide('appClassName', `${this.name}-app-wrapper`);
 
       vueApp.mount(oContainer);
       const _dom = oContainer.querySelector('.app-wrapper')! as WinAppDOM;
