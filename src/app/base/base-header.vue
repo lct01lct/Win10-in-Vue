@@ -58,6 +58,8 @@
   };
 
   const onMaximizeBtnClick = () => {
+    const { isFull } = getWinAppScope(props.appRef!);
+    isFull.value = !isFull.value;
     if (!isFullScreen.value) {
       oldAppViewSize.width = props.appViewSize.width;
       oldAppViewSize.height = props.appViewSize.height;

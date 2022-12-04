@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { PropType } from 'vue';
   import { Icon } from '@/components';
-  import { getWinAppScope, WinApp } from '@/app';
+  import { getWinAppScope, WinApp, taskBarTriggerList } from '@/app';
 
   const { name, winApp } = defineProps({
     iconPath: {
@@ -29,6 +29,13 @@
   });
 
   const onTriggerClick = () => {
+    for (const item of taskBarTriggerList) {
+      const { isFull } = getWinAppScope(item.winApp._dom);
+      if (isFull.value) {
+        winApp.show(true);
+        return;
+      }
+    }
     if (appIsShow.value) {
       winApp.hide();
     } else {

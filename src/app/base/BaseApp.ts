@@ -7,10 +7,6 @@ import installDirective from '@/utils/vue/directives';
 
 export const compMap: Map<string, Component> = new Map();
 
-interface BaseApp {
-  _dom: WinAppDOM;
-}
-
 export const WIN_APP_SCOPE = '__WIN__APP__SCOPE__';
 export type WinAppDOM = HTMLElement & {
   [WIN_APP_SCOPE]: {
@@ -18,6 +14,7 @@ export type WinAppDOM = HTMLElement & {
     close: () => void;
     onMinimizeBtnClick: () => void;
     isShow: Ref<boolean>;
+    isFull: Ref<boolean>;
   };
 };
 
@@ -25,6 +22,10 @@ export interface BaseAppContructorOpt {
   name: string;
   comp: Component;
   icon: string;
+}
+
+interface BaseApp {
+  _dom: WinAppDOM;
 }
 
 class BaseApp {
@@ -131,6 +132,7 @@ const createWinAppScope = (_dom: WinAppDOM, vueApp: App<Element>, baseApp: BaseA
     close: () => {
       vueApp.unmount();
     },
+    isFull: ref(false),
   } as WinAppDOM['__WIN__APP__SCOPE__'];
 };
 
