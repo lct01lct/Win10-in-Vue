@@ -1,4 +1,5 @@
 import { Directive, DirectiveBinding } from 'vue';
+import { toggleZIndex } from '@/app/base/taskBar';
 
 const name = 'resize';
 
@@ -19,7 +20,7 @@ const directive: Directive = {
 
     if (addDirectiveElArr.length === 1) {
       document.addEventListener('mousemove', onDocMouseMove);
-      document.addEventListener('mousedown', onDocMouseDown);
+      document.addEventListener('mousedown', onDocMouseDown, true);
     }
 
     const movedFn = (value && value.movedFn) || (() => {});
@@ -38,7 +39,7 @@ const directive: Directive = {
     removeResizeElFromArr(el);
     if (!addDirectiveElArr.length) {
       document.removeEventListener('mousemove', onDocMouseMove);
-      document.removeEventListener('mousedown', onDocMouseDown);
+      document.removeEventListener('mousedown', onDocMouseDown, true);
     }
   },
 };
@@ -46,9 +47,11 @@ const directive: Directive = {
 const addDirectiveElArr: ResizeEl[] = [];
 const regionSize = 4;
 let activeResizeEl: ResizeEl | null;
+let isTriggerResize = false;
 
 const onDocMouseMove = async (e: MouseEvent) => {
   await nextTick();
+  if (isTriggerResize) return;
 
   let dir = '';
   const oBody = document.body;
@@ -62,19 +65,24 @@ const onDocMouseMove = async (e: MouseEvent) => {
   }
 };
 
-const onDocMouseDown = (e: MouseEvent) => {
+const onDocMouseDown = async (e: MouseEvent) => {
+  await nextTick();
+
+  const el = activeResizeEl!;
   const oBody = document.body;
   const pagex1 = e.pageX;
   const pagey1 = e.pageY;
   const resizeDir = oBody.style.cursor === 'default' ? '' : oBody.style.cursor.split('-')[0];
-  const elStyles = window.getComputedStyle(activeResizeEl!, null);
+  const elStyles = window.getComputedStyle(el, null);
   const left1 = parseFloat(elStyles.left);
   const top1 = parseFloat(elStyles.top);
   const width1 = parseFloat(elStyles.width);
   const height1 = parseFloat(elStyles.height);
-  const subscriberItem = getSubscriverItemByEl(activeResizeEl!);
+  const subscriberItem = getSubscriverItemByEl(el);
   let offsetX = 0;
   let offsetY = 0;
+
+  toggleZIndex(el);
   if (resizeDir) cancelBubble(e);
 
   const onResizeMouseMove = (e: MouseEvent) => {
@@ -82,7 +90,7 @@ const onDocMouseDown = (e: MouseEvent) => {
     offsetY = e.pageY - pagey1;
 
     resizeEl({
-      el: activeResizeEl!,
+      el: el,
       resizeDir,
       width: width1,
       height: height1,
@@ -93,17 +101,22 @@ const onDocMouseDown = (e: MouseEvent) => {
       minWidth: subscriberItem.border.minWidth,
       minHeight: subscriberItem.border.minHeight,
     });
+
+    isTriggerResize = true;
   };
 
   const onResizeMouseUp = () => {
     document.removeEventListener('mousemove', onResizeMouseMove);
     document.removeEventListener('mouseup', onResizeMouseUp);
+
     subscriberItem.movedFn({
-      width: parseInt(activeResizeEl!.style.width),
-      height: parseInt(activeResizeEl!.style.height),
-      left: parseInt(activeResizeEl!.style.left),
-      top: parseInt(activeResizeEl!.style.top),
+      width: parseInt(el.style.width),
+      height: parseInt(el.style.height),
+      left: parseInt(el.style.left),
+      top: parseInt(el.style.top),
     });
+
+    isTriggerResize = false;
   };
 
   document.addEventListener('mousemove', onResizeMouseMove);

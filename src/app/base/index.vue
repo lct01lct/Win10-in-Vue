@@ -7,6 +7,7 @@
   import { WIN_APP_SCOPE } from '../.';
   import type { ResizeBindingValue } from '@/utils/vue';
   import { taskBarTriggerList } from './taskBar';
+  import { toggleZIndex } from './taskBar';
 
   const appRef = ref<WinAppDOM>();
   const isShow = ref<boolean>(true);
@@ -34,8 +35,8 @@
   };
 
   const appViewSize = reactive<AppViewSizeOpt>({
-    width: 1000,
-    height: 600,
+    width: 800,
+    height: 500,
     top: 50 + taskBarTriggerList.length * 30,
     left: 250 + taskBarTriggerList.length * 30,
   });
@@ -75,17 +76,8 @@
     animation(animationOpt);
   };
 
-  const onAppMouseDown = () => {
-    const openedAppLen = taskBarTriggerList.length;
-    const index = taskBarTriggerList.findIndex((item) => item.name === appName);
-    const oldZIndex = taskBarTriggerList[index].zIndex;
-
-    taskBarTriggerList.forEach((item) => {
-      if (item.zIndex > oldZIndex) {
-        item.zIndex--;
-      }
-    });
-    taskBarTriggerList[index].zIndex = openedAppLen;
+  const onAppClick = () => {
+    toggleZIndex(appName);
   };
 
   const vResizeOpt: ResizeBindingValue = {
@@ -106,7 +98,7 @@
     :style="getAppStyle()"
     ref="appRef"
     v-show="isShow"
-    @mousedown="onAppMouseDown"
+    @click="onAppClick"
     v-resize="vResizeOpt"
   >
     <BaseHeader

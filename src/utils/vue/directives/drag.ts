@@ -1,4 +1,5 @@
 import { Directive, DirectiveBinding } from 'vue';
+import { toggleZIndex } from '@/app/base/taskBar';
 
 const name = 'drag';
 
@@ -10,12 +11,15 @@ export interface DragBindingValue {
 const directive: Directive = {
   async mounted(el: HTMLElement, binding: DirectiveBinding<DragBindingValue | undefined>) {
     await nextTick();
+
     const tar = binding.value ? findParentElement(el, binding.value.tar) : el;
 
     if (!tar) throw new Error('Unable to find the target node of draggable!');
 
     const onMouseDown = (e: MouseEvent) => {
       // e.stopPropagation();
+      toggleZIndex(tar);
+
       const pos1 = { x: e.pageX, y: e.pageY };
       const tarStyle = window.getComputedStyle(tar, null);
       const tarPos1 = { left: parseFloat(tarStyle.left), top: parseFloat(tarStyle.top) };

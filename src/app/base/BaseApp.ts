@@ -1,6 +1,6 @@
 import { App, Component, Ref } from 'vue';
 import animation from '@/share/anime';
-import { addTaskBarTriggerItem } from './taskBar';
+import { addTaskBarTriggerItem, toggleZIndex } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
 import WinApp from '../app';
 import installDirective from '@/utils/vue/directives';
@@ -91,6 +91,8 @@ class BaseApp {
         this._dom.style.transformOrigin = 'center';
       },
     });
+
+    toggleZIndex(this._dom);
   }
 
   hide(immediate: boolean = true) {
