@@ -56,13 +56,13 @@ const onDocMouseMove = async (e: MouseEvent) => {
   let dir = '';
   const oBody = document.body;
 
-  for (const el of addDirectiveElArr) {
+  addDirectiveElArr.some((el) => {
     activeResizeEl = el;
     dir = getDir({ el, event: e, regionSize });
     oBody.style.cursor = dir ? `${dir}-resize` : 'default';
 
-    if (dir) break;
-  }
+    return dir;
+  });
 };
 
 const onDocMouseDown = async (e: MouseEvent) => {
@@ -78,7 +78,7 @@ const onDocMouseDown = async (e: MouseEvent) => {
   const top1 = parseFloat(elStyles.top);
   const width1 = parseFloat(elStyles.width);
   const height1 = parseFloat(elStyles.height);
-  const subscriberItem = getSubscriverItemByEl(el);
+  const tarSubscriber = getSubscriverItemByEl(el);
   let offsetX = 0;
   let offsetY = 0;
 
@@ -98,8 +98,8 @@ const onDocMouseDown = async (e: MouseEvent) => {
       top: top1,
       offsetX,
       offsetY,
-      minWidth: subscriberItem.border.minWidth,
-      minHeight: subscriberItem.border.minHeight,
+      minWidth: tarSubscriber.border.minWidth,
+      minHeight: tarSubscriber.border.minHeight,
     });
 
     isTriggerResize = true;
@@ -109,7 +109,7 @@ const onDocMouseDown = async (e: MouseEvent) => {
     document.removeEventListener('mousemove', onResizeMouseMove);
     document.removeEventListener('mouseup', onResizeMouseUp);
 
-    subscriberItem.movedFn({
+    tarSubscriber.movedFn({
       width: parseInt(el.style.width),
       height: parseInt(el.style.height),
       left: parseInt(el.style.left),
