@@ -21,6 +21,9 @@ export const toggleZIndex = (tar: string | HTMLElement) => {
   const index = taskBarTriggerList.findIndex(
     (item) => item.name === tar || item.winApp._dom === tar
   );
+
+  if (index === -1) return;
+
   const oldZIndex = taskBarTriggerList[index].zIndex;
 
   taskBarTriggerList.forEach((item) => {
