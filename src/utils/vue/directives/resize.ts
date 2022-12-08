@@ -4,7 +4,8 @@ import { toggleZIndex } from '@/app/base/taskBar';
 const name = 'resize';
 
 export interface ResizeBindingValue {
-  movedFn: (param: { width: number; height: number; left: number; top: number }) => void;
+  movedFn?: (param: { width: number; height: number; left: number; top: number }) => void;
+  movingFn?: (param: { width: number; height: number; left: number; top: number }) => void;
   border?: {
     minWidth: number;
     minHeight: number;
@@ -24,6 +25,7 @@ const directive: Directive = {
     }
 
     const movedFn = (value && value.movedFn) || (() => {});
+    const movingFn = (value && value.movingFn) || (() => {});
     const border = (value && value.border) || { minWidth: 0, minHeight: 0 };
 
     el.style.position = 'absolute';
@@ -32,6 +34,7 @@ const directive: Directive = {
       el,
       border,
       movedFn,
+      movingFn,
     });
   },
 
@@ -100,6 +103,7 @@ const onDocMouseDown = async (e: MouseEvent) => {
       offsetY,
       minWidth: tarSubscriber.border.minWidth,
       minHeight: tarSubscriber.border.minHeight,
+      movingFn: tarSubscriber.movingFn,
     });
 
     isTriggerResize = true;
@@ -236,6 +240,7 @@ const resizeEl = ({
   top,
   offsetX,
   offsetY,
+  movingFn,
   minWidth = 0,
   minHeight = 0,
 }: {
@@ -247,6 +252,7 @@ const resizeEl = ({
   top: number;
   offsetX: number;
   offsetY: number;
+  movingFn: ResizeBindingValue['movingFn'];
   minWidth?: number;
   minHeight?: number;
 }) => {
@@ -281,6 +287,13 @@ const resizeEl = ({
       resizeMap.get(dir)!();
     }
   }
+  movingFn &&
+    movingFn({
+      width: parseInt(el.style.width),
+      height: parseInt(el.style.height),
+      top: parseInt(el.style.top),
+      left: parseInt(el.style.left),
+    });
 };
 
 const whenResize = (movePx: number, minPx: number, cb: Function) => {

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
   import BaseBody from './base-body.vue';
   import BaseHeader from './base-header.vue';
-  import type { AppViewSizeOpt } from './base';
+  import { useResize } from './base';
+  import type { AppViewSizeOpt, ResizeMoveingScbscriber } from './base';
   import animation from '@/share/anime';
   import type { WinAppDOM } from '../.';
   import { WIN_APP_SCOPE } from '../.';
@@ -28,7 +29,7 @@
   const HandleAppClick = (e: MouseEvent) => {
     if (appRef.value!.contains(e.target as HTMLElement)) {
       e.stopPropagation();
-      appRef.value!.style.transform = 'scale(1.002)';
+      appRef.value!.style.transform = 'scale(1.001)';
     } else {
       appRef.value!.style.transform = 'scale(1)';
     }
@@ -80,6 +81,8 @@
     toggleZIndex(appName);
   };
 
+  const { resizeMovingSubscribers, subscribeResizeMoving } = useResize();
+
   const vResizeOpt: ResizeBindingValue = {
     movedFn: ({ width, height, left, top }: AppViewSizeOpt) => {
       setAppViewSize({ width, height, left, top }, true);
@@ -88,7 +91,15 @@
       minWidth: 288,
       minHeight: 248,
     },
+    movingFn: (params: AppViewSizeOpt) => {
+      resizeMovingSubscribers.forEach((fn) => {
+        fn(params as Required<AppViewSizeOpt>);
+      });
+    },
   };
+
+  provide('appViewSize', appViewSize);
+  provide('subscribeResizeMoving', subscribeResizeMoving);
 </script>
 
 <template>

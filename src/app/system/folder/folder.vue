@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import { Base } from '@/app';
   import FolderHeader from './folder-header.vue';
+  import FolderBody from './folder-body/index.vue';
 </script>
 
 <template>
@@ -8,7 +9,9 @@
     <template #header>
       <FolderHeader></FolderHeader>
     </template>
-    <template #body></template>
+    <template #body>
+      <FolderBody></FolderBody>
+    </template>
   </Base>
 </template>
 
