@@ -2,7 +2,7 @@
   import BaseBody from './base-body.vue';
   import BaseHeader from './base-header.vue';
   import { useResize } from './base';
-  import type { AppViewSizeOpt, ResizeMoveingScbscriber } from './base';
+  import type { AppViewSizeOpt } from './base';
   import animation from '@/share/anime';
   import type { WinAppDOM } from '../.';
   import { WIN_APP_SCOPE } from '../.';
