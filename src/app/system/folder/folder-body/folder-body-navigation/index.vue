@@ -1,13 +1,14 @@
 <script lang="ts" setup>
   import Option from './option.vue';
   import Navigation from './navigation.vue';
+  import Search from './search.vue';
 </script>
 
 <template>
   <div class="folder-body-navigation-wrapper">
     <Option></Option>
     <Navigation></Navigation>
-    <div class="search-wrapper"></div>
+    <Search></Search>
   </div>
 </template>
 

@@ -30,6 +30,9 @@
     <button class="append-icon" @click="isActive = true" :class="[isActive ? 'isActive' : '']">
       <span class="iconfont icon-xiangxia"></span>
     </button>
+    <button class="reload-icon">
+      <span class="iconfont icon-shuaxin"></span>
+    </button>
   </div>
 </template>
 
@@ -53,7 +56,8 @@
       }
     }
 
-    .append-icon {
+    .append-icon,
+    .reload-icon {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -75,6 +79,18 @@
     .append-icon:active {
       border: 1px solid #005499;
       background-color: #cce4f7;
+    }
+
+    .reload-icon {
+      right: -30px;
+      width: 30px;
+      height: 29px;
+      border: 1px solid #ccc;
+      font-weight: 700;
+      &:hover {
+        border: 1px solid #005499;
+        background-color: #cce4f7;
+      }
     }
   }
 </style>

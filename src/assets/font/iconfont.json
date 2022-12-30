@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2076340",
+      "name": "刷新",
+      "font_class": "shuaxin",
+      "unicode": "e8aa",
+      "unicode_decimal": 59562
+    },
+    {
       "icon_id": "5387583",
       "name": "箭头_向右",
       "font_class": "jiantou_xiangyou",
