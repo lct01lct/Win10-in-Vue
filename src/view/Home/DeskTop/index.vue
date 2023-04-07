@@ -15,7 +15,7 @@
     z-index: auto;
     width: 1536px;
     height: 704px;
-    background: url('@/assets/images/homePage/wallpaper/win-default.jpg');
-    background-size: 1536px 704px;
+    background: url('@/assets/images/homePage/wallpaper/win-default.jpg') no-repeat;
+    background-size: 100vw calc(100vh - 50px);
   }
 </style>
