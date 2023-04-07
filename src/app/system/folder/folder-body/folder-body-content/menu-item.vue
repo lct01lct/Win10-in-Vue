@@ -54,7 +54,7 @@
     display: flex;
     align-items: center;
     padding: 4px 0;
-    font-size: 14px;
+    font-size: 13px;
     list-style: none;
     white-space: nowrap;
 
@@ -78,7 +78,7 @@
       position: relative;
       .menu-item-icon {
         position: absolute;
-        top: 0;
+        top: -1px;
         left: -20px;
       }
     }
