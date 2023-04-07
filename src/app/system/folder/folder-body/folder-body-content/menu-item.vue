@@ -2,6 +2,7 @@
   import { PropType } from 'vue';
   import MenuItem from './menu-item.vue';
   import { Icon } from '@/components';
+  import fileEmptyIcon from '@/assets/images/appPage/system-app/folder-app/file-empty.png';
 
   const { icon } = defineProps({
     name: {
@@ -18,7 +19,7 @@
     },
     icon: {
       type: String,
-      default: '/src/assets/images/appPage/system-app/folder-app/file-empty.png',
+      default: fileEmptyIcon,
     },
   });
   const childrenVisible = ref<boolean>(false);

@@ -1,4 +1,5 @@
 import { Desc, Folder } from '@/share/file';
+import quickVisitIcon from '@/assets/images/appPage/system-app/folder-app/quick-visit.png';
 
 interface MenuItem {
   name: string;
@@ -195,7 +196,7 @@ export const ORIGIN_MENU_DATA: MenuItem[] = [
       { name: '图片', children: [] },
       { name: '此电脑', children: [] },
     ],
-    icon: '/src/assets/images/appPage/system-app/folder-app/quick-visit.png',
+    icon: quickVisitIcon,
   },
   {
     name: 'OneDrive-Personal',
