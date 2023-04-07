@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-  document.addEventListener('selectstart', (e) => {
-    e.preventDefault();
-  });
-  document.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-  });
+  const preventDefault = (e: Event) => e.preventDefault();
+
+  document.addEventListener('selectstart', preventDefault);
+  document.addEventListener('contextmenu', preventDefault);
 </script>
 
 <template>
