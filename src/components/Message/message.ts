@@ -1,4 +1,4 @@
-import { VNode, App } from 'vue';
+import { VNode, App, Ref, ComponentPublicInstance } from 'vue';
 import Message from './message.vue';
 import anime from 'animejs';
 import { CompType } from '@/utils/vue';
@@ -9,6 +9,9 @@ export interface MessageInstance {
   destroy: () => void;
 }
 export type MessageContent = string | VNode;
+export type MessageVm = ComponentPublicInstance & {
+  messageRef: MessageEL;
+};
 
 export const SCOPE = '__SCOPE__';
 export type MessageEL = HTMLElement & {
@@ -31,11 +34,14 @@ watch(currMessage, (newMessage, oldMessage) => {
 export const createMessage = (
   content: MessageContent,
   opt?: MessageOption
-): { messageApp: App<Element>; vm: CompType<typeof Message> } => {
+): {
+  messageApp: App<Element>;
+  vm: MessageVm;
+} => {
   const oMessage = document.createDocumentFragment() as unknown as HTMLElement;
   const messageApp = createApp(Message, { content, ...opt });
 
-  const vm: CompType<typeof Message> = messageApp.mount(oMessage);
+  const vm = messageApp.mount(oMessage) as MessageVm;
 
   document.body.appendChild(oMessage);
 
@@ -55,7 +61,7 @@ export const createMessage = (
   };
 };
 
-export const messageClose = (vm: CompType<typeof Message>, cb: Function) => {
+export const messageClose = (vm: MessageVm, cb: Function) => {
   anime({
     targets: vm.messageRef,
     translateX: 320,
