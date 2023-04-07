@@ -6,12 +6,20 @@
   import EnterHandlers from '@/share/EnterHandlers';
 
   new EnterHandlers().addLastEnterListener(gotoLogin).notify();
+
+  const isLoadedBg = ref(false);
 </script>
 
 <template>
   <div>
     <section class="login-wallpaper-wrapper" @click="gotoLogin">
-      <img src="@/assets/images/loginPage/login-bg.jpg" alt="" id="login-wallpaper" />
+      <h1 class="login-page-load" v-if="!isLoadedBg">loading...</h1>
+      <img
+        src="@/assets/images/loginPage/login-bg.jpg"
+        alt=""
+        id="login-wallpaper"
+        @load="isLoadedBg = true"
+      />
       <div class="clock-wrapper" v-if="!maskVisible">
         <div class="minute-second">{{ hour }} : {{ minute }}</div>
         <div class="date">{{ month }}月{{ date }}日，{{ day }}</div>
@@ -27,8 +35,8 @@
 <style scoped lang="scss">
   .login-wallpaper-wrapper {
     position: absolute;
-    width: 100%;
-    height: 753px;
+    width: 100vw;
+    height: 100vh;
 
     #login-wallpaper {
       display: block;
@@ -68,5 +76,10 @@
       filter: blur(25px);
       backdrop-filter: blur(25px);
     }
+  }
+
+  .login-page-load {
+    margin-top: 300px;
+    text-align: center;
   }
 </style>
