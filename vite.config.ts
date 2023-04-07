@@ -19,8 +19,4 @@ export default defineConfig({
   },
 
   plugins: [vue(), AutoImport({ imports: ['vue'] })],
-
-  build: {
-    outDir: './docs',
-  },
 });
