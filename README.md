@@ -1,3 +1,3 @@
 # Win10-in-Vue
 
-体验地址：http://180.76.181.195:8000/
+体验地址：https://lct01lct.github.io/Win10-in-Vue
