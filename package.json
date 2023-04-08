@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "pnpm -F win10 dev --open",
     "build": "pnpm -F win10 build",
-    "preview": "vite preview",
+    "preview": "pnpm -F win10 preview",
     "commit": "git cz"
   },
   "dependencies": {
