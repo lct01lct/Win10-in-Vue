@@ -1,0 +1,39 @@
+{
+  "name": "win10",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --open",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "app": "workspace:^1.0.0",
+    "utils": "workspace:^1.0.0",
+    "assets": "workspace:^1.0.0",
+    "animejs": "^3.2.1",
+    "chinese-lunar-calendar": "^1.0.1",
+    "dayjs": "^1.11.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "lodash": "^4.17.21",
+    "pinia": "^2.0.23",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/animejs": "^3.1.5",
+    "@types/lodash": "^4.14.186",
+    "@types/node": "18.7.18",
+    "@vitejs/plugin-vue": "^3.1.0",
+    "eslint": "^8.25.0",
+    "prettier": "^2.7.1",
+    "sass": "^1.55.0",
+    "typescript": "^4.6.4",
+    "unplugin-auto-import": "^0.11.2",
+    "vite": "^3.1.0",
+    "vite-plugin-cdn2": "^0.3.3",
+    "vite-plugin-compression": "^0.5.1",
+    "vue-tsc": "^0.40.4"
+  }
+}
