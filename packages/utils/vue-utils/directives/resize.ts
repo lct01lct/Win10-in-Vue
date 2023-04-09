@@ -1,5 +1,4 @@
 import { Directive, DirectiveBinding } from 'vue';
-import { toggleZIndex } from 'app/src/base/taskBar';
 
 const name = 'resize';
 
@@ -10,14 +9,22 @@ export interface ResizeBindingValue {
     minWidth: number;
     minHeight: number;
   };
+  onMousedownCb?: (tar: HTMLElement) => void;
 }
 
-type ResizeEl = HTMLElement & {};
+const SCOPE = Symbol('RESIZED_EL_SCOPE');
+type ResizeEl = HTMLElement & {
+  [SCOPE]: { onMousedownCb?: (tar: HTMLElement) => void };
+};
 
 const directive: Directive = {
   async mounted(el: ResizeEl, { value }: DirectiveBinding<ResizeBindingValue | undefined>) {
     await nextTick();
     addDirectiveElArr.push(el);
+
+    el[SCOPE] = {
+      onMousedownCb: value?.onMousedownCb,
+    };
 
     if (addDirectiveElArr.length === 1) {
       document.addEventListener('mousemove', onDocMouseMove);
@@ -26,6 +33,7 @@ const directive: Directive = {
 
     const movedFn = (value && value.movedFn) || (() => {});
     const movingFn = (value && value.movingFn) || (() => {});
+    const onMousedownCb = (value && value.onMousedownCb) || (() => {});
     const border = (value && value.border) || { minWidth: 0, minHeight: 0 };
 
     el.style.position = 'absolute';
@@ -35,6 +43,7 @@ const directive: Directive = {
       border,
       movedFn,
       movingFn,
+      onMousedownCb,
     });
   },
 
@@ -85,7 +94,8 @@ const onDocMouseDown = async (e: MouseEvent) => {
   let offsetX = 0;
   let offsetY = 0;
 
-  toggleZIndex(el);
+  el[SCOPE].onMousedownCb?.(el);
+
   if (resizeDir) cancelBubble(e);
 
   const onResizeMouseMove = (e: MouseEvent) => {

@@ -96,6 +96,9 @@
         fn(params as Required<AppViewSizeOpt>);
       });
     },
+    onMousedownCb(tar) {
+      toggleZIndex(tar);
+    },
   };
 
   provide('appViewSize', appViewSize);

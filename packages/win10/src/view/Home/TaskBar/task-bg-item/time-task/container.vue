@@ -8,10 +8,6 @@
   const onTodayInMonthBtnClick = () => {
     CalendarRef.value.onTodayInMonthBtnClick();
   };
-
-  watch(selectedDay, (val) => {
-    console.log(val, 'selected');
-  });
 </script>
 
 <template>

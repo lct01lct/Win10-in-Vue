@@ -81,7 +81,7 @@ importers:
       '@types/animejs': ^3.1.7
       '@types/lodash': ^4.14.192
       '@types/node': 18.15.11
-      '@vitejs/plugin-vue': ^4.1.0
+      '@vitejs/plugin-vue': ^3.1.0
       animejs: ^3.2.1
       app: workspace:^1.0.0
       chinese-lunar-calendar: ^1.0.1
@@ -116,7 +116,7 @@ importers:
       '@types/animejs': 3.1.7
       '@types/lodash': 4.14.192
       '@types/node': 18.15.11
-      '@vitejs/plugin-vue': 4.1.0_vite@3.2.5+vue@3.2.47
+      '@vitejs/plugin-vue': 3.2.0_vite@3.2.5+vue@3.2.47
       eslint: 8.38.0
       prettier: 2.8.7
       sass: 1.61.0
@@ -665,11 +665,11 @@ packages:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
     dev: true
 
-  /@vitejs/plugin-vue/4.1.0_vite@3.2.5+vue@3.2.47:
-    resolution: {integrity: sha512-++9JOAFdcXI3lyer9UKUV4rfoQ3T1RN8yDqoCLar86s0xQct5yblxAE+yWgRnU5/0FOlVCpTZpYSBV/bGWrSrQ==}
+  /@vitejs/plugin-vue/3.2.0_vite@3.2.5+vue@3.2.47:
+    resolution: {integrity: sha512-E0tnaL4fr+qkdCNxJ+Xd0yM31UwMkQje76fsDVBBUCoGOUPexu2VDUYHL8P4CwV+zMvWw6nlRw19OnRKmYAJpw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
-      vite: ^4.0.0
+      vite: ^3.0.0
       vue: ^3.2.25
     dependencies:
       vite: 3.2.5_4q5mxzltflcgkzvnigcbiggbqa

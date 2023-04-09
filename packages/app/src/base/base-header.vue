@@ -6,7 +6,7 @@
   import type { WinAppDOM } from '../.';
   import { getWinAppScope, WIN_APP_SCOPE } from '../.';
   import animation from 'win10/src/share/anime';
-  import { removeTaskBarTriggerItem } from './taskBar';
+  import { removeTaskBarTriggerItem, toggleZIndex } from './taskBar';
   import type { DragBindingValue } from 'utils';
 
   const props = defineProps({
@@ -100,6 +100,9 @@
     tar: '.app-wrapper',
     movedFn(x: number, y: number) {
       emits('setAppViewSize', { left: x, top: y }, true);
+    },
+    onMousedownCb(tar) {
+      toggleZIndex(tar);
     },
   };
 </script>
