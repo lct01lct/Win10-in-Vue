@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { Icon } from '@/components';
+  import { Icon } from 'win10/src/components';
 
   const placeholder = ref<string>('在什么内搜索');
 </script>

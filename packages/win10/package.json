@@ -5,35 +5,34 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build",
+    "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "app": "workspace:^1.0.0",
-    "utils": "workspace:^1.0.0",
-    "assets": "workspace:^1.0.0",
     "animejs": "^3.2.1",
+    "app": "workspace:^1.0.0",
     "chinese-lunar-calendar": "^1.0.1",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.7",
     "eslint-plugin-prettier": "^4.2.1",
     "lodash": "^4.17.21",
-    "pinia": "^2.0.23",
-    "vue": "^3.2.37",
-    "vue-router": "^4.1.5"
+    "pinia": "^2.0.34",
+    "utils": "workspace:^1.0.0",
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@types/animejs": "^3.1.5",
-    "@types/lodash": "^4.14.186",
-    "@types/node": "18.7.18",
-    "@vitejs/plugin-vue": "^3.1.0",
-    "eslint": "^8.25.0",
-    "prettier": "^2.7.1",
-    "sass": "^1.55.0",
-    "typescript": "^4.6.4",
-    "unplugin-auto-import": "^0.11.2",
-    "vite": "^3.1.0",
+    "@types/animejs": "^3.1.7",
+    "@types/lodash": "^4.14.192",
+    "@types/node": "18.15.11",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "eslint": "^8.38.0",
+    "prettier": "^2.8.7",
+    "sass": "^1.61.0",
+    "typescript": "^5.0.4",
+    "unplugin-auto-import": "^0.15.2",
+    "vite": "^4.2.1",
     "vite-plugin-cdn2": "^0.3.3",
     "vite-plugin-compression": "^0.5.1",
-    "vue-tsc": "^0.40.4"
+    "vue-tsc": "^1.2.0"
   }
 }

@@ -124,8 +124,8 @@
       <div
         class="app-view-opt-item close-btn"
         @click="onCloseBtnClick"
-        @mouseenter="closeBtnIsActive.value = !closeBtnIsActive"
-        @mouseleave="closeBtnIsActive.value = !closeBtnIsActive"
+        @mouseenter="closeBtnIsActive = !closeBtnIsActive"
+        @mouseleave="closeBtnIsActive = !closeBtnIsActive"
       >
         <Icon :height="iconSize" :width="iconSize">
           <img v-if="!closeBtnIsActive" src="@/assets/images/appPage/baseApp/close.png" alt="" />

@@ -4,7 +4,7 @@
   import { maskVisible, gotoLogin } from './login';
   import { hour, minute, month, date, day } from '@/share/time';
   import EnterHandlers from '@/share/EnterHandlers';
-  import loginBg from 'assets/images/loginPage/login-bg.jpg';
+  import loginBg from '@/assets/images/loginPage/login-bg.jpg';
 
   new EnterHandlers().addLastEnterListener(gotoLogin).notify();
 

@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import 'assets/styles/index.scss';
+import '@/assets/styles/index.scss';
 import Win10UI from './plugin/Win10UI';
 import installDirective from 'utils/vue-utils/directives';
 

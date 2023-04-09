@@ -1,12 +1,14 @@
 {
   "scripts": {
-    "dev": "pnpm -F win10 dev --open",
+    "dev": "pnpm -F win10 dev",
     "build": "pnpm -F win10 build",
     "preview": "pnpm -F win10 preview",
     "commit": "git cz"
   },
   "dependencies": {
-    "cz-conventional-changelog": "^2.1.0"
+    "cz-conventional-changelog": "^3.3.0",
+    "vite": "4.2.1",
+    "vue": "3.2.47"
   },
   "config": {
     "commitizen": {

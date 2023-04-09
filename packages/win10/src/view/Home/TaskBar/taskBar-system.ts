@@ -1,11 +1,11 @@
 import WinTask from './task-system-item/win-task/index.vue';
 import SearchTask from './task-system-item/search-task/index.vue';
-import winTp from 'assets/images/homePage/taskBar-img/win-logo.png';
-import winTp1 from 'assets/images/homePage/taskBar-img/win-logo-active.png';
-import searchTp from 'assets/images/homePage/taskBar-img/search.png';
-import searchTp1 from 'assets/images/homePage/taskBar-img/search.png';
-import cortanaTp from 'assets/images/homePage/taskBar-img/cortana.svg';
-import cortanaTp1 from 'assets/images/homePage/taskBar-img/cortana.svg';
+import winTp from '@/assets/images/homePage/taskBar-img/win-logo.png';
+import winTp1 from '@/assets/images/homePage/taskBar-img/win-logo-active.png';
+import searchTp from '@/assets/images/homePage/taskBar-img/search.png';
+import searchTp1 from '@/assets/images/homePage/taskBar-img/search.png';
+import cortanaTp from '@/assets/images/homePage/taskBar-img/cortana.svg';
+import cortanaTp1 from '@/assets/images/homePage/taskBar-img/cortana.svg';
 
 const systemTaskImgList = reactive([
   {

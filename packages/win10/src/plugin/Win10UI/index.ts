@@ -9,10 +9,10 @@ for (const comp in componentFile) {
 }
 
 export default {
-  install(app: App, options: any) {
+  install(app: App, options?: { components?: string[] }) {
     // 按需加载
     if (options && options.components) {
-      options.components.forEach((compName: any) => {
+      options.components.forEach((compName) => {
         componentsPool.forEach((comp) => {
           if (compName === comp.name) {
             app.component(comp.name, comp);

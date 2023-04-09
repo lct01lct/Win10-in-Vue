@@ -1,5 +1,5 @@
 import { Desc, Folder } from '@/share/file';
-import quickVisitIcon from 'assets/images/appPage/system-app/folder-app/quick-visit.png';
+import quickVisitIcon from '@/assets/images/appPage/system-app/folder-app/quick-visit.png';
 
 interface MenuItem {
   name: string;

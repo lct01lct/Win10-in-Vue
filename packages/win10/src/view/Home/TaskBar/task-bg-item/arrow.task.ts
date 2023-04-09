@@ -1,7 +1,7 @@
-import bluetoothIcon from 'assets/images/homePage/taskBar-img/bluetooth.png';
-import winSecurityIcon from 'assets/images/homePage/taskBar-img/win-security.png';
-import QQSecurityIcon from 'assets/images/homePage/taskBar-img/QQ-security.png';
-import NAIDIAIcon from 'assets/images/homePage/taskBar-img/Nvidia.png';
+import bluetoothIcon from '@/assets/images/homePage/taskBar-img/bluetooth.png';
+import winSecurityIcon from '@/assets/images/homePage/taskBar-img/win-security.png';
+import QQSecurityIcon from '@/assets/images/homePage/taskBar-img/QQ-security.png';
+import NAIDIAIcon from '@/assets/images/homePage/taskBar-img/Nvidia.png';
 
 interface BgProcess {
   name: string;

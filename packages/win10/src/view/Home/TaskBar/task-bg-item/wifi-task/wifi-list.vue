@@ -10,7 +10,7 @@
     curFocus.value = name;
   };
 
-  let timer: NodeJS.Timer | null = null;
+  let timer: NodeJS.Timeout | null = null;
   const autoFullWifiInfo = () => {
     resetWifiInfo();
     wifiInfo.value.length = 1;
