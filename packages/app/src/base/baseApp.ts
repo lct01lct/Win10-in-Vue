@@ -1,5 +1,5 @@
 import { App, Component, Ref } from 'vue';
-import animation from 'win10/src/share/anime';
+import { animation } from 'utils';
 import { addTaskBarTriggerItem, toggleZIndex } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
 import WinApp from '../app';

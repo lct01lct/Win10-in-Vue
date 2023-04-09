@@ -3,7 +3,7 @@
   import BaseHeader from './base-header.vue';
   import { useResize } from './base';
   import type { AppViewSizeOpt } from './base';
-  import animation from 'win10/src/share/anime';
+  import { animation } from 'utils';
   import type { WinAppDOM } from '../.';
   import { WIN_APP_SCOPE } from '../.';
   import type { ResizeBindingValue } from 'utils';

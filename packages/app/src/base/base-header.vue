@@ -5,7 +5,7 @@
   import type { AppViewSizeOpt } from './base';
   import type { WinAppDOM } from '../.';
   import { getWinAppScope, WIN_APP_SCOPE } from '../.';
-  import animation from 'win10/src/share/anime';
+  import { animation } from 'utils';
   import { removeTaskBarTriggerItem, toggleZIndex } from './taskBar';
   import type { DragBindingValue } from 'utils';
 

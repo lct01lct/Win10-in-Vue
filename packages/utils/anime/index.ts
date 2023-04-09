@@ -1,6 +1,6 @@
 import anime from 'animejs';
 
-export default (opt: anime.AnimeParams) => {
+export const animation = (opt: anime.AnimeParams) => {
   return anime({
     loop: false,
     direction: 'alternate',
