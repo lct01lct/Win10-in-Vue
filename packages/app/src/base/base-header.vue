@@ -112,13 +112,13 @@
     <div class="app-header-right-wrapper">
       <div class="app-view-opt-item minimize-btn" @click="onMinimizeBtnClick">
         <Icon :height="iconSize" :width="iconSize">
-          <img src="@/assets/images/appPage/baseApp/minimize.png" />
+          <img src="../assets/images/appPage/baseApp/minimize.png" />
         </Icon>
       </div>
       <div class="app-view-opt-item maximize-btn" @click="onMaximizeBtnClick">
         <Icon :height="iconSize" :width="iconSize">
-          <img v-if="!isFullScreen" src="@/assets/images/appPage/baseApp/maximize.png" />
-          <img v-else src="@/assets/images/appPage/baseApp/restore.png" />
+          <img v-if="!isFullScreen" src="../assets/images/appPage/baseApp/maximize.png" />
+          <img v-else src="../assets/images/appPage/baseApp/restore.png" />
         </Icon>
       </div>
       <div
@@ -128,8 +128,8 @@
         @mouseleave="closeBtnIsActive = !closeBtnIsActive"
       >
         <Icon :height="iconSize" :width="iconSize">
-          <img v-if="!closeBtnIsActive" src="@/assets/images/appPage/baseApp/close.png" alt="" />
-          <img v-else src="@/assets/images/appPage/baseApp/close-active.png" alt="" />
+          <img v-if="!closeBtnIsActive" src="../assets/images/appPage/baseApp/close.png" alt="" />
+          <img v-else src="../assets/images/appPage/baseApp/close-active.png" alt="" />
         </Icon>
       </div>
     </div>

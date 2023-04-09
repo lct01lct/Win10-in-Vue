@@ -23,7 +23,7 @@
   <div class="navigation-wrapper">
     <div class="prepend-icon">
       <Icon :width="20" :height="20">
-        <img src="@/assets/images/appPage/system-app/folder-app/file-full.png" />
+        <img src="../../../../assets/images/appPage/system-app/folder-app/file-full.png" />
       </Icon>
     </div>
     <input type="text" class="navigation-ipt" :style="{ width: iptWidth + 'px' }" />

@@ -8,7 +8,7 @@
   <div class="search-wrapper">
     <input type="text" class="search-ipt" :placeholder="placeholder" />
     <Icon class="search-icon" :height="16" :width="16">
-      <img src="@/assets/images/appPage/system-app/folder-app/search.png" alt="" />
+      <img src="../../../../assets/images/appPage/system-app/folder-app/search.png" alt="" />
     </Icon>
   </div>
 </template>
