@@ -47,10 +47,9 @@ jobs:
         run: pnpm build
 
       - name: deploy
-        run: |
-          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          GITHUB_REPOSITORY: Win10-in-Vue
-
-
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: main
+          FOLDER: build
+          BUILD_SCRIPT: pnpm install && pnpm run build
