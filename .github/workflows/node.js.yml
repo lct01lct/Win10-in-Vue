@@ -45,7 +45,7 @@ jobs:
 
       - name: project build
         run: pnpm build
-      
-    - name: deploy
-      env: 
-        GITHUB_REPO: github.com/lct01lct/Win10-in-Vue
+
+      - name: deploy
+        env:
+          GITHUB_REPO: github.com/lct01lct/Win10-in-Vue
