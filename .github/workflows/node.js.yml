@@ -1,17 +1,16 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: WIn10-in-Vue CI
+name: Win10-in-Vue CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,15 +19,17 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: install pnpm
-      run: npm -g i pnpm
-    - name: pnpm build
-      run: pnpm build
-    - name: copy dist file width scp
-      uses: appleboy/scp-action@v0.0.1
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: install pnpm
+        run: npm -g i pnpm
+      - name: pnpm build
+        run: pnpm build
+      - name: copy dist file width scp
+        uses: appleboy/scp-action@v0.0.1
+        with:
+          source: 'dist/'
