@@ -1,9 +1,11 @@
 {
+  "homepage": "https://lct01lct.github.io/",
   "scripts": {
     "dev": "pnpm -F win10 dev",
     "build": "pnpm -F win10 build",
     "preview": "pnpm -F win10 preview",
-    "commit": "git cz"
+    "commit": "git cz",
+    "deploy": "pnpm run build && gh-pages -d dist"
   },
   "dependencies": {
     "cz-conventional-changelog": "^3.3.0",
@@ -14,5 +16,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
   }
 }
