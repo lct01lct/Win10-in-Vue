@@ -47,6 +47,5 @@ jobs:
         run: pnpm build
       
     - name: deploy
-      uses: appleboy/scp-action@v0.0.1
-      with: 
-        target: "dist/"
+      env: 
+        GITHUB_REPO: github.com/lct01lct/Win10-in-Vue
