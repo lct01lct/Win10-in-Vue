@@ -47,13 +47,10 @@ jobs:
         run: pnpm build
 
       - name: deploy
-        working-directory: ./dist
-        run: |
-          git init
-          git checkout -b main
-          git add -A
-        # 这里把下面所有 `<YOUR_NAME>/<YOUR_EMAIL>/<COMMIT_MSG>/<YOUR_TOKEN>` 替换成你自己的就可以了
-          git -c user.name='lct01lct' -c user.email='1786215856@qq.com' commit -m 'deploy'
-        # 这里需要一个 共开仓库 的 secrets 配置，这里的 secrets 是一个环境变量，可以直接拿过来直接用
-          git remote add origin https://${{secrets.WIN10}}@github.com/lct01lct/Win10-in-Vue
-          git push origin main -f -q
+        run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_REPOSITORY: Win10-in-Vue
+
+
