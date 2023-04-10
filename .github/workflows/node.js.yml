@@ -52,8 +52,3 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: main
           FOLDER: dist
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-        with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
