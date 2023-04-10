@@ -52,4 +52,3 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: main
           FOLDER: dist
-          BUILD_SCRIPT: pnpm install && pnpm run build
