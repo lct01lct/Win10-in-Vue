@@ -45,3 +45,8 @@ jobs:
 
       - name: project build
         run: pnpm build
+      
+    - name: deploy
+      uses: appleboy/scp-action@v0.0.1
+      with: 
+        target: "dist/"
