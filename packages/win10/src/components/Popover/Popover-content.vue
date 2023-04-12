@@ -47,12 +47,12 @@
   };
 
   onMounted(() => {
-    document.addEventListener('click', hideContent);
+    document.addEventListener('click', hideContent, true);
     document.addEventListener('contextmenu', hideContent);
   });
 
   onUnmounted(() => {
-    document.removeEventListener('click', hideContent);
+    document.removeEventListener('click', hideContent, true);
     document.removeEventListener('contextmenu', hideContent);
   });
 

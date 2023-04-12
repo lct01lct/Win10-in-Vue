@@ -1,7 +1,14 @@
 <script lang="ts" setup>
-  import { Base } from './../../';
+  import { Base, WinApp } from './../../';
   import FolderHeader from './folder-header.vue';
   import FolderBody from './folder-body/index.vue';
+
+  const currPath = ref<string>();
+  const winApp = inject<WinApp>('appInstance')!;
+
+  currPath.value = `D:\\Desktop\\${winApp.name}`;
+
+  provide('currPath', currPath);
 </script>
 
 <template>

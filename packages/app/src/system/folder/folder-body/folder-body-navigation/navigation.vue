@@ -1,6 +1,10 @@
 <script lang="ts" setup>
   import type { SubscribeResizeMovingType, AppViewSizeOpt } from '../../../../';
   import { Icon } from 'win10/src/components';
+  import { Ref } from 'vue';
+  import { navigationItemMap } from '.';
+  import { onClickOutside } from '@vueuse/core';
+  import { Popover } from 'win10/src/components';
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
 
@@ -17,6 +21,35 @@
 
   const iptWidth = ref<number>(500);
   const isActive = ref<boolean>(false);
+  const currPath = inject<Ref<string>>('currPath')!;
+  const pathItems = computed(() => {
+    const items = currPath.value.slice(3).split('\\');
+
+    items.forEach((item, index) => {
+      const replaceItem = navigationItemMap.get(item.toLowerCase());
+      if (replaceItem) {
+        items[index] = replaceItem;
+      }
+    });
+
+    return items;
+  });
+
+  const iptRef = ref<HTMLInputElement>();
+  const isFocus = ref(false);
+  const onIptWrapperClick = async () => {
+    isFocus.value = true;
+    if (isFocus.value) {
+      await nextTick();
+      iptRef.value?.select();
+    }
+  };
+
+  onMounted(() => {
+    onClickOutside(iptRef, () => {
+      isFocus.value = false;
+    });
+  });
 </script>
 
 <template>
@@ -26,7 +59,34 @@
         <img src="../../../../assets/images/appPage/system-app/folder-app/file-full.png" />
       </Icon>
     </div>
-    <input type="text" class="navigation-ipt" :style="{ width: iptWidth + 'px' }" />
+    <div
+      type="text"
+      class="navigation-ipt-wrapper"
+      :style="{ width: iptWidth + 'px' }"
+      @click="onIptWrapperClick"
+    >
+      <input
+        v-if="isFocus"
+        type="text"
+        v-model="currPath"
+        class="navigation-ipt"
+        ref="iptRef"
+        @click.stop
+      />
+      <div v-else class="navigation-list" @click.stop>
+        <div v-for="item in pathItems" class="navigation-item">
+          <Popover pos="bottom">
+            123
+            <template #reference>
+              <div class="item-inner">
+                {{ item }}
+                <span class="iconfont" :class="['icon-xiangyou']"></span>
+              </div>
+            </template>
+          </Popover>
+        </div>
+      </div>
+    </div>
     <button class="append-icon" @click="isActive = true" :class="[isActive ? 'isActive' : '']">
       <span class="iconfont icon-xiangxia"></span>
     </button>
@@ -45,14 +105,46 @@
       left: 5px;
     }
 
-    .navigation-ipt {
+    .navigation-ipt-wrapper {
+      display: flex;
+      align-items: center;
       height: 25px;
       padding-left: 24px;
       border: 1px solid #ccc;
-      outline: none;
+
       font-size: 12px;
       &:focus {
         border: 1px solid #0078d7;
+      }
+
+      .navigation-ipt {
+        width: calc(100% - 26px);
+        outline: none;
+        border: 0;
+      }
+
+      .navigation-list {
+        display: flex;
+        height: 100%;
+        .navigation-item {
+          display: flex;
+          align-items: center;
+          padding: 0 2px;
+          .item-inner {
+            display: flex;
+            align-items: center;
+            height: 25px;
+          }
+
+          &:hover {
+            background-color: #e5f3ff;
+          }
+
+          .iconfont {
+            padding: 0 4px;
+            font-size: 12px;
+          }
+        }
       }
     }
 

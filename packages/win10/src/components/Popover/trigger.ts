@@ -1,7 +1,7 @@
 import { PropType } from 'vue';
 
-export type TriggerType = 'click' | 'contextmenu';
-export const triggerTypes = ['click', 'contextmenu'];
+export type TriggerType = 'click' | 'contextmenu' | 'hover';
+export const triggerTypes = ['click', 'contextmenu', 'hover'];
 
 export type AnimationDir = 'top' | 'bottom' | 'left' | 'right';
 export const animationDirs = ['top', 'bottom', 'left', 'right'];

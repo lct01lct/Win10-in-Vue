@@ -30,6 +30,7 @@ interface BaseApp {
 
 class BaseApp {
   name: string;
+  infoByOpened?: object;
   _logo: string;
   _isRender: boolean = false;
 
@@ -39,7 +40,9 @@ class BaseApp {
     installWinApp(name, comp);
   }
 
-  open() {
+  open<T extends object>(info?: T) {
+    this.infoByOpened = info;
+
     if (!this._isRender) {
       // 必须先生成 taskBarList 中的 zIndex 信息
       const zIndex = [...compMap.keys()].indexOf(this.name) + 1;

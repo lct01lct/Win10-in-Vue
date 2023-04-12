@@ -4,3 +4,4 @@ export * from './localStoage';
 export * from './number';
 export * from './vue-utils';
 export * from './anime';
+export * from './dom';

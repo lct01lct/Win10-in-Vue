@@ -1,7 +1,8 @@
 <script lang="ts" setup>
   import { PropType } from 'vue';
   import { WinApp } from '../.';
-  import { deskTopIconList, resetFocusIcon } from './desktop-icon';
+  import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
+  import { getViewPort, sleep } from 'utils';
 
   const props = defineProps({
     appInstance: {
@@ -18,13 +19,12 @@
     },
   });
 
-  const deskIconOpt = deskTopIconList.find((item) => props.appName === item.appName)!;
+  const deskIconOpt = deskTopIconMap.get(props.appName)!;
 
-  const getStyles = () => {
+  const getPosition = () => {
     const posIdx = deskIconOpt.posIdx;
-
-    const deskTopWidth = 1536;
-    const deskTopHeight = 704;
+    const viewPort = getViewPort();
+    const deskTopHeight = viewPort.height;
     const deskTopPaddingTop = 8;
     const iconMarginX = 2;
     const iconMarginY = 10;
@@ -44,13 +44,24 @@
     };
   };
 
+  const setPosition = async (el: unknown) => {
+    const ele = el as HTMLElement;
+    await sleep(0);
+    const pos = getPosition();
+    ele.style.left = pos.left;
+    ele.style.top = pos.top;
+  };
+
   const onIconClick = () => {
     resetFocusIcon();
     deskIconOpt.isFocus = true;
   };
 
   const onIconDbclick = () => {
-    props.appInstance.open();
+    props.appInstance.open({
+      folderName: props.appName,
+    });
+
     deskIconOpt.isFocus = false;
   };
 </script>
@@ -59,7 +70,7 @@
   <div
     class="desktop-icon-wrapper"
     @dblclick="onIconDbclick"
-    :style="getStyles()"
+    :ref="setPosition"
     @click.stop="onIconClick"
     :class="[deskIconOpt.isFocus ? 'focus' : '']"
   >
