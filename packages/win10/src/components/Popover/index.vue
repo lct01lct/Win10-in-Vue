@@ -3,10 +3,12 @@
   import { whenTrigger, PopoverProps, PopoverEmits } from './trigger';
   import type { TriggerType } from './trigger';
   import { beforeEnterAnimeHandler, enterAnimeHandler, LeaveAnimeHandler } from './animate';
+  import { sleep } from 'utils';
 
   const props = defineProps(PopoverProps);
 
   const triggerRef = ref<HTMLElement | null>(null);
+  const popoverContentVueRef = ref<InstanceType<typeof PopoverContent>>();
 
   let clickCount = 0;
   const setClickCount = (num: number) => {
@@ -37,8 +39,24 @@
   };
 
   const onContextmenu = () => {
-    whenTrigger(props.triggerType as TriggerType, 'contextmenu', () => {
-      toggle();
+    whenTrigger(props.triggerType, 'contextmenu', toggle);
+  };
+
+  const onHover = () => {
+    whenTrigger(props.triggerType, 'hover', toggle);
+  };
+
+  const onMouseleave = (e: Event) => {
+    whenTrigger(props.triggerType, 'hover', async () => {
+      const tar = e.target as HTMLElement;
+      await sleep(200);
+
+      if (
+        popoverRef.value?.contains(tar) ||
+        popoverContentVueRef.value?.contentRef?.contains(tar)
+      ) {
+        setVisible(false);
+      }
     });
   };
 
@@ -114,15 +132,18 @@
         :triggerRef="triggerRef!"
         :triggerType="triggerType"
         :popoverRef="popoverRef!"
+        ref="popoverContentVueRef"
       >
         <slot></slot>
       </PopoverContent>
     </Transition>
 
     <div
-      @click="onClick()"
+      @click="onClick"
       class="popover-reference"
       ref="triggerRef"
+      @mouseenter="onHover"
+      @mouseleave="onMouseleave"
       @contextmenu="onContextmenu()"
     >
       <template v-if="$slots.reference">

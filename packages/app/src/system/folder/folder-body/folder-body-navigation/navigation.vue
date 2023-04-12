@@ -75,8 +75,8 @@
       />
       <div v-else class="navigation-list" @click.stop>
         <div v-for="item in pathItems" class="navigation-item">
-          <Popover pos="bottom">
-            123
+          <Popover pos="bottom" trigger-type="hover">
+            todo
             <template #reference>
               <div class="item-inner">
                 {{ item }}

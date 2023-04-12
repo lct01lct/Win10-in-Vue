@@ -128,6 +128,10 @@
       top,
     };
   };
+
+  defineExpose({
+    contentRef,
+  });
 </script>
 
 <template>
