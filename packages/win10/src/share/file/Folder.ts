@@ -16,6 +16,8 @@ export interface InitFolderOpt {
   children: (InitFileOpt | InitFolderOpt)[];
 }
 
+// 禁止在 computed 使用递归
+
 class Folder {
   name: string;
   size: string = '0KB';
@@ -138,7 +140,7 @@ class Folder {
 
     const _search = (node: (Folder | Desc)[]) => {
       for (const item of node) {
-        if (item.name.match(keyword)) result.push(item);
+        if (item.name.toLowerCase().match(keyword.toLowerCase())) result.push(item);
         if (!isFile(item)) _search(item.children as (Folder | Desc)[]);
       }
     };
@@ -151,7 +153,8 @@ class Folder {
   static findByPath(path: string): BinType | null {
     const idxs = path.split('\\').filter((item) => item);
 
-    const tarDesc = binData.find((item) => item.name.match(/[A-Z]:/)![0]);
+    const tarDesc = binData.find((item) => item.name.match(/[A-Z]:/)![0] === idxs[0]);
+    const foundPointers = new Set<Folder>([]);
 
     if (!tarDesc) {
       return null;
@@ -161,7 +164,15 @@ class Folder {
     let pointer = tarDesc as Desc | Folder;
 
     while (i < idxs.length) {
-      const tar = pointer.children.find((item) => item.name === idxs[i]);
+      foundPointers.add(pointer);
+      const tar = pointer.children.find((item) => {
+        if (!foundPointers.has(pointer)) {
+          return false;
+        }
+
+        return item.name === idxs[i];
+      });
+
       if (tar) {
         pointer = tar as unknown as Folder;
         i++;

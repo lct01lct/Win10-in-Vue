@@ -2,11 +2,31 @@
   import { Base, WinApp } from './../../';
   import FolderHeader from './folder-header.vue';
   import FolderBody from './folder-body/index.vue';
+  import { Folder, BinType } from 'win10/src/share/file';
 
-  const currPath = ref<string>();
+  const currPath = ref<string>('');
   const winApp = inject<WinApp>('appInstance')!;
+  const showFoldersAndFiles = ref<BinType>();
+  provide('showFoldersAndFiles', showFoldersAndFiles);
 
-  currPath.value = `D:\\Desktop\\${winApp.name}`;
+  const getPointer = () => {
+    if (currPath.value) {
+      const pointer = Folder.findByPath(currPath.value);
+      if (pointer) {
+        showFoldersAndFiles.value = pointer;
+      }
+    }
+  };
+
+  watch(currPath, getPointer);
+
+  setTimeout(() => {
+    if (winApp.infoByOpened) {
+      const folderName = (winApp.infoByOpened as { folderName: string }).folderName;
+
+      currPath.value = `C:\\DeskTop${folderName === '此电脑' || '' ? '' : '\\' + folderName}`;
+    }
+  }, 200);
 
   provide('currPath', currPath);
 </script>

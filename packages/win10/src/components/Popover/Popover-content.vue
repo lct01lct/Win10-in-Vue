@@ -36,9 +36,7 @@
   const hideContent = (e: Event) => {
     const tar = e.target as HTMLElement;
 
-    if (isHide(tar, e)) {
-      e.stopPropagation();
-    } else {
+    if (!isHide(tar, e)) {
       _leave(() => {
         setVisible(false);
         setClickCount(0);

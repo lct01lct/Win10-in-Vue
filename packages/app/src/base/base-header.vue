@@ -112,7 +112,7 @@
     <div class="app-header-left-wrapper">
       <slot></slot>
     </div>
-    <div class="app-header-right-wrapper">
+    <div class="app-header-right-wrapper" @mousedown.stop @mouseleave.stop>
       <div class="app-view-opt-item minimize-btn" @click="onMinimizeBtnClick">
         <Icon :height="iconSize" :width="iconSize">
           <img src="../assets/images/appPage/baseApp/minimize.png" />
