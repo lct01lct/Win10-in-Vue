@@ -2,29 +2,36 @@
   import { Base, WinApp } from './../../';
   import FolderHeader from './folder-header.vue';
   import FolderBody from './folder-body/index.vue';
-  import { Folder, Desc } from 'win10/src/share/file';
+  import { Pointer } from '@/system/folder/types';
+  import { Folder } from 'win10/src/share/file';
 
   const winApp = inject<WinApp>('appInstance')!;
-  const currPointer = ref<Folder | Desc>();
-  const visitedList = reactive<(Folder | Desc)[]>([]);
+  const currPointer = ref<Pointer>();
+  const visitedList = reactive([]) as Pointer[];
   const currIdxInVisitList = ref<number>(-1);
   let isRecordVisitByOpt = true;
 
   const backward = () => {
     if (currIdxInVisitList.value > 0) {
       isRecordVisitByOpt = false;
-      currPointer.value = visitedList[--currIdxInVisitList.value] as Folder | Desc;
+      currPointer.value = visitedList[--currIdxInVisitList.value];
     }
   };
 
   const forward = () => {
     if (currIdxInVisitList.value < visitedList.length - 1) {
       isRecordVisitByOpt = false;
-      currPointer.value = visitedList[++currIdxInVisitList.value] as Folder | Desc;
+      currPointer.value = visitedList[++currIdxInVisitList.value];
     }
   };
 
-  const setCurrPointer = (currentPointer: Desc | Folder) => {
+  const step = (index: number) => {
+    isRecordVisitByOpt = false;
+    currIdxInVisitList.value = index;
+    currPointer.value = visitedList[index];
+  };
+
+  const setCurrPointer = (currentPointer: Pointer) => {
     isRecordVisitByOpt = true;
 
     if (currIdxInVisitList.value > -1) {
@@ -33,7 +40,7 @@
     currPointer.value = currentPointer;
   };
 
-  const recordHistory = (currPointer: Desc | Folder) => {
+  const recordHistory = (currPointer: Pointer) => {
     visitedList.push(currPointer);
     currIdxInVisitList.value++;
   };
@@ -50,6 +57,7 @@
 
   provide('backward', backward);
   provide('forward', forward);
+  provide('step', step);
   provide('currPath', currPath);
   provide('visitedList', visitedList);
   provide('currPointer', currPointer);

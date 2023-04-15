@@ -1,12 +1,6 @@
 import { Desc, Folder } from '@/share/file';
 import quickVisitIcon from '@/assets/images/appPage/system-app/folder-app/quick-visit.png';
 
-interface MenuItem {
-  name: string;
-  children: MenuItem[];
-  icon?: string;
-}
-
 const ORIGIN_DATA = [
   {
     name: 'Windows (C:)',
@@ -32,7 +26,7 @@ const ORIGIN_DATA = [
             posIdx: 11,
             children: [
               {
-                name: 'QQ Music',
+                name: 'QQ Video',
                 children: [
                   {
                     name: '周杰伦的专辑',
@@ -49,10 +43,23 @@ const ORIGIN_DATA = [
                       },
                     ],
                   },
+                  {
+                    name: '数字唱片',
+                    children: [
+                      { name: 'bin', children: [] },
+                      {
+                        name: 'pacakges',
+                        children: [
+                          { name: 'pg-1', children: [] },
+                          { name: 'pg-2', children: [] },
+                        ],
+                      },
+                    ],
+                  },
                 ],
               },
               {
-                name: 'Cloud Music',
+                name: 'Cloud Video',
                 children: [
                   {
                     name: '周杰伦的专辑',
@@ -191,44 +198,54 @@ const ORIGIN_DATA = [
   },
 ];
 
-export const ORIGIN_MENU_DATA: MenuItem[] = [
-  {
-    name: '快速访问',
-    children: [
-      { name: '桌面', children: [] },
-      { name: '下载', children: [] },
-      { name: '文档', children: [] },
-      { name: '图片', children: [] },
-      { name: '此电脑', children: [] },
-    ],
-    icon: quickVisitIcon,
-  },
-  {
-    name: 'OneDrive-Personal',
-    children: [
-      { name: '图片', children: [] },
-      { name: '文档', children: [] },
-    ],
-  },
-  {
-    name: '此电脑',
-    children: [
-      { name: '3D对象', children: [] },
-      { name: '视频', children: [] },
-      { name: '图片', children: [] },
-      { name: '文档', children: [] },
-      { name: '下载', children: [] },
-      { name: '音乐', children: [] },
-      { name: '桌面', children: [] },
-      { name: 'Windows (C:)', children: [] },
-      { name: 'Data (D:)', children: [] },
-    ],
-  },
-  { name: '网络', children: [{ name: 'LAPTOP-04GMNTLU', children: [] }] },
-];
+type MenuItem = (Desc | Folder) & {
+  icon?: string;
+};
+
+export const ORIGIN_MENU_DATA: MenuItem[] = reactive([
+  // {
+  //   name: '快速访问',
+  //   children: [
+  //     { name: '桌面', children: [] },
+  //     { name: '下载', children: [] },
+  //     { name: '文档', children: [] },
+  //     { name: '图片', children: [] },
+  //     { name: '此电脑', children: [] },
+  //   ],
+  //   icon: quickVisitIcon,
+  // },
+  // {
+  //   name: 'OneDrive-Personal',
+  //   children: [
+  //     { name: '图片', children: [] },
+  //     { name: '文档', children: [] },
+  //   ],
+  // },
+  // {
+  //   name: '此电脑',
+  //   children: [
+  //     { name: '3D对象', children: [] },
+  //     { name: '视频', children: [] },
+  //     { name: '图片', children: [] },
+  //     { name: '文档', children: [] },
+  //     { name: '下载', children: [] },
+  //     { name: '音乐', children: [] },
+  //     { name: '桌面', children: [] },
+  //     { name: 'Windows (C:)', children: [] },
+  //     { name: 'Data (D:)', children: [] },
+  //   ],
+  // },
+  // { name: '网络', children: [{ name: 'LAPTOP-04GMNTLU', children: [] }] },
+]);
+
+setTimeout(() => {
+  const deskTopPointer = Folder.search('desktop')[0] as MenuItem;
+  deskTopPointer.icon = quickVisitIcon;
+  ORIGIN_MENU_DATA.push(deskTopPointer);
+}, 100);
 
 export const binData = reactive(ORIGIN_DATA.map((item) => new Desc(item as any)));
-export const deskTopData = reactive<Folder>(Desc.search('DeskTop')[0] as Folder);
+export const deskTopData = Desc.search('DeskTop')[0] as Folder;
 deskTopData.addFolder();
 
 export const menuData = [{ name: '快速访问', children: [Desc.search('DeskTop')] }];

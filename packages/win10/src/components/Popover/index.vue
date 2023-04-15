@@ -112,6 +112,12 @@
   };
 
   const popoverRef = ref<HTMLElement | null>(null);
+
+  defineExpose({
+    close: () => {
+      setVisible(false);
+    },
+  });
 </script>
 
 <template>

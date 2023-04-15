@@ -62,7 +62,7 @@
           {{ item.title }}
         </td>
       </thead>
-      <tbody v-if="currPointer?.children">
+      <tbody v-if="currPointer?.children.length">
         <tr
           v-for="item in currPointer?.children"
           :key="item.name"
@@ -90,6 +90,7 @@
           <td>{{ item.size }}</td>
         </tr>
       </tbody>
+
       <div v-else class="table--empty">此文件夹为空。</div>
     </div>
   </div>

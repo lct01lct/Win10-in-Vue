@@ -3,14 +3,12 @@
   import MenuItem from './menu-item.vue';
   import { Icon } from 'win10/src/components';
   import fileEmptyIcon from '../../../../assets/images/appPage/system-app/folder-app/file-empty.png';
+  import { isFile } from 'win10/src/share/file';
+  import { Pointer } from '../../types';
 
-  const { icon } = defineProps({
-    name: {
-      type: String,
-      required: true,
-    },
-    children: {
-      type: Array as PropType<any>,
+  defineProps({
+    item: {
+      type: Object as PropType<Pointer>,
       required: true,
     },
     leftOffset: {
@@ -23,30 +21,42 @@
     },
   });
   const childrenVisible = ref<boolean>(false);
+  const setCurrPointer = inject<(pointer: Pointer) => void>('setCurrPointer');
 </script>
 
 <template>
-  <li class="menu-item" :style="{ marginTop: leftOffset ? 0 : 5 + 'px' }">
-    <span @click="childrenVisible = !childrenVisible" v-if="children.length" class="toggle-btn">
+  <li
+    class="menu-item"
+    :style="{ marginTop: leftOffset ? 0 : 2 + 'px' }"
+    @click="setCurrPointer?.(item)"
+  >
+    <span
+      @click.stop="childrenVisible = !childrenVisible"
+      v-if="item.children.filter((item) => !isFile(item)).length"
+      class="toggle-btn"
+      :style="{ marginLeft: leftOffset * 10 + 'px' }"
+    >
       <span v-if="childrenVisible" class="iconfont icon-xiangxia"></span>
       <span v-else class="iconfont icon-xiangyou"></span>
     </span>
+    <span v-else :style="{ marginLeft: 16 + leftOffset * 10 + 'px' }"></span>
 
-    <span class="menu-item-title" :style="{ marginLeft: 20 + leftOffset * 25 + 'px' }">
-      {{ name }}
+    <span class="menu-item-title">
       <Icon class="menu-item-icon" :width="20" :height="20">
         <img :src="icon" alt="" />
       </Icon>
+      {{ item.name.toLowerCase() === 'desktop' ? '快速访问' : item.name }}
     </span>
   </li>
-  <template v-if="children.length && childrenVisible">
-    <MenuItem
-      v-for="item in children"
-      :key="item.name"
-      :children="item.children"
-      :name="item.name"
-      :leftOffset="leftOffset + 1"
-    ></MenuItem>
+  <template v-if="item.children.length && childrenVisible">
+    <template v-for="item2 in item.children">
+      <MenuItem
+        v-if="!isFile(item2)"
+        :key="item2.name"
+        :item="item2"
+        :leftOffset="leftOffset + 1"
+      ></MenuItem>
+    </template>
   </template>
 </template>
 
@@ -54,8 +64,8 @@
   .menu-item {
     display: flex;
     align-items: center;
-    padding: 4px 0;
-    font-size: 13px;
+    padding: 3px 0;
+    font-size: 12px;
     list-style: none;
     white-space: nowrap;
 
@@ -77,11 +87,8 @@
 
     .menu-item-title {
       position: relative;
-      .menu-item-icon {
-        position: absolute;
-        top: -1px;
-        left: -20px;
-      }
+      display: flex;
+      align-items: center;
     }
   }
 </style>

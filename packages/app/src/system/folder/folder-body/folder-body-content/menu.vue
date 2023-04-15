@@ -16,14 +16,15 @@
 <template>
   <div class="menu-wrapper">
     <ul class="menu-list" :style="{ height: menuHeight + 'px' }">
-      <MenuItem
-        :name="item.name"
-        v-for="item in ORIGIN_MENU_DATA"
-        :key="item.name"
-        :children="item.children"
-        :leftOffset="leftOffset"
-        :icon="item.icon"
-      ></MenuItem>
+      <template v-for="item in ORIGIN_MENU_DATA">
+        <MenuItem
+          :item="item"
+          v-if="!item.extensions"
+          :key="item.name"
+          :leftOffset="leftOffset"
+          :icon="item.icon"
+        ></MenuItem>
+      </template>
     </ul>
   </div>
 </template>
@@ -34,6 +35,7 @@
     width: 150px;
     overflow-x: hidden;
     overflow-y: scroll;
+    margin-bottom: 0;
     .menu-item {
       list-style: none;
       margin-left: 20px;
