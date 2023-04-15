@@ -96,14 +96,14 @@ export const isRepeatFile = (tarNodes: (Files | Folder)[], name: string) => {
   );
 };
 
-export const isFile = (data: any) => {
+export const isFile = (data: any): data is Files => {
   return data instanceof Files;
 };
 
-export const isFolder = (data: any) => {
+export const isFolder = (data: any): data is Folder => {
   return data instanceof Folder;
 };
 
-export const isDesc = (data: any) => {
+export const isDesc = (data: any): data is Desc => {
   return data instanceof Desc;
 };

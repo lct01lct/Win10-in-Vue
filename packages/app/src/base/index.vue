@@ -134,5 +134,6 @@
     position: absolute;
     box-shadow: 0 0 4px #848383;
     background-color: #fff;
+    overflow: hidden;
   }
 </style>

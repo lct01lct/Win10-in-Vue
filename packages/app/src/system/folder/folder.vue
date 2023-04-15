@@ -2,33 +2,74 @@
   import { Base, WinApp } from './../../';
   import FolderHeader from './folder-header.vue';
   import FolderBody from './folder-body/index.vue';
-  import { Folder, BinType } from 'win10/src/share/file';
+  import { Folder, Desc } from 'win10/src/share/file';
 
-  const currPath = ref<string>('');
   const winApp = inject<WinApp>('appInstance')!;
-  const showFoldersAndFiles = ref<BinType>();
-  provide('showFoldersAndFiles', showFoldersAndFiles);
+  const currPointer = ref<Folder | Desc>();
+  const visitedList = reactive<(Folder | Desc)[]>([]);
+  const currIdxInVisitList = ref<number>(-1);
+  let isRecordVisitByOpt = true;
 
-  const getPointer = () => {
-    if (currPath.value) {
-      const pointer = Folder.findByPath(currPath.value);
-      if (pointer) {
-        showFoldersAndFiles.value = pointer;
-      }
+  const backward = () => {
+    if (currIdxInVisitList.value > 0) {
+      isRecordVisitByOpt = false;
+      currPointer.value = visitedList[--currIdxInVisitList.value] as Folder | Desc;
     }
   };
 
-  watch(currPath, getPointer);
-
-  setTimeout(() => {
-    if (winApp.infoByOpened) {
-      const folderName = (winApp.infoByOpened as { folderName: string }).folderName;
-
-      currPath.value = `C:\\DeskTop${folderName === '此电脑' || '' ? '' : '\\' + folderName}`;
+  const forward = () => {
+    if (currIdxInVisitList.value < visitedList.length - 1) {
+      isRecordVisitByOpt = false;
+      currPointer.value = visitedList[++currIdxInVisitList.value] as Folder | Desc;
     }
-  }, 200);
+  };
 
+  const setCurrPointer = (currentPointer: Desc | Folder) => {
+    isRecordVisitByOpt = true;
+
+    if (currIdxInVisitList.value > -1) {
+      visitedList.length = currIdxInVisitList.value + 1;
+    }
+    currPointer.value = currentPointer;
+  };
+
+  const recordHistory = (currPointer: Desc | Folder) => {
+    visitedList.push(currPointer);
+    currIdxInVisitList.value++;
+  };
+
+  const currPath = computed(() => {
+    const _currPointer = currPointer.value;
+
+    if (_currPointer && isRecordVisitByOpt) {
+      recordHistory(_currPointer);
+    }
+
+    return _currPointer?.path;
+  });
+
+  provide('backward', backward);
+  provide('forward', forward);
   provide('currPath', currPath);
+  provide('visitedList', visitedList);
+  provide('currPointer', currPointer);
+  provide('setCurrPointer', setCurrPointer);
+  provide('currIdxInVisitList', currIdxInVisitList);
+
+  // init
+  (() => {
+    if (winApp.infoByOpened) {
+      const folderName = winApp.infoByOpened.folderName;
+      const folderPointer = winApp.infoByOpened.folderPointer;
+      const res =
+        folderPointer ||
+        Folder.findByPath(`C:\\DeskTop${folderName === '此电脑' || '' ? '' : '\\' + folderName}`);
+
+      if (res) {
+        setCurrPointer(res);
+      }
+    }
+  })();
 </script>
 
 <template>

@@ -11,7 +11,8 @@
     "pinia": "^2.0.23",
     "utils": "workspace:^1.0.0",
     "vue": "^3.2.37",
-    "win10": "workspace:^1.0.0"
+    "win10": "workspace:^1.0.0",
+    "i18n": "workspace:^1.0.0"
   },
   "devDependencies": {
     "@types/animejs": "^3.1.5",

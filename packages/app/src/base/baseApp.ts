@@ -4,6 +4,7 @@ import { addTaskBarTriggerItem, toggleZIndex } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
 import WinApp from '../app';
 import installDirective from 'utils/vue-utils/directives';
+import { Folder, Desc } from 'win10/src/share/file';
 
 export const compMap: Map<string, Component> = new Map();
 
@@ -30,7 +31,10 @@ interface BaseApp {
 
 class BaseApp {
   name: string;
-  infoByOpened?: object;
+  infoByOpened?: Record<string, any> & {
+    folderName?: string;
+    folderPointer?: Desc | Folder;
+  };
   _logo: string;
   _isRender: boolean = false;
 
@@ -40,7 +44,7 @@ class BaseApp {
     installWinApp(name, comp);
   }
 
-  open<T extends object>(info?: T) {
+  open<T extends Record<string, any>>(info?: T) {
     this.infoByOpened = info;
 
     if (!this._isRender) {

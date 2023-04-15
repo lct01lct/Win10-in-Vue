@@ -13,5 +13,6 @@
 <style scoped>
   .folder-content-wrapper {
     display: flex;
+    overflow: hidden;
   }
 </style>

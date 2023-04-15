@@ -1,10 +1,11 @@
 <script lang="ts" setup>
   import type { SubscribeResizeMovingType, AppViewSizeOpt } from '../../../../';
   import { Icon } from 'win10/src/components';
-  import { Ref } from 'vue';
+  import { Ref, ComputedRef } from 'vue';
   import { navigationItemMap } from '.';
   import { onClickOutside } from '@vueuse/core';
   import { Popover } from 'win10/src/components';
+  import { Folder, Desc } from 'win10/src/share/file';
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
 
@@ -21,9 +22,16 @@
 
   const iptWidth = ref<number>(500);
   const isActive = ref<boolean>(false);
-  const currPath = inject<Ref<string>>('currPath')!;
+  const currPath = inject<ComputedRef<string | undefined>>('currPath')!;
+  const setCurrPointer = inject<(currPointer: Folder | Desc) => void>('setCurrPointer');
+
+  const currPointer = inject<Ref<Folder | Desc>>('currPointer');
   const pathItems = computed(() => {
-    const items = currPath.value.slice(3).split('\\');
+    if (!currPath.value) return '';
+    const items = currPath.value
+      .slice(3)
+      .split('\\')
+      .filter((item) => item);
 
     items.forEach((item, index) => {
       const replaceItem = navigationItemMap.get(item.toLowerCase());
@@ -50,6 +58,18 @@
       isFocus.value = false;
     });
   });
+
+  const onItemClick = (index: number) => {
+    if (currPointer && setCurrPointer) {
+      let forwardCount = pathItems.value.length - 1 - index;
+      let _currPointer = currPointer.value;
+
+      while (forwardCount--) {
+        _currPointer = _currPointer.parent;
+      }
+      setCurrPointer(_currPointer);
+    }
+  };
 </script>
 
 <template>
@@ -74,16 +94,16 @@
         @click.stop
       />
       <div v-else class="navigation-list" @click.stop>
-        <div v-for="item in pathItems" class="navigation-item">
-          <Popover pos="bottom" trigger-type="hover">
-            todo
-            <template #reference>
-              <div class="item-inner">
-                {{ item }}
-                <span class="iconfont" :class="['icon-xiangyou']"></span>
-              </div>
-            </template>
-          </Popover>
+        <div v-for="(item, index) in pathItems" class="navigation-item">
+          <div class="item-inner" @click.stop="onItemClick(index)">
+            {{ item }}
+            <Popover pos="bottom" trigger-type="click">
+              TODO:
+              <template #reference>
+                <span class="iconfont" :class="['icon-xiangyou']" @click.stop></span>
+              </template>
+            </Popover>
+          </div>
         </div>
       </div>
     </div>

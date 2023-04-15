@@ -14,7 +14,6 @@
 
 <style>
   .folder-body-navigation-wrapper {
-    overflow: hidden;
     display: flex;
     height: 40px;
     align-items: center;

@@ -157,5 +157,6 @@
   .popover-wrapper {
     position: relative;
     z-index: auto;
+    overflow: visible;
   }
 </style>

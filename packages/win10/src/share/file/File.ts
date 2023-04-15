@@ -1,22 +1,27 @@
+import { hour, minute, todayStr } from '@/share/time';
+
 export type Extension = 'mp4' | 'mp3' | 'html' | 'txt' | 'js' | 'ts' | 'css' | '';
 export const extensions: Extension[] = ['mp4', 'mp3', 'html', 'txt', 'js', 'ts', 'css', ''];
 
 export interface InitFileOpt {
   name: string;
   extension: Extension;
-  size: string;
+  size?: string;
+  createdAt?: string;
 }
 
 class Files {
   name: string;
   extension: Extension;
   size: string;
+  createdAt: string;
 
   constructor(initFileOpt: InitFileOpt) {
-    const { name, extension, size } = initFileOpt;
+    const { name, extension, size, createdAt } = initFileOpt;
     this.name = name;
     this.extension = extension;
-    this.size = size;
+    this.size = size || '0KB';
+    this.createdAt = createdAt || `${todayStr} ${hour.value}:${minute.value}`;
   }
 
   setName(newName: string) {

@@ -10,10 +10,12 @@ import {
 } from '.';
 import type { InitFileOpt, BinType } from '.';
 import { binData } from '@/config/bin-data';
+import { hour, minute, todayStr } from '@/share/time';
 
 export interface InitFolderOpt {
   name: string;
   children: (InitFileOpt | InitFolderOpt)[];
+  createdAt?: string;
 }
 
 // 禁止在 computed 使用递归
@@ -23,12 +25,14 @@ class Folder {
   size: string = '0KB';
   children: (Files | Folder)[] = [];
   parent: Folder | Desc;
+  createdAt: string;
 
   constructor(initFolderOpt: InitFolderOpt, parent: Folder | Desc) {
-    const { name, children } = initFolderOpt;
+    const { name, children, createdAt } = initFolderOpt;
 
     this.name = name;
     this.parent = parent;
+    this.createdAt = createdAt || `${todayStr} ${hour.value}:${minute.value}`;
 
     this.initChildren(children);
     this.initSize();
@@ -150,7 +154,7 @@ class Folder {
     return result;
   }
 
-  static findByPath(path: string): BinType | null {
+  static findByPath(path: string): Folder | Desc | null {
     const idxs = path.split('\\').filter((item) => item);
 
     const tarDesc = binData.find((item) => item.name.match(/[A-Z]:/)![0] === idxs[0]);
