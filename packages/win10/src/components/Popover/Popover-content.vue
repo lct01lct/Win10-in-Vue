@@ -106,15 +106,14 @@
         break;
       case 'bottom':
         left = leftMargin;
-        top = oContentHeight.value + topMargin;
+        top = oTriggerHeight.value + topMargin;
         break;
       case 'left':
         left = oTriggerWidth.value + leftMargin;
         top = topMargin;
         break;
-
       case `right`:
-        left = oContentWidth.value + leftMargin;
+        left = -oContentWidth.value + leftMargin;
         top = topMargin;
         break;
       default:
