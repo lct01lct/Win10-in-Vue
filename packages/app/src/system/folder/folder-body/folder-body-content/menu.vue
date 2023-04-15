@@ -2,6 +2,7 @@
   import { ORIGIN_MENU_DATA } from 'win10/src/config/bin-data';
   import MenuItem from './menu-item.vue';
   import type { SubscribeResizeMovingType, AppViewSizeOpt } from '../../../../';
+  import { isFile } from 'win10/src/share/file';
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
   const menuHeight = ref<number>(500 - 135);
@@ -19,7 +20,7 @@
       <template v-for="item in ORIGIN_MENU_DATA">
         <MenuItem
           :item="item"
-          v-if="!item.extensions"
+          v-if="!isFile(item) || !item.extension"
           :key="item.name"
           :leftOffset="leftOffset"
           :icon="item.icon"

@@ -1,12 +1,19 @@
 <script lang="ts" setup>
   import { Ref } from 'vue';
+  import { Pointer } from '../types';
 
-  import { Pointer } from '@/system/folder/types';
   const currPointer = inject<Ref<Pointer>>('currPointer');
+  const projectCount = computed(() => {
+    if (!currPointer) {
+      return null;
+    } else {
+      return currPointer.value.children.length;
+    }
+  });
 </script>
 
 <template>
-  <div class="guide-wrapper">{{ currPointer?.children.length }}个项目</div>
+  <div class="guide-wrapper">{{ Number(projectCount) }}个项目</div>
 </template>
 
 <style scoped>

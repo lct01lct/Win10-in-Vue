@@ -2,7 +2,7 @@
   import { Base, WinApp } from './../../';
   import FolderHeader from './folder-header.vue';
   import FolderBody from './folder-body/index.vue';
-  import { Pointer } from '@/system/folder/types';
+  import { Pointer } from './types';
   import { Folder } from 'win10/src/share/file';
 
   const winApp = inject<WinApp>('appInstance')!;

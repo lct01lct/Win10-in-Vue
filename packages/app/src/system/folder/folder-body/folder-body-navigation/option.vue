@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { Ref } from 'vue';
   import { Popover } from 'win10/src/components';
-  import { Pointer } from '@/system/folder/types';
+  import { Pointer } from '../../types';
 
   const backward = inject<() => void>('backward');
   const forward = inject<() => void>('forward');
