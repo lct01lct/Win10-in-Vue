@@ -6,6 +6,7 @@
   import { onClickOutside } from '@vueuse/core';
   import { Popover } from 'win10/src/components';
   import { Folder, Desc } from 'win10/src/share/file';
+  import { messageBox } from 'win10/src/components';
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
 
@@ -82,6 +83,30 @@
   const iptVal = ref(currPath.value);
   watch(currPath, (val) => {
     iptVal.value = val;
+  });
+
+  const onDocEnter = (e: KeyboardEvent) => {
+    const val = iptVal.value;
+    if (val && document.activeElement === iptRef.value && e.keyCode === 13) {
+      const resPointer = Folder.findByPath(val);
+      if (resPointer && currPointer) {
+        currPointer.value = resPointer;
+      } else {
+        messageBox({
+          title: '文件资源管理器',
+          content: val,
+          // cancelBtn: false,
+        });
+      }
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('keydown', onDocEnter);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener('keydown', onDocEnter);
   });
 </script>
 
