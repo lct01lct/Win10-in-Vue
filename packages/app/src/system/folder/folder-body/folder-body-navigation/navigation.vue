@@ -40,6 +40,14 @@
       }
     });
 
+    const descName = currPath.value.slice(0, 1);
+    let firstItem = '';
+    if (descName.toUpperCase() === 'D') firstItem = 'Data (D:)';
+    if (descName.toUpperCase() === 'C') firstItem = 'Windows (C:)';
+    if (firstItem) {
+      items.unshift(firstItem);
+    }
+
     return items;
   });
 
@@ -70,6 +78,11 @@
       setCurrPointer(_currPointer);
     }
   };
+
+  const iptVal = ref(currPath.value);
+  watch(currPath, (val) => {
+    iptVal.value = val;
+  });
 </script>
 
 <template>
@@ -88,7 +101,7 @@
       <input
         v-if="isFocus"
         type="text"
-        v-model="currPath"
+        v-model="iptVal"
         class="navigation-ipt"
         ref="iptRef"
         @click.stop

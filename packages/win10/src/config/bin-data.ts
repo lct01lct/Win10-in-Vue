@@ -1,5 +1,7 @@
 import { Desc, Folder } from '@/share/file';
 import quickVisitIcon from '@/assets/images/appPage/system-app/folder-app/quick-visit.png';
+import cDescIcon from '@/assets/images/appPage/system-app/folder-app/C-Desc.png';
+import dDescIcon from '@/assets/images/appPage/system-app/folder-app/D-Desc.png';
 
 const ORIGIN_DATA = [
   {
@@ -242,9 +244,18 @@ setTimeout(() => {
   const deskTopPointer = Folder.search('desktop')[0] as MenuItem;
   deskTopPointer.icon = quickVisitIcon;
   ORIGIN_MENU_DATA.push(deskTopPointer);
-}, 100);
+
+  const cDesc = Folder.findByPath('C:\\') as MenuItem;
+  cDesc.icon = cDescIcon;
+  ORIGIN_MENU_DATA.push(cDesc);
+
+  const dDesc = Folder.findByPath('D:\\') as MenuItem;
+  dDesc.icon = dDescIcon;
+  ORIGIN_MENU_DATA.push(dDesc);
+});
 
 export const binData = reactive(ORIGIN_DATA.map((item) => new Desc(item as any)));
+
 export const deskTopData = Desc.search('DeskTop')[0] as Folder;
 deskTopData.addFolder();
 

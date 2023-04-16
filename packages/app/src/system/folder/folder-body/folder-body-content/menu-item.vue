@@ -6,21 +6,19 @@
   import { isFile } from 'win10/src/share/file';
   import { Pointer } from '../../types';
 
-  defineProps({
-    item: {
-      type: Object as PropType<Pointer>,
-      required: true,
-    },
-    leftOffset: {
-      type: Number,
-      required: true,
-    },
-    icon: {
-      type: String,
-      default: fileEmptyIcon,
-    },
-  });
-  const childrenVisible = ref<boolean>(false);
+  const props = withDefaults(
+    defineProps<{
+      item: Pointer;
+      leftOffset: number;
+      icon?: string;
+      isExpand?: boolean;
+    }>(),
+    {
+      icon: fileEmptyIcon,
+      isExpand: false,
+    }
+  );
+  const childrenVisible = ref<boolean>(props.isExpand);
   const setCurrPointer = inject<(pointer: Pointer) => void>('setCurrPointer');
 </script>
 
@@ -39,13 +37,13 @@
       <span v-if="childrenVisible" class="iconfont icon-xiangxia"></span>
       <span v-else class="iconfont icon-xiangyou"></span>
     </span>
-    <span v-else :style="{ marginLeft: 16 + leftOffset * 10 + 'px' }"></span>
+    <span v-else :style="{ marginLeft: 17 + leftOffset * 10 + 'px' }"></span>
 
     <span class="menu-item-title">
       <Icon class="menu-item-icon" :width="20" :height="20">
         <img :src="icon" alt="" />
       </Icon>
-      {{ item.name.toLowerCase() === 'desktop' ? '快速访问' : item.name }}
+      {{ item.name.toLowerCase() === 'desktop' && !leftOffset ? '快速访问' : item.name }}
     </span>
   </li>
   <template v-if="item.children.length && childrenVisible">

@@ -24,6 +24,7 @@
           :key="item.name"
           :leftOffset="leftOffset"
           :icon="item.icon"
+          :isExpand="true"
         ></MenuItem>
       </template>
     </ul>

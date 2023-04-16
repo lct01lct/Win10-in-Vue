@@ -87,7 +87,7 @@
           </td>
           <td>{{ item.createdAt }}</td>
           <td>{{ isFile(item) ? item.extension : '文件夹' }}</td>
-          <td>{{ item.size }}</td>
+          <td>{{ parseInt(item.size) + 'kb' }}</td>
         </tr>
       </tbody>
 
