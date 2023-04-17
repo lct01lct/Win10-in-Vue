@@ -135,6 +135,22 @@ class Folder {
     index > -1 && this.children.splice(index, 1);
   }
 
+  hasParentFolder(pointer: Folder | Desc) {
+    let flag = false;
+    let _pointer = pointer;
+
+    while (_pointer.parent) {
+      if (_pointer.parent === pointer) {
+        flag = true;
+        break;
+      } else {
+        _pointer = _pointer.parent;
+      }
+    }
+
+    return flag;
+  }
+
   get path(): string {
     return `${this.parent.path}${this.name}\\`;
   }

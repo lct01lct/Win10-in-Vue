@@ -8,6 +8,8 @@
   import { Folder, Desc } from 'win10/src/share/file';
   import { messageBox } from 'win10/src/components';
   import { Alert } from 'win10/src/components';
+  import { Pointer } from '../../types';
+  import { isFolder } from 'win10/src/share/file';
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
 
@@ -69,15 +71,24 @@
     });
   });
 
-  const onItemClick = (index: number) => {
-    if (currPointer && setCurrPointer) {
+  const findPointer = (index: number) => {
+    if (currPointer) {
       let forwardCount = pathItems.value.length - 1 - index;
       let _currPointer = currPointer.value;
 
       while (forwardCount--) {
         _currPointer = _currPointer.parent;
       }
-      setCurrPointer(_currPointer);
+
+      return _currPointer;
+    }
+  };
+
+  const onItemClick = (index: number) => {
+    const pointer = findPointer(index);
+
+    if (pointer && setCurrPointer) {
+      setCurrPointer(pointer);
     }
   };
 
@@ -97,26 +108,36 @@
           title: '文件资源管理器',
           content: h(
             Alert,
-            {
-              style: {
-                padding: '15px',
-              },
-            },
+            { style: { padding: '15px' } },
             { default: () => `Windows 找不到"${val}"。请检查拼写并重试。` }
           ),
           cancelBtn: false,
+        }).finally(() => {
+          iptVal.value = currPointer?.value.path;
         });
       }
     }
   };
 
-  onMounted(() => {
-    document.addEventListener('keydown', onDocEnter);
-  });
+  const expandItem = ref<Pointer[]>([]);
+  const expandPointerParent = ref<Pointer>();
 
-  onUnmounted(() => {
-    document.removeEventListener('keydown', onDocEnter);
-  });
+  // TODO:
+
+  const onExpandItemClick = (index: number) => {
+    const parentFolder = findPointer(index);
+    const folderPointer = parentFolder?.children.filter((item) => isFolder(item));
+
+    if (folderPointer) {
+      expandItem.value = folderPointer as Pointer[];
+      if (index + 1) {
+      }
+      expandPointerParent.value = findPointer(index + 1);
+    }
+  };
+
+  onMounted(() => document.addEventListener('keydown', onDocEnter));
+  onUnmounted(() => document.removeEventListener('keydown', onDocEnter));
 </script>
 
 <template>
@@ -145,9 +166,17 @@
           <div class="item-inner" @click.stop="onItemClick(index)">
             {{ item }}
             <Popover pos="bottom" trigger-type="click">
-              TODO:
+              <div>
+                <div v-for="item in expandItem">
+                  {{ item.name }}
+                </div>
+              </div>
               <template #reference>
-                <span class="iconfont" :class="['icon-xiangyou']" @click.stop></span>
+                <span
+                  class="iconfont"
+                  :class="['icon-xiangyou']"
+                  @click="onExpandItemClick(index)"
+                ></span>
               </template>
             </Popover>
           </div>

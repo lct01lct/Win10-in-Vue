@@ -7,12 +7,11 @@ export const useDebounce = (trailingFn: () => void, delay: number, immediatelyFn
 
     if (flag) {
       clearTimeout(timerId);
-    } else {
-      timerId = window.setTimeout(() => {
-        trailingFn();
-        flag = false;
-      }, delay);
     }
+    timerId = window.setTimeout(() => {
+      trailingFn();
+      flag = false;
+    }, delay);
 
     flag = true;
   };
