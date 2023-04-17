@@ -13,7 +13,7 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "baseUrl": "./",
-    "types": ["vite/client", "node"],
+    "types": ["node"],
     "paths": {
       "@/*": ["src/*"]
     }

@@ -7,6 +7,7 @@
   import { Popover } from 'win10/src/components';
   import { Folder, Desc } from 'win10/src/share/file';
   import { messageBox } from 'win10/src/components';
+  import { Alert } from 'win10/src/components';
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
 
@@ -94,8 +95,16 @@
       } else {
         messageBox({
           title: '文件资源管理器',
-          content: val,
-          // cancelBtn: false,
+          content: h(
+            Alert,
+            {
+              style: {
+                padding: '15px',
+              },
+            },
+            { default: () => `Windows 找不到"${val}"。请检查拼写并重试。` }
+          ),
+          cancelBtn: false,
         });
       }
     }

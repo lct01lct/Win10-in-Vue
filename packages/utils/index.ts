@@ -6,3 +6,4 @@ export * from './vue-utils';
 export * from './anime';
 export * from './dom';
 export * from './proxy';
+export * from './hook';

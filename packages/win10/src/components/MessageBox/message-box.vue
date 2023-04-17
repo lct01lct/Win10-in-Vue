@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-  import { CSSProperties, VNode } from 'vue';
   import { State } from '.';
   import { useZIndex } from '@/config';
   import { Btn } from '../';
+  import { WinCloseBtn } from '@/components';
+  import type { DragBindingValue } from 'utils';
+  import { useDebounce } from 'utils';
 
   const props = withDefaults(
     defineProps<{
       title?: string;
-      content?: VNode | string;
+      content?: any;
       cancelBtn?: string | boolean;
       confirmBtn?: string | boolean;
       appendTo: HTMLElement | null;
@@ -55,10 +57,27 @@
 
   const watchStateEvents: ((state: State) => void)[] = [];
 
+  const vDragOpt: DragBindingValue = {
+    tar: '.message-box-outer',
+  };
+
   watch(state, (_state) => {
-    console.log(_state);
     watchStateEvents.forEach((fn) => fn(_state));
   });
+
+  const isClickOuter = ref(false);
+
+  const { debounced, clearup } = useDebounce(
+    () => (isClickOuter.value = false),
+    1000,
+    () => (isClickOuter.value = true)
+  );
+
+  const onOuterClick = debounced;
+  const onWrapperClick = () => {
+    isClickOuter.value = false;
+    clearup();
+  };
 
   onMounted(() => {
     zIndexConfig.remove();
@@ -74,17 +93,23 @@
   <div
     class="message-box-outer"
     ref="outerRef"
-    @click.stop
+    @click.stop="onOuterClick"
     @mouseenter.stop
     @mouseleave.stop
     @mousedown.stop
   >
-    <div class="meesage-box-wrapper" :style="{ width: width + 'px' }">
+    <div
+      class="meesage-box-wrapper"
+      v-drag="vDragOpt"
+      :style="{ width: width + 'px' }"
+      :class="isClickOuter && 'blink'"
+      @click.stop="onWrapperClick"
+    >
       <div class="message-box__header">
         <div class="header-title">
           {{ title }}
         </div>
-        <div class="close-btn" @click.stop="state = 'close'">X</div>
+        <WinCloseBtn class="close-btn" @click="state = 'close'"></WinCloseBtn>
       </div>
       <div class="message-box__content">
         <ContentVue></ContentVue>
@@ -115,6 +140,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      color: #000 !important;
 
       .message-box__header {
         padding-left: 5px;
@@ -136,6 +162,8 @@
         .message-box__button {
           background-color: #e1e1e1;
           border: 2px solid #0078d7;
+          font-size: 12px;
+          padding: 0 10px;
         }
 
         .confirm-btn {
@@ -146,6 +174,21 @@
           margin-right: 20px;
         }
       }
+    }
+  }
+
+  .close-btn {
+    height: 20px;
+  }
+
+  .blink {
+    animation: blink 0.2s infinite steps(1);
+  }
+  @keyframes blink {
+    50% {
+      color: transparent;
+      border-color: transparent;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
   }
 </style>

@@ -1,5 +1,6 @@
-import { App, VNode, ComponentPublicInstance, Ref } from 'vue';
+import { App, VNode, ComponentPublicInstance } from 'vue';
 import MessageBox from './message-box.vue';
+import installDirective from 'utils/vue-utils/directives';
 
 interface MessageBoxOpt {
   title?: string;
@@ -20,13 +21,14 @@ const messageBox = (option: MessageBoxOpt) => {
   ) as HTMLElement | null;
 
   const messageBoxApp = createApp(MessageBox, { ...option, appendTo: oWrapper });
+  installDirective(messageBoxApp);
 
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<State>((resolve, reject) => {
     showMessageBox(messageBoxApp, oWrapper, resolve, reject, option);
   });
 };
 
-type PromiseExecutorParams = Parameters<ConstructorParameters<typeof Promise<string>>[0]>;
+type PromiseExecutorParams = Parameters<ConstructorParameters<typeof Promise<State>>[0]>;
 type MessageBoxVm = ComponentPublicInstance & { watchState: (fn: (state: State) => void) => void };
 export type State = 'confirm' | 'cancel' | 'none' | 'close';
 
