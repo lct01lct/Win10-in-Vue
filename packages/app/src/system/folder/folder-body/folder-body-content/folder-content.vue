@@ -51,10 +51,10 @@
 
 <template>
   <div class="folder-content-wrapper" @click="clearSelectedFoldersAndFiles">
-    <div class="table-wrapper">
-      <thead class="table-header">
+    <table class="folder-content-table-wrapper">
+      <thead class="folder-content-table-header">
         <td
-          class="header-item"
+          class="folder-content-table-header-item"
           v-for="item in headerItemsConfig"
           :class="item.className"
           :style="{ minWidth: item.width + 'px' }"
@@ -62,6 +62,9 @@
           {{ item.title }}
         </td>
       </thead>
+
+      <br />
+
       <tbody v-if="currPointer?.children.length">
         <tr
           v-for="item in currPointer?.children"
@@ -70,7 +73,7 @@
           @click.stop="onItemClick(item)"
           @dblclick.stop="onItemBblClick(item)"
         >
-          <td class="cell name">
+          <td class="folder-content-table-cell name">
             <Icon :height="20" :width="20" :style="{ marginRight: '5px' }">
               <img
                 v-if="isFile(item)"
@@ -92,7 +95,7 @@
       </tbody>
 
       <div v-else class="table--empty">此文件夹为空。</div>
-    </div>
+    </table>
   </div>
 </template>
 
@@ -100,17 +103,19 @@
   .folder-content-wrapper {
     flex: 1;
 
-    .table-wrapper {
+    .folder-content-table-wrapper {
+      height: fit-content;
       padding: 10px;
+      padding-left: 20px;
+
       color: #acacac;
       font-size: 13px;
-      .table-header {
+      .folder-content-table-header {
         font-size: 12px;
         color: #4c607a;
-        .header-item {
+        .folder-content-table-header-item {
           height: 24px;
           padding: 0;
-          padding-left: 10px;
           &:nth-child(n + 2) {
             border-left: 1px solid #e5e5e5;
           }
@@ -124,7 +129,7 @@
         text-align: center;
       }
 
-      .cell.name {
+      .folder-content-table-cell.name {
         display: flex;
         align-items: center;
         color: #000;

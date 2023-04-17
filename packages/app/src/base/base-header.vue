@@ -8,6 +8,9 @@
   import { animation } from 'utils';
   import { removeTaskBarTriggerItem, toggleZIndex } from './taskBar';
   import type { DragBindingValue } from 'utils';
+  import type { ResizeMoveingScbscriber } from '../';
+
+  const resizeMovingSubscribers = inject<ResizeMoveingScbscriber[]>('resizeMovingSubscribers');
 
   const props = defineProps({
     appViewSize: {
@@ -59,21 +62,26 @@
 
   const onMaximizeBtnClick = () => {
     const { isFull } = getWinAppScope(props.appRef!);
+    const params: AppViewSizeOpt = {};
     isFull.value = !isFull.value;
     if (!isFullScreen.value) {
       oldAppViewSize.width = props.appViewSize.width;
       oldAppViewSize.height = props.appViewSize.height;
       oldAppViewSize.left = props.appViewSize.left;
       oldAppViewSize.top = props.appViewSize.top;
-      emits('setAppViewSize', { width: maxAppWidth, height: maxAppHeight, top: 0, left: 0 });
+      Object.assign(params, { width: maxAppWidth, height: maxAppHeight, top: 0, left: 0 });
     } else {
-      emits('setAppViewSize', {
+      Object.assign(params, {
         width: oldAppViewSize.width,
         height: oldAppViewSize.height,
         left: oldAppViewSize.left,
         top: oldAppViewSize.top,
       });
     }
+    emits('setAppViewSize', params);
+    resizeMovingSubscribers?.map((fn) => {
+      fn(params as Required<AppViewSizeOpt>);
+    });
   };
 
   const onCloseBtnClick = () => {
@@ -108,7 +116,7 @@
 </script>
 
 <template>
-  <div class="app-header-wrapper" v-drag="vDragOpt">
+  <div class="app-header-wrapper" v-drag="vDragOpt" @dblclick="onMaximizeBtnClick">
     <div class="app-header-left-wrapper">
       <slot></slot>
     </div>

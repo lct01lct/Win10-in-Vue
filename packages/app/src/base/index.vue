@@ -103,6 +103,7 @@
 
   provide('appViewSize', appViewSize);
   provide('subscribeResizeMoving', subscribeResizeMoving);
+  provide('resizeMovingSubscribers', resizeMovingSubscribers);
 </script>
 
 <template>
