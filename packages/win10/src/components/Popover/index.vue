@@ -121,7 +121,7 @@
 </script>
 
 <template>
-  <div class="popover-wrapper" ref="popoverRef">
+  <div class="popover-wrapper" ref="popoverRef" @click.stop>
     <Transition
       @beforeEnter="beforeEnter"
       @enter="enter"

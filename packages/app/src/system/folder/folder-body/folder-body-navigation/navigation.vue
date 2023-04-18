@@ -146,6 +146,15 @@
     }
   };
 
+  const expandPopverRefs = ref<InstanceType<typeof Popover>[]>([]);
+
+  const expandItemClick = (pointer: Pointer, index: number) => {
+    if (currPointer) {
+      currPointer.value = pointer;
+      expandPopverRefs.value[index]?.close();
+    }
+  };
+
   onMounted(() => document.addEventListener('keydown', onDocEnter));
   onUnmounted(() => document.removeEventListener('keydown', onDocEnter));
 </script>
@@ -175,12 +184,18 @@
         <div v-for="(item, index) in pathItems" class="navigation-item">
           <div class="item-inner" @click.stop="onItemClick(index)">
             {{ item }}
-            <Popover v-if="hasExpandList(index)" pos="bottom" :left-margin="-40">
+            <Popover
+              v-if="hasExpandList(index)"
+              pos="bottom"
+              :left-margin="-40"
+              ref="expandPopverRefs"
+            >
               <div class="expand-list">
                 <div
                   v-for="item2 in expandItem"
                   class="expand-item"
                   :class="getExpandItemClass(item2 as Pointer, index)"
+                  @click="expandItemClick(item2 as Pointer, index)"
                 >
                   <Icon :width="14" :height="14" :style="{ marginRight: '15px' }">
                     <img
