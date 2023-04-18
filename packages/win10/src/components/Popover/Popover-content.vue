@@ -86,8 +86,8 @@
       oContentWidth.value = parseInt(computedStyleOfContent.width);
       oContentHeight.value = parseInt(computedStyleOfContent.height);
 
-      oWrap.style.width = oContent.clientWidth + 'px';
-      oWrap.style.height = oContent.clientHeight + 'px';
+      oWrap.style.width = computedStyleOfContent.width;
+      oWrap.style.height = computedStyleOfContent.height;
       const styles = getStyles(pos);
 
       oWrap.style.left = `${styles.left}px`;

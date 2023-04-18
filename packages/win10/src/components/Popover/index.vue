@@ -164,5 +164,8 @@
     position: relative;
     z-index: auto;
     overflow: visible;
+    .popover-reference {
+      display: flex;
+    }
   }
 </style>

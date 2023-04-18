@@ -169,8 +169,13 @@
           <div class="item-inner" @click.stop="onItemClick(index)">
             {{ item }}
             <Popover v-if="hasExpandList(index)" pos="bottom">
-              <div>
-                <div v-for="item in expandItem">
+              <div class="expand-list">
+                <div v-for="item in expandItem" class="expand-item">
+                  <Icon :width="12" :height="12">
+                    <img
+                      src="../../../../assets/images/appPage/system-app/folder-app/file-full.png"
+                    />
+                  </Icon>
                   {{ item.name }}
                 </div>
               </div>
@@ -240,7 +245,7 @@
           }
 
           .iconfont {
-            padding: 0 4px;
+            padding: 6px 4px;
             font-size: 12px;
           }
         }
@@ -282,6 +287,18 @@
         border: 1px solid #005499;
         background-color: #cce4f7;
       }
+    }
+  }
+
+  .expand-list {
+    border: 1px solid #000;
+    background-color: #f2f2f2;
+    .expand-item {
+      padding: 2px;
+      padding-right: 100px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
     }
   }
 </style>
