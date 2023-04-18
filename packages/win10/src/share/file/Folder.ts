@@ -136,19 +136,17 @@ class Folder {
   }
 
   hasParentFolder(pointer: Folder | Desc) {
-    let flag = false;
-    let _pointer = pointer;
+    let _pointer: Folder | Desc = this;
 
-    while (_pointer.parent) {
-      if (_pointer.parent === pointer) {
-        flag = true;
-        break;
+    while (_pointer) {
+      if (_pointer === pointer) {
+        return true;
       } else {
         _pointer = _pointer.parent;
       }
     }
 
-    return flag;
+    return false;
   }
 
   get path(): string {

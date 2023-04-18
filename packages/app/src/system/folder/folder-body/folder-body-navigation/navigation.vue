@@ -31,7 +31,7 @@
 
   const currPointer = inject<Ref<Folder | Desc>>('currPointer');
   const pathItems = computed(() => {
-    if (!currPath.value) return '';
+    if (!currPath.value) return [];
     const items = currPath.value
       .slice(3)
       .split('\\')
@@ -139,6 +139,13 @@
     }
   };
 
+  const getExpandItemClass = (pointer: Pointer, index: number) => {
+    if (index >= pathItems.value.length - 1) return '';
+    if (pointer) {
+      return currPointer?.value.hasParentFolder(pointer) ? 'hasPointer' : '';
+    }
+  };
+
   onMounted(() => document.addEventListener('keydown', onDocEnter));
   onUnmounted(() => document.removeEventListener('keydown', onDocEnter));
 </script>
@@ -168,15 +175,19 @@
         <div v-for="(item, index) in pathItems" class="navigation-item">
           <div class="item-inner" @click.stop="onItemClick(index)">
             {{ item }}
-            <Popover v-if="hasExpandList(index)" pos="bottom">
+            <Popover v-if="hasExpandList(index)" pos="bottom" :left-margin="-40">
               <div class="expand-list">
-                <div v-for="item in expandItem" class="expand-item">
-                  <Icon :width="12" :height="12">
+                <div
+                  v-for="item2 in expandItem"
+                  class="expand-item"
+                  :class="getExpandItemClass(item2 as Pointer, index)"
+                >
+                  <Icon :width="14" :height="14" :style="{ marginRight: '15px' }">
                     <img
                       src="../../../../assets/images/appPage/system-app/folder-app/file-full.png"
                     />
                   </Icon>
-                  {{ item.name }}
+                  {{ item2.name }}
                 </div>
               </div>
               <template #reference>
@@ -293,12 +304,22 @@
   .expand-list {
     border: 1px solid #000;
     background-color: #f2f2f2;
+    max-height: 200px;
+    overflow-y: auto;
     .expand-item {
-      padding: 2px;
-      padding-right: 100px;
+      padding: 2px 100px 2px 5px;
       font-size: 12px;
       display: flex;
       align-items: center;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: #c3def5;
+      }
+    }
+
+    .hasPointer {
+      font-weight: 700;
     }
   }
 </style>
