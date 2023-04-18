@@ -3,6 +3,7 @@ import { AnimationDir } from './trigger';
 
 const beforeEnterAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined) => {
   const styles = getOffset(el);
+
   switch (dir) {
     case 'top':
       el.style.transform = `translateY(${styles.height}px)`;
@@ -82,10 +83,17 @@ const LeaveAnimeHandler = (el: HTMLElement, dir: AnimationDir | undefined, done:
 };
 
 const getOffset = (el: HTMLElement): { width: number; height: number } => {
-  const styles = window.getComputedStyle(el, null);
+  let width = 0;
+  let height = 0;
+
+  if (el) {
+    const styles = window.getComputedStyle(el, null);
+    width = parseInt(styles.width);
+    height = parseInt(styles.height);
+  }
   return {
-    width: parseInt(styles.width),
-    height: parseInt(styles.height),
+    width,
+    height,
   };
 };
 

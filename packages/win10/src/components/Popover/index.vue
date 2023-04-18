@@ -116,7 +116,11 @@
   defineExpose({
     close: () => {
       setVisible(false);
+      _leave(() => {
+        setClickCount(0);
+      });
     },
+    visible,
   });
 </script>
 

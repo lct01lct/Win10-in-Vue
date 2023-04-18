@@ -10,6 +10,7 @@
   import { Alert } from 'win10/src/components';
   import { Pointer } from '../../types';
   import { isFolder } from 'win10/src/share/file';
+  import throttle from 'lodash/throttle';
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
 
@@ -155,6 +156,42 @@
     }
   };
 
+  const inVisibleRef = ref<HTMLElement>();
+  const appendPopoverRef = ref<InstanceType<typeof Popover>>();
+
+  let visibleAppendPopover = false;
+  const appendListRef = ref<HTMLElement>();
+
+  const appendIconClick = throttle(async () => {
+    if (visibleAppendPopover) {
+      visibleAppendPopover = false;
+      // 1. There cannot call close()
+      // 2. because click appendIcon equal outside click
+      // 3. Clicking appendIcon is able to trigger inVisibleBtn
+      // appendPopoverRef.value?.close();
+    } else {
+      visibleAppendPopover = true;
+      inVisibleRef?.value?.click();
+    }
+  }, 400);
+
+  const appendBtnRef = ref<HTMLElement>();
+  onMounted(() => {
+    onClickOutside(appendListRef, (e: Event) => {
+      if (!(appendBtnRef.value && e.composedPath().includes(appendBtnRef.value))) {
+        visibleAppendPopover = false;
+      }
+    });
+  });
+
+  const onAppendItemClick = (pointer: Pointer) => {
+    if (currPointer) {
+      currPointer.value = pointer;
+      appendPopoverRef.value?.close();
+      visibleAppendPopover = false;
+    }
+  };
+
   onMounted(() => document.addEventListener('keydown', onDocEnter));
   onUnmounted(() => document.removeEventListener('keydown', onDocEnter));
 </script>
@@ -217,9 +254,38 @@
         </div>
       </div>
     </div>
-    <button class="append-icon" @click="isActive = true" :class="[isActive ? 'isActive' : '']">
+
+    <button
+      class="append-icon"
+      @click="appendIconClick"
+      :class="[isActive ? 'isActive' : '']"
+      ref="appendBtnRef"
+    >
       <span class="iconfont icon-xiangxia"></span>
     </button>
+
+    <Popover pos="bottom" ref="appendPopoverRef" animation-dir="bottom">
+      <div
+        class="append-list"
+        ref="appendListRef"
+        :style="{
+          width: iptWidth + 25 + 'px',
+        }"
+      >
+        <template v-for="item in currPointer?.children" :key="item">
+          <div class="append-item" v-if="isFolder(item)" @click.stop="onAppendItemClick(item)">
+            <Icon :width="14" :height="14">
+              <img src="../../../../assets/images/appPage/system-app/folder-app/file-empty.png" />
+            </Icon>
+            {{ item.path }}
+          </div>
+        </template>
+      </div>
+      <template #reference>
+        <span ref="inVisibleRef"></span>
+      </template>
+    </Popover>
+
     <button class="reload-icon">
       <span class="iconfont icon-shuaxin"></span>
     </button>
@@ -280,7 +346,7 @@
 
     .append-icon,
     .reload-icon {
-      display: flex;
+      display: inline-flex;
       justify-content: center;
       align-items: center;
       position: absolute;
@@ -306,7 +372,7 @@
     .reload-icon {
       right: -30px;
       width: 30px;
-      height: 29px;
+
       border: 1px solid #ccc;
       font-weight: 700;
       &:hover {
@@ -320,7 +386,7 @@
     border: 1px solid #000;
     background-color: #f2f2f2;
     max-height: 200px;
-    overflow-y: auto;
+
     .expand-item {
       padding: 2px 100px 2px 5px;
       font-size: 12px;
@@ -335,6 +401,25 @@
 
     .hasPointer {
       font-weight: 700;
+    }
+  }
+
+  .append-list {
+    border: 1px solid #0078d7;
+    background-color: #fff;
+    font-size: 12px;
+    overflow-y: auto;
+    min-height: 16px;
+    max-height: 200px;
+    overflow: auto;
+    .append-item {
+      display: flex;
+      align-items: center;
+      padding: 1px;
+      &:hover {
+        color: #fff;
+        background-color: #0078d7;
+      }
     }
   }
 </style>
