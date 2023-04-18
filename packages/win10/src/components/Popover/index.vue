@@ -145,7 +145,7 @@
     </Transition>
 
     <div
-      @click="onClick"
+      @click.stop="onClick"
       class="popover-reference"
       ref="triggerRef"
       @mouseenter="onHover"

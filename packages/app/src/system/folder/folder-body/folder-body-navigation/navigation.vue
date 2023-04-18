@@ -76,7 +76,7 @@
       let forwardCount = pathItems.value.length - 1 - index;
       let _currPointer = currPointer.value;
 
-      while (forwardCount--) {
+      while (forwardCount-- && _currPointer.parent) {
         _currPointer = _currPointer.parent;
       }
 
@@ -122,7 +122,10 @@
   const expandItem = ref<Pointer[]>([]);
   const expandPointerParent = ref<Pointer>();
 
-  // TODO:
+  const hasExpandList = (index: number) => {
+    const pointer = findPointer(index);
+    return pointer?.children.some((item) => isFolder(item));
+  };
 
   const onExpandItemClick = (index: number) => {
     const parentFolder = findPointer(index);
@@ -131,8 +134,8 @@
     if (folderPointer) {
       expandItem.value = folderPointer as Pointer[];
       if (index + 1) {
+        expandPointerParent.value = findPointer(index + 1);
       }
-      expandPointerParent.value = findPointer(index + 1);
     }
   };
 
@@ -165,7 +168,7 @@
         <div v-for="(item, index) in pathItems" class="navigation-item">
           <div class="item-inner" @click.stop="onItemClick(index)">
             {{ item }}
-            <Popover pos="bottom" trigger-type="click">
+            <Popover v-if="hasExpandList(index)" pos="bottom">
               <div>
                 <div v-for="item in expandItem">
                   {{ item.name }}

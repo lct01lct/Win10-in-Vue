@@ -10,6 +10,8 @@
     class="win-close-btn-wrapper close-btn"
     @mouseenter="closeBtnIsActive = !closeBtnIsActive"
     @mouseleave="closeBtnIsActive = !closeBtnIsActive"
+    @mousedown.stop
+    @mousemove.stop
   >
     <Icon :height="12" :width="12">
       <img v-if="!closeBtnIsActive" src="@/assets/images/base-components/close.png" alt="" />
