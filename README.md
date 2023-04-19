@@ -20,7 +20,10 @@ win-10-vue 面向开发者提供了完整的 `api` 可以轻松集成 `app` 级�
 2. 安装依赖：`pnpm install`
 3. 运行项目： `pnpm dev`
 
-本项目使用 `monorepo 架构`，可以在 `packages/` 路径下创建一个文件夹作为你的开发目录
+创建开发根目录：
+
+1. 方式 1：本项目使用 `monorepo 架构`，可以在 `packages/` 路径下创建一个文件夹作为你的开发根目录
+2. 方式 2：`packages/app` 中拥有一个完整的 vue 项目基础，另外 `packages/app/src` 这个路径下的所有文件享受到 vite 的配置，可以不用创建那些复杂的环境
 
 ##### 2.1.2 Base
 
