@@ -65,7 +65,7 @@ const app = new WinApp({
 import Logo from './assets/logo.png';
 ```
 
-引用: [静态资源处理 | Vite (vitejs.net)](https://www.vitejs.net/guide/assets.html)
+引用：[静态资源处理 | Vite (vitejs.net)](https://www.vitejs.net/guide/assets.html)
 
 ##### 2.1.4 桌面上的快件方式
 
