@@ -330,6 +330,7 @@
             display: flex;
             align-items: center;
             height: 25px;
+            white-space: nowrap;
           }
 
           &:hover {
