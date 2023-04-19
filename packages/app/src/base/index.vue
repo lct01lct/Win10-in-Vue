@@ -10,6 +10,11 @@
   import { taskBarTriggerList } from './taskBar';
   import { toggleZIndex } from './taskBar';
 
+  const props = defineProps<{
+    appLogo?: string;
+    appName?: string;
+  }>();
+
   const appRef = ref<WinAppDOM>();
   const isShow = ref<boolean>(true);
   const appName = inject<string>('appName')!;
@@ -117,13 +122,25 @@
     v-resize="vResizeOpt"
   >
     <BaseHeader
+      v-if="$slots.header"
       :appViewSize="appViewSize"
       @setAppViewSize="setAppViewSize"
       :appRef="appRef!"
       v-model:isShow="isShow"
+      :appName="props.appName"
+      :appLogo="props.appLogo"
     >
       <slot name="header"></slot>
     </BaseHeader>
+    <BaseHeader
+      v-else-if="props.appName || props.appLogo"
+      :appViewSize="appViewSize"
+      @setAppViewSize="setAppViewSize"
+      :appRef="appRef!"
+      v-model:isShow="isShow"
+      :appName="props.appName"
+      :appLogo="props.appLogo"
+    ></BaseHeader>
     <BaseBody>
       <slot name="body"></slot>
     </BaseBody>

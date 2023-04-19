@@ -24,6 +24,12 @@
       type: Boolean,
       required: true,
     },
+    appName: {
+      type: String,
+    },
+    appLogo: {
+      type: String,
+    },
   });
 
   const emits = defineEmits(['setAppViewSize', 'update:isShow']);
@@ -118,7 +124,19 @@
 <template>
   <div class="app-header-wrapper" v-drag="vDragOpt" @dblclick="onMaximizeBtnClick">
     <div class="app-header-left-wrapper">
-      <slot></slot>
+      <template v-if="props.appName || props.appLogo">
+        <div class="app-header-inner">
+          <Icon :size="18" v-if="props.appLogo" :style="{ marginRight: '5px' }">
+            <img :src="props.appLogo" alt="" />
+          </Icon>
+          <template v-if="props.appName">
+            {{ props.appName }}
+          </template>
+        </div>
+      </template>
+      <template v-else-if="$slots.default">
+        <slot></slot>
+      </template>
     </div>
     <div class="app-header-right-wrapper" @mousedown.stop @mouseleave.stop>
       <div class="app-view-opt-item minimize-btn" @click="onMinimizeBtnClick">
@@ -172,5 +190,12 @@
         }
       }
     }
+  }
+
+  .app-header-inner {
+    margin: 0 5px;
+    display: flex;
+    font-size: 12px;
+    align-items: center;
   }
 </style>

@@ -12,11 +12,18 @@
       type: Number,
       default: 25,
     },
+    size: {
+      type: Number,
+    },
   });
 </script>
 
 <template>
-  <div alt="" :class="className + ' system-icon'" :style="`width: ${width}px; height: ${height}px`">
+  <div
+    alt=""
+    :class="className + ' system-icon'"
+    :style="`width: ${size || width}px; height: ${size || height}px`"
+  >
     <slot></slot>
   </div>
 </template>
