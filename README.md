@@ -8,7 +8,7 @@
 
 ##### 1.1 Base
 
-packages `app` 提供一个 `<Base />`，将这个组件包裹在你的 app 应用上，就可以 `Win10` 获取到你的 app 应用的信息
+packages `app` 提供一个 `<Base />`，将这个组件包裹在你的 app 应用上，`<Base />` 暴露两个插槽，分别用于控制你的 app 不同部分的内容
 
 ```ts
 import { Base } from 'app';
@@ -40,7 +40,7 @@ const app = new WinApp({
 });
 ```
 
-注意 `win10` 项目是根据 vite 创建出来的，如果 `icon` 不生效，很可能是 `icon` 并不是静态资源，你需要通过 `vite` 的方式进行额外处理
+注意 `win10` 项目是根据 vite 创建出来的，如果 `icon` 不生效，很可能是 `icon` 并不是静态资源，需要通过 `vite` 的方式进行额外处理
 
 ```ts
 import Logo from './assets/logo.png';
@@ -48,7 +48,7 @@ import Logo from './assets/logo.png';
 
 引用: [静态资源处理 | Vite (vitejs.net)](https://www.vitejs.net/guide/assets.html)
 
-##### 1.3 创建在桌面
+##### 1.3 桌面上的快件方式
 
 ```ts
 import Logo from './assets/logo.png';
@@ -56,6 +56,8 @@ const name = '应用名称';
 
 app.createShortcut(Logo, name);
 ```
+
+`createShortcut()` 方法可以在桌面上创建一个快捷方式
 
 ### 2. 设置 app 头部
 
