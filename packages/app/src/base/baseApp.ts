@@ -1,6 +1,6 @@
 import { App, Component, Ref } from 'vue';
 import { animation } from 'utils';
-import { addTaskBarTriggerItem, toggleZIndex } from './taskBar';
+import { addTaskBarTriggerItem, toggleZIndex, taskBarTriggerList } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
 import WinApp from '../app';
 import installDirective from 'utils/vue-utils/directives';
@@ -49,7 +49,8 @@ class BaseApp {
 
     if (!this._isRender) {
       // 必须先生成 taskBarList 中的 zIndex 信息
-      const zIndex = [...compMap.keys()].indexOf(this.name) + 1;
+      const zIndex = taskBarTriggerList.length + 1;
+
       renderTiggerInTaskBar({
         iconPath: this._logo,
         name: this.name,

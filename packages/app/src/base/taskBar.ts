@@ -24,12 +24,14 @@ export const toggleZIndex = (tar: string | HTMLElement) => {
 
   if (index === -1) return;
 
+  const triggerItem = taskBarTriggerList[index];
   const oldZIndex = taskBarTriggerList[index].zIndex;
 
   taskBarTriggerList.forEach((item) => {
-    if (item.zIndex > oldZIndex) {
+    if (item.zIndex >= oldZIndex && item !== triggerItem) {
       item.zIndex--;
     }
   });
-  taskBarTriggerList[index].zIndex = openedAppLen;
+
+  triggerItem.zIndex = openedAppLen;
 };

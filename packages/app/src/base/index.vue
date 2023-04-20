@@ -118,7 +118,8 @@
     :style="getAppStyle()"
     ref="appRef"
     v-show="isShow"
-    @click="onAppClick"
+    @click.stop
+    @click.capture="onAppClick"
     v-resize="vResizeOpt"
   >
     <BaseHeader
@@ -153,5 +154,7 @@
     box-shadow: 0 0 4px #848383;
     background-color: #fff;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 </style>

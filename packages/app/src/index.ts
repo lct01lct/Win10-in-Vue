@@ -5,6 +5,7 @@ export * from './register';
 export * from './base/baseApp';
 export * from './base/desktop-icon';
 export * from './base/base';
+export * from './hooks';
 export { taskBarTriggerList } from './base/taskBar';
 
 export { Base, WinApp };

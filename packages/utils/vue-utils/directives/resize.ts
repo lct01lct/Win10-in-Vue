@@ -94,9 +94,10 @@ const onDocMouseDown = async (e: MouseEvent) => {
   let offsetX = 0;
   let offsetY = 0;
 
-  el[SCOPE].onMousedownCb?.(el);
-
-  if (resizeDir) cancelBubble(e);
+  if (resizeDir) {
+    el[SCOPE].onMousedownCb?.(el);
+    cancelBubble(e);
+  }
 
   const onResizeMouseMove = (e: MouseEvent) => {
     offsetX = e.pageX - pagex1;

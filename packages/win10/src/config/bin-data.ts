@@ -260,3 +260,7 @@ export const deskTopData = Desc.search('DeskTop')[0] as Folder;
 deskTopData.addFolder();
 
 export const menuData = [{ name: '快速访问', children: [Desc.search('DeskTop')] }];
+
+export const getDesktopPointer = (): Desc | Folder => {
+  return Folder.search('desktop')[0] as Desc | Folder;
+};

@@ -6,4 +6,9 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  .app-body-wrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+</style>

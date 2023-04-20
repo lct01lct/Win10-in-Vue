@@ -11,6 +11,7 @@
   import { Pointer } from '../../types';
   import { isFolder } from 'win10/src/share/file';
   import throttle from 'lodash/throttle';
+  import { terminalApp } from '../../../../register';
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
 
@@ -101,9 +102,21 @@
   const onDocEnter = (e: KeyboardEvent) => {
     const val = iptVal.value;
     if (val && document.activeElement === iptRef.value && e.keyCode === 13) {
+      // open cmd
+      const openCmdStrs = ['cmd', 'command'];
+      if (openCmdStrs.includes(val)) {
+        terminalApp.open({
+          folderName: currPointer?.value.name,
+          folderPointer: currPointer?.value,
+        });
+        isFocus.value = false;
+
+        return;
+      }
+
       const resPointer = Folder.findByPath(val);
       if (resPointer && currPointer) {
-        currPointer.value = resPointer;
+        setCurrPointer?.(resPointer);
       } else {
         messageBox({
           title: '文件资源管理器',
@@ -151,7 +164,7 @@
 
   const expandItemClick = (pointer: Pointer, index: number) => {
     if (currPointer) {
-      currPointer.value = pointer;
+      setCurrPointer?.(pointer);
       expandPopverRefs.value[index]?.close();
     }
   };
@@ -186,7 +199,7 @@
 
   const onAppendItemClick = (pointer: Pointer) => {
     if (currPointer) {
-      currPointer.value = pointer;
+      setCurrPointer?.(pointer);
       appendPopoverRef.value?.close();
       visibleAppendPopover = false;
     }
