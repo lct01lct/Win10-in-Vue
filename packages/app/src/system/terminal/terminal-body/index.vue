@@ -8,6 +8,7 @@
 
   const currPointer = ref<Pointer>();
   const wrapper = ref<HTMLElement>();
+  const itemVueRef = ref<InstanceType<typeof TerminalItem>>();
 
   (function init() {
     if (isOpenedInDesktop()) {
@@ -27,17 +28,25 @@
       scrollToBottom(wrapper.value);
     }
   };
+
+  const onBodyClick = () => {
+    itemVueRef.value?.autoFocus();
+  };
 </script>
 
 <template>
-  <div class="terminal-body-wrapper" ref="wrapper">
+  <div class="terminal-body-wrapper" ref="wrapper" @click="onBodyClick">
     <div class="terminal-body-inner">
       <div class="terminal-tip">
         <div>Microsoft Windows [版本 10.0.19044.2006]</div>
         <div>(c) Microsoft Corporation。保留所有权利。</div>
       </div>
       <TerminalItem v-for="item in terminalList" :pointer="currPointer" :item="item"></TerminalItem>
-      <TerminalItem :pointer="currPointer" :scrollBottom="scrollBottom"></TerminalItem>
+      <TerminalItem
+        :pointer="currPointer"
+        :scrollBottom="scrollBottom"
+        ref="itemVueRef"
+      ></TerminalItem>
     </div>
   </div>
 </template>

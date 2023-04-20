@@ -12,6 +12,7 @@
   }>();
 
   const iptVal = ref<string>('');
+  const iptRef = ref<HTMLElement>();
   const attrs: { scrollBottom?: () => void } = useAttrs();
   let cacheIndex: number = 0; // 记录索引，按 up 键可以获取已访问的命令
 
@@ -30,7 +31,7 @@
         output: getAnswer(iptVal.value),
       });
       iptVal.value = '';
-      await sleep(0);
+      await nextTick();
       attrs.scrollBottom?.();
       cacheIndex = terminalList.length;
     };
@@ -70,6 +71,19 @@
       handleOther();
     }
   };
+
+  const autoFocus = () => {
+    iptRef.value?.focus();
+  };
+
+  onMounted(async () => {
+    await nextTick();
+    autoFocus();
+  });
+
+  defineExpose({
+    autoFocus,
+  });
 </script>
 
 <template>
@@ -83,10 +97,10 @@
       <input
         v-else
         class="ipt"
-        autofocus
         type="text /"
         v-model="iptVal"
         @keydown="onIptMouseenter"
+        ref="iptRef"
       />
     </div>
     <div class="answer" v-if="item">
