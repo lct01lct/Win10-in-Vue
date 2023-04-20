@@ -37,6 +37,7 @@ class BaseApp {
   };
   _logo: string;
   _isRender: boolean = false;
+  closeCbs: (() => void)[] = [];
 
   constructor({ name, comp, icon }: BaseAppContructorOpt) {
     this.name = name;
@@ -111,6 +112,10 @@ class BaseApp {
       this._dom[WIN_APP_SCOPE].onMinimizeBtnClick();
     }
   }
+
+  onClose(fn: () => void) {
+    this.closeCbs.push(fn);
+  }
 }
 
 const installWinApp = (name: string, comp: Component) => {
@@ -138,6 +143,7 @@ const createWinAppScope = (_dom: WinAppDOM, vueApp: App<Element>, baseApp: BaseA
   _dom[WIN_APP_SCOPE] = {
     appInstance: baseApp,
     close: () => {
+      baseApp.closeCbs.forEach((fn) => fn());
       vueApp.unmount();
     },
     isFull: ref(false),
