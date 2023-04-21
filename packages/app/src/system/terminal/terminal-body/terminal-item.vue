@@ -1,12 +1,12 @@
 <script lang="ts" setup>
   import { Pointer } from '../types';
   import { addNewTerminalItem, TerminalItem, terminalList } from '../store';
-  import { getAnswer } from '../parse';
+  import { getAnswer } from '../core';
   import { handleKeyCode, sleep } from 'utils';
 
   type handlerMapKey = ReturnType<typeof handleKeyCode>;
 
-  defineProps<{
+  const props = defineProps<{
     pointer?: Pointer;
     item?: TerminalItem;
   }>();
@@ -26,14 +26,16 @@
   const onIptMouseenter = async (e: KeyboardEvent) => {
     const res = handleKeyCode(e.keyCode);
     const handleEnter = async () => {
-      addNewTerminalItem({
-        input: iptVal.value,
-        output: getAnswer(iptVal.value),
-      });
-      iptVal.value = '';
-      await nextTick();
-      attrs.scrollBottom?.();
-      cacheIndex = terminalList.length;
+      if (props.pointer) {
+        addNewTerminalItem({
+          input: iptVal.value,
+          output: getAnswer(props.pointer.path, iptVal.value),
+        });
+        iptVal.value = '';
+        await nextTick();
+        attrs.scrollBottom?.();
+        cacheIndex = terminalList.length;
+      }
     };
 
     const handleUp = () => {
