@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { Pointer } from '../types';
-  import { addNewTerminalItem, currPointer, TerminalItem, terminalList } from '../store';
+  import { addNewTerminalItem, TerminalItem, terminalList } from '../store';
   import { getAnswer } from '../core';
   import { handleKeyCode, sleep } from 'utils';
 
@@ -106,9 +106,7 @@
         ref="iptRef"
       />
     </div>
-    <div class="answer" v-if="item">
-      {{ item.output }}
-    </div>
+    <div class="answer" v-if="item" v-html="item.output"></div>
   </div>
 </template>
 

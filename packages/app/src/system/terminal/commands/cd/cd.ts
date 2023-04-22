@@ -3,7 +3,7 @@ import { currPointer } from '../../store';
 import CommandError from '../../core/error';
 import { Folder, isFolder } from 'win10/src/share/file';
 
-const cd: Command = {
+export default {
   commandName: 'cd',
   type: 'get',
   effect: (options, params) => {
@@ -21,9 +21,7 @@ const cd: Command = {
 
     return '';
   },
-};
-
-export default cd;
+} as Command;
 
 const checkPathMatchTemplate = (path: string): boolean => {
   const template = ['..', '.'];
