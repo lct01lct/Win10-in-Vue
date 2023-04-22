@@ -1,4 +1,4 @@
-import { Command, Drive } from './types';
+import { Command, Drive, Pointer } from './types';
 
 export interface TerminalItem {
   input: string;
@@ -40,3 +40,5 @@ export const setCache = (drive: Drive, prompt: PromptVal, res: Command) => {
 export const getCache = (drive: Drive, prompt: PromptVal) => {
   return queryCommandCache.get(drive)?.get(prompt);
 };
+
+export const currPointer = ref<Pointer>();

@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-  import { Pointer } from '../types';
   import { getAppInstance, isOpenedInDesktop } from '../../../';
-  import { terminalList } from '../store';
+  import { terminalList, currPointer } from '../store';
   import { getDesktopPointer } from 'win10/src/config';
   import TerminalItem from './terminal-item.vue';
   import { scrollToBottom } from 'utils';
 
-  const currPointer = ref<Pointer>();
   const wrapper = ref<HTMLElement>();
   const itemVueRef = ref<InstanceType<typeof TerminalItem>>();
 
