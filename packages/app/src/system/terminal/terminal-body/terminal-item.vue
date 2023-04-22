@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { Pointer } from '../types';
-  import { addNewTerminalItem, TerminalItem, terminalList } from '../store';
+  import { addNewTerminalItem, currPointer, TerminalItem, terminalList } from '../store';
   import { getAnswer } from '../core';
   import { handleKeyCode, sleep } from 'utils';
 
@@ -30,6 +30,7 @@
         addNewTerminalItem({
           input: iptVal.value,
           output: getAnswer(props.pointer.path, iptVal.value),
+          drive: props.pointer.path,
         });
         iptVal.value = '';
         await nextTick();
@@ -92,7 +93,7 @@
   <div class="terminal-item">
     <div class="qustion-wrapper" v-if="pointer">
       <span class="current-path">
-        {{ pointer.path }}
+        {{ item?.drive || pointer.path }}
         <span style="transform: scale(1.2); display: inline-block; margin-right: 5px">></span>
       </span>
       <span v-if="item" class="qustion">{{ item.input }}</span>

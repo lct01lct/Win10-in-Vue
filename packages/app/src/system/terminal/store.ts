@@ -3,6 +3,7 @@ import { Command, Drive, Pointer } from './types';
 export interface TerminalItem {
   input: string;
   output: string;
+  drive: string;
 }
 
 export const terminalList = reactive<TerminalItem[]>([]);
