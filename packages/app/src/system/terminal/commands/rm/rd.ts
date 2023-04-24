@@ -1,7 +1,7 @@
 import CommandError from '../../core/error';
 import { Command } from '../../types';
 import { currPointer } from '../../store';
-import { useMatchUnequalCount } from '../../hooks';
+import { matchUnequalCount } from '../../hooks';
 import { isFolder } from 'win10/src/share/file';
 import { getDesktopPointer } from 'win10/src/config/bin-data';
 import { folderApp } from '../../../folder';
@@ -11,7 +11,7 @@ export default {
   type: 'post',
   effect(options, params) {
     if (options.length) {
-      throw new CommandError('execute', useMatchUnequalCount('mkdir', 'option', 0, options.length));
+      throw new CommandError('execute', matchUnequalCount('mkdir', 'option', 0, options.length));
     }
 
     if (!params.length) {

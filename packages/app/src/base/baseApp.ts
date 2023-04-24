@@ -120,7 +120,7 @@ class BaseApp {
 
 const installWinApp = (name: string, comp: Component) => {
   if (compMap.has(name)) {
-    throw new Error('${name} already exists!');
+    throw new Error(`${name} already have existed!`);
   } else {
     compMap.set(name, comp);
   }

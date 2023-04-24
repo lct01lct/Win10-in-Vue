@@ -1,7 +1,7 @@
 import CommandError from '../../core/error';
 import { Command } from '../../types';
 import { currPointer } from '../../store';
-import { useMatchUnequalCount } from '../../hooks';
+import { matchUnequalCount } from '../../hooks';
 import { folderApp } from '../../../folder';
 import emptyFolderIcon from '../../../folder/img/empty-folder.ico';
 
@@ -10,7 +10,7 @@ export default {
   type: 'post',
   effect(options, params) {
     if (options.length) {
-      throw new CommandError('execute', useMatchUnequalCount('mkdir', 'option', 0, options.length));
+      throw new CommandError('execute', matchUnequalCount('mkdir', 'option', 0, options.length));
     }
 
     if (params.length === 1) {
@@ -23,7 +23,7 @@ export default {
         folderApp.createShortcut(emptyFolderIcon, folderName);
       }
     } else {
-      throw new CommandError('execute', useMatchUnequalCount('mkdir', 'param', 1, options.length));
+      throw new CommandError('execute', matchUnequalCount('mkdir', 'param', 1, options.length));
     }
   },
 } as Command;
