@@ -1,3 +1,6 @@
+import { getViewPort } from 'utils';
+import { useEventListener } from '@vueuse/core';
+
 export interface AppViewSizeOpt {
   width?: number;
   height?: number;
@@ -5,8 +8,13 @@ export interface AppViewSizeOpt {
   top?: number;
 }
 
-export const maxAppHeight = 703;
-export const maxAppWidth = 1536;
+export let maxAppHeight = getViewPort().height - 50;
+export let maxAppWidth = getViewPort().width;
+
+useEventListener(window, 'resize', () => {
+  maxAppHeight = getViewPort().height - 50;
+  maxAppWidth = getViewPort().width;
+});
 
 export type ResizeMoveingScbscriber = (params: Required<AppViewSizeOpt>) => void;
 export type SubscribeResizeMovingType = ReturnType<typeof useResize>['subscribeResizeMoving'];
