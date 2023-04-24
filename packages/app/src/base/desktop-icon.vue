@@ -1,8 +1,7 @@
 <script lang="ts" setup>
   import { PropType } from 'vue';
-  import { WinApp } from '../.';
+  import { WinApp, maxAppHeight } from '../.';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
-  import { getViewPort } from 'utils';
 
   const props = defineProps({
     appInstance: {
@@ -24,13 +23,14 @@
   const getPosition = () => {
     if (deskIconOpt) {
       const posIdx = deskIconOpt.posIdx;
-      const viewPort = getViewPort();
-      const deskTopHeight = viewPort.height;
+      const deskTopHeight = maxAppHeight;
       const deskTopPaddingTop = 8;
       const iconMarginX = 2;
       const iconMarginY = 10;
       const iconSize = 76.8;
-      const colMaxCount = Math.floor((deskTopHeight - deskTopPaddingTop + iconMarginY) / iconSize);
+      const colMaxCount = Math.floor(
+        (deskTopHeight - deskTopPaddingTop) / (iconSize + iconMarginY)
+      );
 
       return {
         left: `${
