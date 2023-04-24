@@ -16,14 +16,19 @@ export default class WinApp extends BaseApp {
 
   // 创建快捷方式
   createShortcut(appIcon: string, appName: string) {
-    deskTopIconMap.set(appName, { appInstance: this, posIdx: getNewlyPosIdx(), isFocus: false });
-
-    const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
     const vueApp = createApp(DesktopIcon, {
       appInstance: this,
       appIcon,
       appName,
     });
+    deskTopIconMap.set(appName, {
+      appInstance: this,
+      posIdx: getNewlyPosIdx(),
+      isFocus: false,
+      vueApp,
+    });
+    const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
+
     vueApp.mount(oContainer);
 
     setTimeout(() => {
@@ -31,5 +36,10 @@ export default class WinApp extends BaseApp {
     });
 
     return this;
+  }
+
+  deleteShortcut(appName: string) {
+    deskTopIconMap.get(appName)?.vueApp.unmount();
+    deskTopIconMap.delete(appName);
   }
 }

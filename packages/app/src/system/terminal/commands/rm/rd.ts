@@ -3,6 +3,8 @@ import { Command } from '../../types';
 import { currPointer } from '../../store';
 import { useMatchUnequalCount } from '../../hooks';
 import { isFolder } from 'win10/src/share/file';
+import { getDesktopPointer } from 'win10/src/config/bin-data';
+import { folderApp } from '../../../folder';
 
 export default {
   commandName: 'rm',
@@ -18,12 +20,17 @@ export default {
         if (isFolder(itemPointer)) {
           prohibitDelDesktop(itemPointer.name);
           currPointer.value!.removeFolder(itemPointer.name);
+          folderApp.deleteShortcut(itemPointer.name);
         }
       }
     } else {
       params.forEach((folderName) => {
         prohibitDelDesktop(folderName);
         currPointer.value?.removeFolder(folderName);
+
+        if (currPointer.value === getDesktopPointer()) {
+          folderApp.deleteShortcut(folderName);
+        }
       });
     }
   },

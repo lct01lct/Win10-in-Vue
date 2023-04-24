@@ -1,9 +1,11 @@
+import { App } from 'vue';
 import { WinApp } from '..';
 
 export interface DeskTopIconItem {
   appInstance: WinApp;
   posIdx: number;
   isFocus: boolean;
+  vueApp: App;
 }
 
 export const deskTopIconMap = reactive<Map<string, DeskTopIconItem>>(new Map());

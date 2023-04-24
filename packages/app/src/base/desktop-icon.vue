@@ -19,50 +19,56 @@
     },
   });
 
-  const deskIconOpt = deskTopIconMap.get(props.appName)!;
+  const deskIconOpt = deskTopIconMap.get(props.appName);
 
   const getPosition = () => {
-    const posIdx = deskIconOpt.posIdx;
-    const viewPort = getViewPort();
-    const deskTopHeight = viewPort.height;
-    const deskTopPaddingTop = 8;
-    const iconMarginX = 2;
-    const iconMarginY = 10;
-    const iconSize = 76.8;
-    const colMaxCount = Math.floor((deskTopHeight - deskTopPaddingTop + iconMarginY) / iconSize);
+    if (deskIconOpt) {
+      const posIdx = deskIconOpt.posIdx;
+      const viewPort = getViewPort();
+      const deskTopHeight = viewPort.height;
+      const deskTopPaddingTop = 8;
+      const iconMarginX = 2;
+      const iconMarginY = 10;
+      const iconSize = 76.8;
+      const colMaxCount = Math.floor((deskTopHeight - deskTopPaddingTop + iconMarginY) / iconSize);
+
+      return {
+        left: `${
+          Math.floor(posIdx % colMaxCount ? posIdx / colMaxCount : posIdx / colMaxCount - 1) *
+          (iconMarginX + iconSize)
+        }px`,
+        top: `${
+          deskTopPaddingTop +
+          (posIdx % colMaxCount ? (posIdx % colMaxCount) - 1 : colMaxCount - 1) *
+            (iconMarginY + iconSize)
+        }px`,
+      };
+    }
+  };
+
+  const styles = computed(() => {
+    const pos = getPosition();
 
     return {
-      left: `${
-        Math.floor(posIdx % colMaxCount ? posIdx / colMaxCount : posIdx / colMaxCount - 1) *
-        (iconMarginX + iconSize)
-      }px`,
-      top: `${
-        deskTopPaddingTop +
-        (posIdx % colMaxCount ? (posIdx % colMaxCount) - 1 : colMaxCount - 1) *
-          (iconMarginY + iconSize)
-      }px`,
+      left: pos?.left || '0px',
+      top: pos?.top || '0px',
     };
-  };
-
-  const setPosition = async (el: unknown) => {
-    const ele = el as HTMLElement;
-    await sleep(0);
-    const pos = getPosition();
-    ele.style.left = pos.left;
-    ele.style.top = pos.top;
-  };
+  });
 
   const onIconClick = () => {
     resetFocusIcon();
-    deskIconOpt.isFocus = true;
+    if (deskIconOpt) {
+      deskIconOpt.isFocus = true;
+    }
   };
 
   const onIconDbclick = () => {
     props.appInstance.open({
       folderName: props.appName,
     });
-
-    deskIconOpt.isFocus = false;
+    if (deskIconOpt) {
+      deskIconOpt.isFocus = false;
+    }
   };
 </script>
 
@@ -70,9 +76,9 @@
   <div
     class="desktop-icon-wrapper"
     @dblclick="onIconDbclick"
-    :ref="setPosition"
+    :style="styles"
     @click.stop="onIconClick"
-    :class="[deskIconOpt.isFocus ? 'focus' : '']"
+    :class="[deskIconOpt?.isFocus ? 'focus' : '']"
   >
     <img class="app-icon" :src="appIcon" alt="" draggable="false" />
     <span class="app-name">{{ appName }}</span>
