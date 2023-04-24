@@ -88,12 +88,13 @@ export const isRepeatFolder = (tarNodes: (Files | Folder)[], name: string) => {
 export const isRepeatFile = (tarNodes: (Files | Folder)[], name: string) => {
   return (
     tarNodes.findIndex((item) => {
-      if (item instanceof Files) {
-        return item.name === name;
-      }
-      return false;
+      return item.name === name;
     }) > -1
   );
+};
+
+export const reSetBinName = (name: string) => {
+  return `${name} - 副本`;
 };
 
 export const isFile = (data: any): data is Files => {

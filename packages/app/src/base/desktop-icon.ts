@@ -31,6 +31,5 @@ export const getNewlyPosIdx = (): number => {
       nextIdx[index] = icon.posIdx + 1;
     }
   }
-
   return deskTopIconMap.size ? Math.min(...nextIdx) : 1;
 };

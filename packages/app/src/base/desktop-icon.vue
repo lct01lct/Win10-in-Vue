@@ -2,7 +2,7 @@
   import { PropType } from 'vue';
   import { WinApp } from '../.';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
-  import { getViewPort, sleep } from 'utils';
+  import { getViewPort } from 'utils';
 
   const props = defineProps({
     appInstance: {

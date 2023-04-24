@@ -5,8 +5,8 @@ import {
   Desc,
   isFile,
   getBytes,
-  isRepeatFolder,
   isRepeatFile,
+  reSetBinName,
 } from '.';
 import type { InitFileOpt, BinType } from '.';
 import { binData } from '@/config/bin-data';
@@ -58,10 +58,13 @@ class Folder {
 
   addFolder(content: string | Folder = '新建文件夹') {
     const resolveName = (name: string): string => {
-      if (isRepeatFolder(this.children, name)) {
-        name = reSetBinName(name);
+      let _name = name;
+
+      while (isRepeatFile(this.children, _name)) {
+        _name = reSetBinName(_name);
       }
-      return name;
+
+      return _name;
     };
 
     if (content instanceof Folder) {
@@ -70,10 +73,13 @@ class Folder {
       content.name = resolveName(content.name);
 
       this.children.push(content);
+
+      return content.name;
     } else {
       content = resolveName(content);
 
       this.children.push(new Folder({ name: content, children: [] }, this));
+      return content;
     }
   }
 
@@ -213,10 +219,6 @@ const isOverMemory = (curr: Folder | Desc, size: string): boolean => {
     return true;
   }
   return false;
-};
-
-const reSetBinName = (name: string) => {
-  return `${name} - 副本`;
 };
 
 export default Folder;
