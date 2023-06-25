@@ -4,7 +4,6 @@
     "dev": "pnpm -F win10 dev",
     "build": "pnpm -F win10 build",
     "preview": "pnpm -F win10 preview",
-    "back": "pnpm -F backend start:dev",
     "commit": "git cz"
   },
   "dependencies": {
