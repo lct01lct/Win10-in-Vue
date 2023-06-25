@@ -11,6 +11,7 @@
   "dependencies": {
     "animejs": "^3.2.1",
     "app": "workspace:^1.0.0",
+    "axios": "^1.4.0",
     "chinese-lunar-calendar": "^1.0.1",
     "dayjs": "^1.11.7",
     "eslint-plugin-prettier": "^4.2.1",
