@@ -1,6 +1,8 @@
 export * from './types';
+import router from '@/router';
 import axios from 'axios';
 import { AxiosRequestConfig } from 'axios';
+import useUserStore from '@/store/user';
 
 const http = axios.create({
   baseURL: 'http://127.0.0.1:3000/api/v1',
@@ -17,6 +19,18 @@ http.interceptors.response.use(
     return Promise.resolve(res);
   },
   (err) => {
+    const statusCode = err.response.status;
+    const userStore = useUserStore();
+
+    switch (statusCode) {
+      case 401:
+      case 403:
+        router.push('/');
+        userStore.user = null;
+        userStore.setToken('Invalid token');
+
+        break;
+    }
     return Promise.reject(err);
   }
 );
