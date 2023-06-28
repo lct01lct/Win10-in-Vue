@@ -1,9 +1,11 @@
+export * from './types';
 import axios from 'axios';
-import { AxiosRequestConfig, Axios } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 
 const http = axios.create({
   baseURL: 'http://127.0.0.1:3000/api/v1',
   timeout: 2000,
+  withCredentials: true,
 });
 
 http.interceptors.request.use((config) => {
@@ -25,10 +27,10 @@ type BaseMethodRequestFnType = <Data>(
   url: string,
   data?: any,
   anyConfig?: AxiosRequestConfig
-) => Promise<Data>;
+) => Promise<Data | null>;
 
 export interface RequestFn {
-  <Data = any, Config = any>(params: AxiosRequestConfig<Config>): Promise<Data>;
+  <Data = any, Config = any>(params: AxiosRequestConfig<Config>): Promise<Data | null>;
   get: BaseMethodRequestFnType;
   post: BaseMethodRequestFnType;
   delete: BaseMethodRequestFnType;
@@ -41,12 +43,14 @@ export const request: RequestFn = <Data = any, Config = any>(
   params: AxiosRequestConfig<Config>
 ) => {
   if (import.meta.env.MODE === 'development') {
-    return new Promise<Data>((resolve, reject) => {
+    return new Promise<Data>((resolve) => {
       http(params)
         .then((res) => resolve(res.data))
-        .catch((err) => reject(err));
+        .catch((err) => resolve(err.response.data));
     });
   }
+
+  return Promise.resolve(null);
 };
 
 requestMethods.forEach((method) => {

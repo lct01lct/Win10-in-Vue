@@ -1,5 +1,7 @@
 import router from '@/router';
 import useUserStore from '@/store/user';
+import { ResponseWithToken, request } from '@/service';
+import { User } from '@/types';
 const { username, password } = toRefs(useUserStore());
 
 const errorTipVisvible = ref<boolean>(false);
@@ -10,8 +12,10 @@ const loginForm = reactive({
   password: '123456',
 });
 
-const login = () => {
-  if (checkLoginForm()) {
+const login = async () => {
+  const res = await checkLoginForm();
+
+  if (res) {
     router.push({ name: 'Home' });
   } else {
     errorTipVisvible.value = true;
@@ -19,10 +23,22 @@ const login = () => {
   }
 };
 
-const checkLoginForm = (): boolean => {
-  if (loginForm.password === password.value && loginForm.username === username.value) {
+const checkLoginForm = async () => {
+  const res = await request.post<ResponseWithToken<{ user: User }>>('/auth/login', {
+    username: 'admin',
+    password: password.value,
+  });
+
+  if (res) {
+    const { status } = res;
+    if (status === 'failed') return false;
+
+    const userStore = useUserStore();
+    userStore.user = res.data?.user ?? null;
+    userStore.setToken(res.token ?? '');
     return true;
   }
+
   return false;
 };
 
