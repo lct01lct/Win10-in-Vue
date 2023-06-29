@@ -7,3 +7,4 @@ export * from './anime';
 export * from './dom';
 export * from './proxy';
 export * from './hook';
+export * from './handleBackendPath';

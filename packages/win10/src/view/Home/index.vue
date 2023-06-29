@@ -2,11 +2,17 @@
   import DeskTop from './DeskTop/index.vue';
   import TaskBar from './TaskBar/index.vue';
   import Modal from './Modal/index.vue';
-  import { request } from '@/service';
+  import { R_getMe } from '@/api';
+  import useUserStore from '@/store/user';
 
+  const userStore = useUserStore();
   const checkIsLogin = async () => {
-    const res = await request.get('/users/me');
-    console.log(res);
+    const res = await R_getMe();
+    if (res?.status === 'failed') {
+      userStore.user = null;
+    } else {
+      userStore.setUser(res?.data?.user);
+    }
   };
 
   checkIsLogin();

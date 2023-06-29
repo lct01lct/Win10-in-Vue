@@ -1,7 +1,6 @@
 import router from '@/router';
 import useUserStore from '@/store/user';
-import { ResponseWithToken, request } from '@/service';
-import { User } from '@/types';
+import { R_login } from '@/api';
 const { username, password } = toRefs(useUserStore());
 
 const errorTipVisvible = ref<boolean>(false);
@@ -24,7 +23,7 @@ const login = async () => {
 };
 
 const checkLoginForm = async () => {
-  const res = await request.post<ResponseWithToken<{ user: User }>>('/auth/login', {
+  const res = await R_login({
     username: 'admin',
     password: password.value,
   });
@@ -34,6 +33,7 @@ const checkLoginForm = async () => {
     if (status === 'failed') return false;
 
     const userStore = useUserStore();
+
     userStore.user = res.data?.user ?? null;
     userStore.setToken(res.token ?? '');
     return true;

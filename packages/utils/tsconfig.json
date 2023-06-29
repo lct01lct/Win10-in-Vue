@@ -13,7 +13,7 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "baseUrl": "./",
-    "types": ["node"],
+    "types": ["node", "../../env.d.ts"],
     "paths": {
       "@/*": ["src/*"]
     }

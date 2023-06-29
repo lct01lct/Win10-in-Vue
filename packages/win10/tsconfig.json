@@ -11,7 +11,7 @@
     "isolatedModules": false,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
-    "types": ["node"],
+    "types": ["node", "../../env.d.ts"],
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
