@@ -5,11 +5,29 @@
     sysytmTaskIconMouseenterHandler,
     sysytmTaskIconMouseleaveHandler,
   } from './taskBar-system';
+
+  type Fn = () => void;
+  const popoverEnterFn: Fn[] = [];
+  const popoverCloseFn: Fn[] = [];
+  const subscribePopoverEnter = (fn: Fn) => popoverEnterFn.push(fn);
+  const subscribePopoverClose = (fn: Fn) => popoverCloseFn.push(fn);
+
+  provide('subscribePopoverEnter', subscribePopoverEnter);
+  provide('subscribePopoverClose', subscribePopoverClose);
+
+  const onPopoverAfterEnter = () => popoverEnterFn.forEach((fn) => fn());
+  const onPopoverClose = () => popoverCloseFn.forEach((fn) => fn());
 </script>
 
 <template>
   <div class="system-task-wrapper">
-    <Popover v-for="(item, index) in systemTaskImgList" :key="item.className" animation-dir="top">
+    <Popover
+      v-for="(item, index) in systemTaskImgList"
+      :key="item.className"
+      animation-dir="top"
+      @on-after-enter="onPopoverAfterEnter"
+      @closed="onPopoverClose"
+    >
       <component :is="item.contentComp" v-if="item.contentComp"></component>
       <template #reference>
         <div

@@ -170,6 +170,7 @@
     overflow: visible;
     .popover-reference {
       display: flex;
+      height: 100%;
     }
   }
 </style>

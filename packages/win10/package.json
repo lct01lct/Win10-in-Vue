@@ -16,9 +16,9 @@
     "dayjs": "^1.11.7",
     "eslint-plugin-prettier": "^4.2.1",
     "lodash": "^4.17.21",
-    "pinia": "^2.0.34",
+    "pinia": "^2.1.4",
     "utils": "workspace:^1.0.0",
-    "vue": "^3.2.47",
+    "vue": "^3.3.4",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
