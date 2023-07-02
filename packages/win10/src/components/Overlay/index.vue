@@ -47,14 +47,14 @@
         });
         overlay.addEventListener('mouseleave', async () => {
           isClose = true;
-          // hide();
+          hide();
         });
       }
     };
 
     const { debounced } = useDebounce(() => {
       if (trigger && isClose) {
-        // hide();
+        hide();
       }
     }, 200);
 
