@@ -10,6 +10,10 @@ export const R_login = async (data: LoginDto) => {
   return await request.post<ResponseWithToken<{ user: User }>>('/auth/login', data);
 };
 
+export const R_logout = async () => {
+  return await request.get<Response>('/auth/logout');
+};
+
 export const R_getMe = async () => {
   return await request.get<Response<{ user: User }>>('/users/me');
 };

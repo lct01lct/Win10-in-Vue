@@ -4,8 +4,9 @@
   import PictureIcon from '@/assets/images/homePage/taskBar-img/picture.png';
   import ShutdownIcon from '@/assets/images/loginPage/RestartNowPower_80.png';
   import useUserStore from '@/store/user';
-  import { handleBackendPath, sleep } from 'utils';
-  import noop from 'lodash/fp/noop';
+  import { handleBackendPath } from 'utils';
+  import router from '@/router';
+  import { R_logout } from '@/api';
 
   const userStore = useUserStore();
   const triggerRef = ref<HTMLElement>();
@@ -18,17 +19,17 @@
     { icon: DocIcon, name: '文档' },
     { icon: PictureIcon, name: '图片' },
     { icon: SettingIcon, name: '设置' },
-    { icon: ShutdownIcon, name: '电源' },
+    {
+      icon: ShutdownIcon,
+      name: '电源',
+      async onClick() {
+        await R_logout();
+        userStore.setToken('loggedout');
+        userStore.user = null;
+        router.push('/');
+      },
+    },
   ];
-
-  const subscribePopoverEnter = inject('subscribePopoverEnter', noop);
-
-  subscribePopoverEnter(async () => {
-    await sleep(500);
-    const oTrigger = triggerRef.value;
-    if (oTrigger) {
-    }
-  });
 </script>
 
 <template>
@@ -41,7 +42,7 @@
         </div>
       </div>
       <div class="setting-task-bar__bottom setting-task-bar__section">
-        <div class="item-wrapper" v-for="item in bottomBar" :key="item.name">
+        <div class="item-wrapper" v-for="item in bottomBar" :key="item.name" @click="item?.onClick">
           <img class="item-img" :src="item.icon" alt="" />
           <span class="item-text">{{ item.name }}</span>
         </div>
