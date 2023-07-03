@@ -45,7 +45,12 @@ class BaseApp {
     installWinApp(name, comp);
   }
 
-  open<T extends Record<string, any>>(info?: T) {
+  open<T extends Record<string, any>>(
+    info?: {
+      folderName?: string;
+      folderPointer?: Desc | Folder;
+    } & T
+  ) {
     this.infoByOpened = info;
 
     if (!this._isRender) {

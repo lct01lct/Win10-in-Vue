@@ -1,7 +1,12 @@
 <script lang="ts" setup>
+  import { Popover } from '@/components';
   import ApplicationBar from './application-bar.vue';
   import EfficientWorkBar from './efficient-work-bar.vue';
   import WinSettingBar from './win-setting-bar.vue';
+
+  const props = defineProps<{ popoverRef?: InstanceType<typeof Popover> }>();
+
+  provide('popoverRef', props.popoverRef);
 </script>
 
 <template>

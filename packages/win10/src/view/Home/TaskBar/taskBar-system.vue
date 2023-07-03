@@ -6,17 +6,10 @@
     sysytmTaskIconMouseleaveHandler,
   } from './taskBar-system';
 
-  type Fn = () => void;
-  const popoverEnterFn: Fn[] = [];
-  const popoverCloseFn: Fn[] = [];
-  const subscribePopoverEnter = (fn: Fn) => popoverEnterFn.push(fn);
-  const subscribePopoverClose = (fn: Fn) => popoverCloseFn.push(fn);
-
-  provide('subscribePopoverEnter', subscribePopoverEnter);
-  provide('subscribePopoverClose', subscribePopoverClose);
-
-  const onPopoverAfterEnter = () => popoverEnterFn.forEach((fn) => fn());
-  const onPopoverClose = () => popoverCloseFn.forEach((fn) => fn());
+  const getEl = (el: InstanceType<typeof Popover>, item: (typeof systemTaskImgList)[number]) => {
+    // @ts-ignore
+    item.popoverRef = el;
+  };
 </script>
 
 <template>
@@ -25,10 +18,13 @@
       v-for="(item, index) in systemTaskImgList"
       :key="item.className"
       animation-dir="top"
-      @on-after-enter="onPopoverAfterEnter"
-      @closed="onPopoverClose"
+      :ref="(el) => getEl(el as InstanceType<typeof Popover>, item)"
     >
-      <component :is="item.contentComp" v-if="item.contentComp"></component>
+      <component
+        :is="item.contentComp"
+        v-if="item.contentComp"
+        :popoverRef="(item as any).popoverRef"
+      ></component>
       <template #reference>
         <div
           class="system-task-item"

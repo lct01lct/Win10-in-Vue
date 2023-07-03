@@ -4,21 +4,38 @@
   import PictureIcon from '@/assets/images/homePage/taskBar-img/picture.png';
   import ShutdownIcon from '@/assets/images/loginPage/RestartNowPower_80.png';
   import useUserStore from '@/store/user';
-  import { handleBackendPath } from 'utils';
+  import { handleBackendPath, sleep } from 'utils';
   import router from '@/router';
   import { R_logout } from '@/api';
+  import { folderApp } from 'app';
+  import { Popover } from '@/components';
 
   const userStore = useUserStore();
   const triggerRef = ref<HTMLElement>();
+  const popoverRef = inject<InstanceType<typeof Popover>>('popoverRef');
+
+  const openFolder = async (folderName: string) => {
+    if (popoverRef) {
+      popoverRef.close();
+      await sleep(0);
+      folderApp.open({
+        folderName,
+      });
+    }
+  };
 
   const bottomBar = [
     {
       icon: handleBackendPath(userStore.user?.avatar!),
       name: userStore.user?.username,
     },
-    { icon: DocIcon, name: '文档' },
-    { icon: PictureIcon, name: '图片' },
-    { icon: SettingIcon, name: '设置' },
+    {
+      icon: DocIcon,
+      name: '文档',
+      onClick: () => openFolder('Video'),
+    },
+    { icon: PictureIcon, name: '图片', onClick: () => openFolder('Music') },
+    { icon: SettingIcon, name: '设置', onClick: () => {} },
     {
       icon: ShutdownIcon,
       name: '电源',
