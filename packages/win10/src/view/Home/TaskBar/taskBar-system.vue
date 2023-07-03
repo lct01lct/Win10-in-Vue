@@ -18,7 +18,7 @@
       v-for="(item, index) in systemTaskImgList"
       :key="item.className"
       animation-dir="top"
-      :ref="(el) => getEl(el as InstanceType<typeof Popover>, item)"
+      :ref="(el: any) => getEl(el as InstanceType<typeof Popover>, item)"
     >
       <component
         :is="item.contentComp"
