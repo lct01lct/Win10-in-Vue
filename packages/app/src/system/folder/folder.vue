@@ -5,7 +5,7 @@
   import { Pointer } from './types';
   import { Folder } from 'win10/src/share/file';
 
-  const winApp = inject<WinApp>('appInstance')!;
+  const folderApp = inject<WinApp>('appInstance')!;
   const currPointer = ref<Pointer>();
   const visitedList = reactive([]) as Pointer[];
   const currIdxInVisitList = ref<number>(-1);
@@ -64,11 +64,10 @@
   provide('setCurrPointer', setCurrPointer);
   provide('currIdxInVisitList', currIdxInVisitList);
 
-  // init
-  (() => {
-    if (winApp.infoByOpened) {
-      const folderName = winApp.infoByOpened.folderName;
-      const folderPointer = winApp.infoByOpened.folderPointer;
+  const init = () => {
+    if (folderApp.infoByOpened) {
+      const folderName = folderApp.infoByOpened.folderName;
+      const folderPointer = folderApp.infoByOpened.folderPointer;
       const res =
         folderPointer ||
         Folder.findByPath(`C:\\DeskTop${folderName === '此电脑' || '' ? '' : '\\' + folderName}`);
@@ -77,7 +76,12 @@
         setCurrPointer(res);
       }
     }
-  })();
+  };
+
+  // @ts-ignore
+  folderApp.init = init;
+
+  init();
 </script>
 
 <template>

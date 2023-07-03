@@ -4,7 +4,11 @@ import fileFullIcon from '../../assets/images/appPage/system-app/folder-app/file
 import FolderIcon from '../../assets/images/appPage/system-app/folder-app/logo.png';
 import Folder from './folder.vue';
 
-export const folderApp = new WinApp({
+type FolderApp = WinApp & { init?: () => void };
+
+export const isFolderApp = (winApp: WinApp): winApp is FolderApp => winApp === folderApp;
+
+export const folderApp: FolderApp = new WinApp({
   name: '文件夹',
   comp: Folder,
   icon: FolderIcon,

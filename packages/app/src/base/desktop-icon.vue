@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { PropType } from 'vue';
-  import { WinApp, maxAppHeight } from '../.';
+  import { WinApp, isFolderApp, maxAppHeight } from '../.';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
 
   const props = defineProps({
@@ -63,9 +63,17 @@
   };
 
   const onIconDbclick = () => {
-    props.appInstance.open({
+    const appInstance = props.appInstance;
+
+    appInstance.open({
       folderName: props.appName,
     });
+
+    // reRender folder
+    if (appInstance._isRender && isFolderApp(appInstance)) {
+      appInstance.init?.();
+    }
+
     if (deskIconOpt) {
       deskIconOpt.isFocus = false;
     }

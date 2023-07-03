@@ -59,8 +59,18 @@
         </div>
       </div>
       <div class="setting-task-bar__bottom setting-task-bar__section">
-        <div class="item-wrapper" v-for="item in bottomBar" :key="item.name" @click="item?.onClick">
-          <img class="item-img" :src="item.icon" alt="" />
+        <div
+          class="item-wrapper"
+          v-for="(item, index) in bottomBar"
+          :key="item.name"
+          @click="item?.onClick"
+        >
+          <img
+            class="item-img"
+            :src="item.icon"
+            alt=""
+            :style="{ borderRadius: index ? '0%' : '50%' }"
+          />
           <span class="item-text">{{ item.name }}</span>
         </div>
       </div>
@@ -90,7 +100,6 @@
     }
 
     .item-img {
-      border-radius: 40%;
       width: 20px;
       padding: 15px;
       height: 20px;

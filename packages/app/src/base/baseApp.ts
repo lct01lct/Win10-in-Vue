@@ -1,4 +1,4 @@
-import { App, Component, Ref } from 'vue';
+import { App, Component, ComponentPublicInstance, Ref } from 'vue';
 import { animation } from 'utils';
 import { addTaskBarTriggerItem, toggleZIndex, taskBarTriggerList } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
@@ -37,6 +37,7 @@ class BaseApp {
   };
   _logo: string;
   _isRender: boolean = false;
+  private _vm?: ComponentPublicInstance;
   closeCbs: (() => void)[] = [];
 
   constructor({ name, comp, icon }: BaseAppContructorOpt) {
@@ -72,7 +73,7 @@ class BaseApp {
       vueApp.provide('appName', this.name);
       vueApp.provide('appClassName', `${this.name}-app-wrapper`);
 
-      vueApp.mount(oContainer);
+      this._vm = vueApp.mount(oContainer);
       const _dom = oContainer.querySelector('.app-wrapper')! as WinAppDOM;
       this._dom = _dom;
 
