@@ -5,11 +5,9 @@
   import ShutdownIcon from '@/assets/images/loginPage/RestartNowPower_80.png';
   import useUserStore from '@/store/user';
   import { handleBackendPath, sleep } from 'utils';
-  import { Overlay } from '@/components';
   import noop from 'lodash/fp/noop';
 
   const userStore = useUserStore();
-  const opRef = ref<InstanceType<typeof Overlay>>();
   const triggerRef = ref<HTMLElement>();
 
   const bottomBar = [
@@ -29,59 +27,45 @@
     await sleep(500);
     const oTrigger = triggerRef.value;
     if (oTrigger) {
-      opRef.value?.hover(oTrigger);
     }
   });
 </script>
 
 <template>
   <div class="setting-task-bar" ref="triggerRef">
-    <div class="setting-task-bar__top">
-      <div class="img-wrapper">
-        <img class="item-img" src="@/assets/images/homePage/taskBar-img/menu.png" alt="" />
+    <div class="setting-task-bar__icon">
+      <div class="setting-task-bar__top setting-task-bar__section">
+        <div class="item-wrapper">
+          <img class="item-img" src="@/assets/images/homePage/taskBar-img/menu.png" alt="" />
+          <span class="item-text">开始</span>
+        </div>
       </div>
-    </div>
-    <div class="setting-task-bar__bottom">
-      <div class="img-wrapper" v-for="item in bottomBar" :key="item.name">
-        <img class="item-img" :src="item.icon" alt="" />
-      </div>
-    </div>
-  </div>
-
-  <Overlay ref="opRef" pos="right" animate-dir="left">
-    <div class="setting-overlay">
-      <div class="setting-overlay__top">
-        <div class="setting-name">开始</div>
-      </div>
-      <div class="setting-overlay__bottom">
-        <div class="setting-name" v-for="{ name } in bottomBar" :key="name">
-          {{ name }}
+      <div class="setting-task-bar__bottom setting-task-bar__section">
+        <div class="item-wrapper" v-for="item in bottomBar" :key="item.name">
+          <img class="item-img" :src="item.icon" alt="" />
+          <span class="item-text">{{ item.name }}</span>
         </div>
       </div>
     </div>
-  </Overlay>
+  </div>
 </template>
 
 <style scoped lang="scss">
   .setting-task-bar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    position: relative;
     height: 100%;
     width: 50px;
-
-    .setting-task-bar-section {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
   }
 
-  .img-wrapper {
+  .setting-task-bar__section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item-wrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 50px;
+    width: 250px;
     height: 50px;
     &:hover {
       background-color: #5f5d5b;
@@ -90,27 +74,37 @@
     .item-img {
       border-radius: 40%;
       width: 20px;
+      padding: 15px;
       height: 20px;
     }
   }
 
-  .setting-overlay {
+  .setting-task-bar__icon {
+    position: absolute;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 200px;
-    height: 600px;
-    background-color: #1e1e1e;
-    opacity: 1;
-    color: #fff;
-    border-right: 1px solid #000;
-    .setting-name {
-      height: 50px;
-      line-height: 50px;
-      padding-left: 30px;
-      &:hover {
-        background-color: #5f5d5b;
-      }
+    height: 100%;
+    width: 50px;
+    top: 0;
+    left: 0;
+
+    &:hover {
+      width: 250px;
+      background-color: #2c2c2b;
+      opacity: 1;
+      animation: drawer 0.3s ease;
+    }
+  }
+
+  @keyframes drawer {
+    0% {
+      width: 50px;
+    }
+
+    100% {
+      width: 250px;
     }
   }
 </style>

@@ -69,8 +69,7 @@
     }
   }
   .system-task-detail {
-    background-color: #1e1e1e;
-    opacity: 0.8;
+    background-color: rgb(62, 62, 62, 0.8);
     color: #fff;
   }
 </style>
