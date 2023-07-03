@@ -32,7 +32,7 @@
   };
   autoFullWifiInfo();
 
-  const listRef = ref<HTMLElement | null>(null);
+  const listRef = ref<HTMLElement>();
 
   let observer: MutationObserver;
   onMounted(() => {
@@ -64,6 +64,7 @@
   });
 
   watch(wifiStatus, (val) => {
+    console.log(listRef);
     if (val) {
       observer.observe(listRef.value!, {
         subtree: true,

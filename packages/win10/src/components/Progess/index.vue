@@ -6,8 +6,8 @@
   const stepsLen = props.steps.length;
   const stepChild = reactive<HTMLElement[]>([]);
   const progessWidth = ref((props.modelValue / 100) * props.width);
-  const lineRef = ref<HTMLElement | null>(null);
-  const sliderRef = ref<HTMLElement | null>(null);
+  const lineRef = ref<HTMLElement>();
+  const sliderRef = ref<HTMLElement>();
 
   onMounted(async () => {
     await nextTick(); // 确保父元素更新完毕

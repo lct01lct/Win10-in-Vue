@@ -1,7 +1,6 @@
 <script lang="ts" setup>
   import Trigger from './taskBar-cur-trigger.vue';
   import { taskBarTriggerList } from 'app/src/base/taskBar';
-  import { WinApp } from 'app';
 </script>
 
 <template>
@@ -11,7 +10,7 @@
       :key="item.name"
       :icon-path="item.iconPath"
       :name="item.name"
-      :win-app="(item.winApp as WinApp)"
+      :win-app="item.winApp"
     ></Trigger>
   </div>
 </template>

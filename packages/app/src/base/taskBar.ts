@@ -7,7 +7,7 @@ export interface TaskBarTriggerItem {
   zIndex: number;
 }
 
-export const taskBarTriggerList = reactive<TaskBarTriggerItem[]>([]);
+export const taskBarTriggerList: TaskBarTriggerItem[] = reactive([]);
 export const addTaskBarTriggerItem = (opt: TaskBarTriggerItem) => {
   taskBarTriggerList.push(opt);
 };

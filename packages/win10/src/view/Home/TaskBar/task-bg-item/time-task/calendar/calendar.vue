@@ -53,14 +53,17 @@
     const diffDays = getDiffDays(scroDay, prevMonth);
     const tarNum = Math.floor(diffDays / 7) + (diffDays % 7 === 0 ? 0 : 1);
 
-    domSommthlyScroll(calendarDateRef.value!.calendarRef!, -tarNum * 50);
+    domSommthlyScroll(calendarDateRef.value!.calendarRef! as HTMLElement, -tarNum * 50);
 
     let scroPx1 = scroPx;
     setTimeout(() => {
       let scroNum = Math.abs(scroPx - scroPx1) / 50;
       scroNum = getNearestInt(scroNum);
       if (scroNum !== tarNum) {
-        domSommthlyScroll(calendarDateRef.value!.calendarRef!, -(tarNum - scroNum) * 50);
+        domSommthlyScroll(
+          calendarDateRef.value!.calendarRef! as HTMLElement,
+          -(tarNum - scroNum) * 50
+        );
       }
     }, 300);
   };
@@ -71,7 +74,7 @@
     const nextMonth = dayjs(currMonth).add(1, 'month');
     const tarNum = Math.floor(getDiffDays(nextMonth, scroDay) / 7);
 
-    domSommthlyScroll(calendarDateRef.value!.calendarRef!, tarNum * 50);
+    domSommthlyScroll(calendarDateRef.value!.calendarRef! as HTMLElement, tarNum * 50);
 
     let scroPx1 = scroPx;
     setTimeout(() => {
@@ -79,7 +82,10 @@
       scroNum = getNearestInt(scroNum);
 
       if (tarNum !== scroNum) {
-        domSommthlyScroll(calendarDateRef.value!.calendarRef!, (tarNum - scroNum) * 50);
+        domSommthlyScroll(
+          calendarDateRef.value!.calendarRef! as HTMLElement,
+          (tarNum - scroNum) * 50
+        );
       }
     }, 300);
   };

@@ -1,20 +1,16 @@
 <script lang="ts" setup>
   import { Pos } from './trigger';
+  import noop from 'lodash/fp/noop';
 
-  const props = defineProps({
-    triggerRef: { type: Object },
-    setVisible: {
-      type: Function,
-      default: () => {},
-    },
-    triggerType: {
-      type: String,
-      default: 'click',
-    },
-    popoverRef: {
-      type: HTMLElement,
-    },
-  });
+  const props = withDefaults(
+    defineProps<{
+      triggerRef: HTMLElement;
+      setVisible: (visible: boolean) => void;
+      triggerType: string;
+      popoverRef: HTMLElement;
+    }>(),
+    { setVisible: noop, triggerType: 'click' }
+  );
 
   const { setVisible } = props;
 
@@ -66,7 +62,7 @@
 
   onMounted(() => {
     const oWrap = document.createElement('div');
-    const oContent = contentRef.value!;
+    const oContent = contentRef.value! as HTMLElement;
     const oTrigger = props.triggerRef! as HTMLElement;
     const computedStyledofTrigger = window.getComputedStyle(oTrigger, null);
 

@@ -1,22 +1,8 @@
 <script lang="ts" setup>
-  import { PropType } from 'vue';
   import { Icon } from '@/components';
-  import { getWinAppScope, WinApp, taskBarTriggerList } from 'app';
+  import { getWinAppScope, WinApp, taskBarTriggerList, WinAppDOM } from 'app';
 
-  const { name, winApp } = defineProps({
-    iconPath: {
-      type: String,
-      required: true,
-    },
-    winApp: {
-      type: Object as PropType<WinApp>,
-      required: true,
-    },
-    name: {
-      type: String,
-      require: true,
-    },
-  });
+  const { winApp } = defineProps<{ iconPath: string; winApp: WinApp; name: string }>();
 
   const appIsShow = ref<boolean>(false);
   onMounted(async () => {
@@ -30,7 +16,7 @@
 
   const onTriggerClick = () => {
     for (const item of taskBarTriggerList) {
-      const { isFull } = getWinAppScope(item.winApp._dom);
+      const { isFull } = getWinAppScope(item.winApp._dom as unknown as WinAppDOM);
       if (isFull.value) {
         winApp.show(true);
         return;

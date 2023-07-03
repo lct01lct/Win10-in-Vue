@@ -24,7 +24,7 @@ type NewMessage = Omit<Omit<Omit<Message, 'option'>, 'dom'>, 'isSeen'> & {
   option?: Partial<IOption>;
 };
 
-export const messageList = reactive<Message[]>([
+export const messageList: Message[] = reactive([
   {
     isSeen: false,
     title: { text: '截图和草稿2', icon: '' },
@@ -47,7 +47,7 @@ export const messageList = reactive<Message[]>([
       time: '2022-11-13',
     },
   },
-] as Message[]);
+]) as unknown as Message[];
 
 export const isNotSeenCount = computed(() => {
   let count = 0;
