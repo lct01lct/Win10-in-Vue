@@ -7,21 +7,26 @@
   import { handleBackendPath, sleep } from 'utils';
   import router from '@/router';
   import { R_logout } from '@/api';
-  import { folderApp } from 'app';
+  import { folderApp, settingApp } from 'app';
   import { Popover } from '@/components';
 
   const userStore = useUserStore();
   const triggerRef = ref<HTMLElement>();
   const popoverRef = inject<InstanceType<typeof Popover>>('popoverRef');
 
-  const openFolder = async (folderName: string) => {
+  const waitPopoverClose = async () => {
     if (popoverRef) {
       popoverRef.close();
       await sleep(0);
-      folderApp.open({
-        folderName,
-      });
     }
+  };
+
+  const openFolder = async (folderName: string) => {
+    await waitPopoverClose();
+
+    folderApp.open({
+      folderName,
+    });
   };
 
   const bottomBar = [
@@ -35,7 +40,14 @@
       onClick: () => openFolder('Video'),
     },
     { icon: PictureIcon, name: '图片', onClick: () => openFolder('Music') },
-    { icon: SettingIcon, name: '设置', onClick: () => {} },
+    {
+      icon: SettingIcon,
+      name: '设置',
+      onClick: async () => {
+        await waitPopoverClose();
+        settingApp.open();
+      },
+    },
     {
       icon: ShutdownIcon,
       name: '电源',

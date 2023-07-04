@@ -67,7 +67,7 @@ import Logo from './assets/logo.png';
 
 引用：[静态资源处理 | Vite (vitejs.net)](https://www.vitejs.net/guide/assets.html)
 
-##### 2.1.4 桌面上的快件方式
+##### 2.1.4 创建桌面上的快捷方式
 
 ```ts
 import Logo from './assets/logo.png';
