@@ -77,15 +77,8 @@
             :style="{ width: headerItemsConfig[0].width + 'px' }"
           >
             <Icon :height="20" :width="20" :style="{ marginRight: '4px' }">
-              <img
-                v-if="isFile(item)"
-                src="./../../../../assets/images/appPage/system-app/folder-app/file-type/mp3.png"
-              />
-              <img
-                v-else
-                src="./../../../../assets/images/appPage/system-app/folder-app/file-empty.png"
-                alt=""
-              />
+              <img v-if="isFile(item)" src="../../img/file-type/mp3.png" />
+              <img v-else src="../../img/file-empty.png" alt="" />
             </Icon>
 
             {{ item.name }}

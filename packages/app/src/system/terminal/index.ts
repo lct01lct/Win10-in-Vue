@@ -1,6 +1,6 @@
 import { WinApp } from '../..';
 import Terminal from '../../system/terminal/terminal.vue';
-import terminalIcon from '../../assets/images/appPage/system-app/terminal-app/terminal-logo.png';
+import terminalIcon from './img/terminal-logo.png';
 
 export const terminalAppName = '命令提示符';
 

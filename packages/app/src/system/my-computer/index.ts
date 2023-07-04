@@ -1,7 +1,7 @@
 import { WinApp } from '../../';
 import Folder from '../../system/folder/folder.vue';
-import ComputerIcon from '../../assets/images/appPage/system-app/folder-app/logo.png';
-import ComputerLogo from '../../assets/images/appPage/system-app/my-computer/computer.png';
+import ComputerIcon from '../folder/img/logo.png';
+import ComputerLogo from './img/computer.png';
 
 export const userApp = new WinApp({
   name: '此电脑',

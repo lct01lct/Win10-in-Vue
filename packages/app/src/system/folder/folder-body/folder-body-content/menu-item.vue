@@ -2,7 +2,7 @@
   import { PropType } from 'vue';
   import MenuItem from './menu-item.vue';
   import { Icon } from 'win10/src/components';
-  import fileEmptyIcon from '../../../../assets/images/appPage/system-app/folder-app/file-empty.png';
+  import fileEmptyIcon from '../../img/file-empty.png';
   import { isFile } from 'win10/src/share/file';
   import { Pointer } from '../../types';
 

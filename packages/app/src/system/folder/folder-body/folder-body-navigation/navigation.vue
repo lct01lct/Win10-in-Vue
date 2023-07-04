@@ -213,7 +213,7 @@
   <div class="navigation-wrapper">
     <div class="prepend-icon">
       <Icon :width="20" :height="20">
-        <img src="../../../../assets/images/appPage/system-app/folder-app/file-full.png" />
+        <img src="../../img/file-full.png" />
       </Icon>
     </div>
     <div
@@ -248,9 +248,7 @@
                   @click="expandItemClick(item2 as Pointer, index)"
                 >
                   <Icon :width="14" :height="14" :style="{ marginRight: '15px' }">
-                    <img
-                      src="../../../../assets/images/appPage/system-app/folder-app/file-full.png"
-                    />
+                    <img src="../../img/file-full.png" />
                   </Icon>
                   {{ item2.name }}
                 </div>
@@ -288,7 +286,7 @@
         <template v-for="item in currPointer?.children" :key="item">
           <div class="append-item" v-if="isFolder(item)" @click.stop="onAppendItemClick(item)">
             <Icon :width="14" :height="14">
-              <img src="../../../../assets/images/appPage/system-app/folder-app/file-empty.png" />
+              <img src="../../img/file-empty.png" />
             </Icon>
             {{ item.path }}
           </div>
