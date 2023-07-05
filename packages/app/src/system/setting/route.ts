@@ -7,3 +7,7 @@ export const setPageRoute = (route?: SettingPageOpenRoute) => {
 export const pageOptions = computed(
   () => settingPageInfo.find((item) => item.name === pageRoute.value)!.options
 );
+
+export const isRenderPage = computed(() => {
+  return !!(pageRoute.value && pageOptions.value?.length);
+});

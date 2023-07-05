@@ -40,12 +40,14 @@
 <style scoped lang="scss">
   .search-input {
     border: 3px solid #6a6a6a;
+    background-color: #fff;
     font-weight: 700;
     font-size: 14px;
     padding: 3px;
     display: flex;
     align-items: center;
     .ipt {
+      width: 100%;
       height: 20px;
       outline: none;
       border: none;

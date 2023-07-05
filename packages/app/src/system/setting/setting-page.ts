@@ -1,3 +1,4 @@
+import { Component } from 'vue';
 import accountIcon from './img/item-icon/account.png';
 import applicationIcon from './img/item-icon/application.png';
 import deviceIcon from './img/item-icon/device.png';
@@ -11,6 +12,14 @@ import searchIcon from './img/item-icon/search.png';
 import systemIcon from './img/item-icon/system.png';
 import updateIcon from './img/item-icon/update.png';
 import xboxIcon from './img/item-icon/xbox.png';
+
+// account-icon
+import account_infoIcon from './img/account-icon/info.png';
+import account_emailIcon from './img/account-icon/email.png';
+import account_friendsIcon from './img/account-icon/friends.png';
+import account_loginIcon from './img/account-icon/login.png';
+import account_connectIcon from './img/account-icon/connect.png';
+import account_syncIcon from './img/account-icon/sync.png';
 
 export const settingPageInfo: SettingInfoItem[] = [
   {
@@ -54,12 +63,13 @@ export const settingPageInfo: SettingInfoItem[] = [
     desc: '你的账户、电子邮箱、同步设置、工作、家庭',
     icon: accountIcon,
     options: [
-      { icon: '', subName: '账户信息' },
-      { icon: '', subName: '电子邮箱和账户' },
-      { icon: '', subName: '登录选项' },
-      { icon: '', subName: '连接工作或学校账户' },
-      { icon: '', subName: '家庭和其他用户' },
-      { icon: '', subName: '提供其他的设置' },
+      // @ts-ignore
+      { icon: account_infoIcon, subName: '账户信息' },
+      { icon: account_emailIcon, subName: '电子邮箱和账户' },
+      { icon: account_loginIcon, subName: '登录选项' },
+      { icon: account_connectIcon, subName: '连接工作或学校账户' },
+      { icon: account_friendsIcon, subName: '家庭和其他用户' },
+      { icon: account_syncIcon, subName: '同步你的设置' },
     ],
   },
   {
@@ -103,6 +113,7 @@ export const settingPageInfo: SettingInfoItem[] = [
 export interface SettingPageOptionItem {
   readonly icon: string;
   readonly subName: string;
+  readonly comp?: Component;
 }
 export type SettingPageOpenRoute = (typeof settingPageInfo)[number]['name'];
 

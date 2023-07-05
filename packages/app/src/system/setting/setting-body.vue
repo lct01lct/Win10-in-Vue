@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { getAppInstance } from '../../';
-  import { pageRoute, setPageRoute, pageOptions } from './route';
+  import { isRenderPage, setPageRoute, pageOptions, pageRoute } from './route';
   import SettingPage from './setting-page.vue';
   import SettingOverview from './setting-overview.vue';
   import { SettingApp } from '.';
@@ -9,10 +9,8 @@
 </script>
 
 <template>
-  <div>
-    <SettingPage v-if="pageRoute && pageOptions?.length" :pageOptions="pageOptions!"></SettingPage>
-    <SettingOverview v-else></SettingOverview>
-  </div>
+  <SettingPage v-if="isRenderPage" :pageOptions="pageOptions!" :title="pageRoute!"></SettingPage>
+  <SettingOverview v-else></SettingOverview>
 </template>
 
 <style scoped></style>
