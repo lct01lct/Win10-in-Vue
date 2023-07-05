@@ -5,10 +5,11 @@
   import type { AppViewSizeOpt } from './base';
   import { animation } from 'utils';
   import type { WinAppDOM } from '../.';
-  import { WIN_APP_SCOPE } from '../.';
+  import { WIN_APP_SCOPE, getAppInstance } from '../.';
   import type { ResizeBindingValue } from 'utils';
   import { taskBarTriggerList } from './taskBar';
   import { toggleZIndex } from './taskBar';
+  import { getViewSizeConfig } from './view-config';
 
   const props = defineProps<{
     appLogo?: string;
@@ -19,6 +20,8 @@
   const isShow = ref<boolean>(true);
   const appName = inject<string>('appName')!;
   const appClassName = inject<string>('appClassName');
+  const appInstance = getAppInstance();
+  const viewConfig = getViewSizeConfig(appInstance);
 
   onMounted(async () => {
     await nextTick();
@@ -41,10 +44,10 @@
   };
 
   const appViewSize = reactive<AppViewSizeOpt>({
-    width: 800,
-    height: 500,
-    top: 50 + taskBarTriggerList.length * 30,
-    left: 250 + taskBarTriggerList.length * 30,
+    width: viewConfig.width,
+    height: viewConfig.height,
+    top: viewConfig.top,
+    left: viewConfig.left,
   });
 
   const getAppStyle = () => {
@@ -93,8 +96,8 @@
       setAppViewSize({ width, height, left, top }, true);
     },
     border: {
-      minWidth: 288,
-      minHeight: 248,
+      minWidth: viewConfig.minWidth,
+      minHeight: viewConfig.minHeight,
     },
     movingFn: (params: AppViewSizeOpt) => {
       resizeMovingSubscribers.forEach((fn) => {

@@ -29,12 +29,21 @@ interface BaseApp {
   _dom: WinAppDOM;
 }
 
+type InfoByOpened = {
+  folderName?: string;
+  folderPointer?: Desc | Folder;
+  minWidth?: number;
+  minHeight?: number;
+  width?: number;
+  height?: number;
+  top?: number;
+  left?: number;
+  isFull?: boolean;
+} & Record<string, any>;
+
 class BaseApp {
   name: string;
-  infoByOpened?: Record<string, any> & {
-    folderName?: string;
-    folderPointer?: Desc | Folder;
-  };
+  infoByOpened?: InfoByOpened;
   _logo: string;
   _isRender: boolean = false;
   private _vm?: ComponentPublicInstance;
@@ -46,12 +55,7 @@ class BaseApp {
     installWinApp(name, comp);
   }
 
-  open<T extends Record<string, any>>(
-    info?: {
-      folderName?: string;
-      folderPointer?: Desc | Folder;
-    } & T
-  ) {
+  open(info?: InfoByOpened) {
     this.infoByOpened = info;
 
     if (!this._isRender) {
