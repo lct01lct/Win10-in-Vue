@@ -3,8 +3,9 @@
   import { pageRoute, setPageRoute, pageOptions } from './route';
   import SettingPage from './setting-page.vue';
   import SettingOverview from './setting-overview.vue';
+  import { SettingApp } from '.';
 
-  setPageRoute(getAppInstance().infoByOpened?.route);
+  setPageRoute(getAppInstance<SettingApp>().infoByOpened?.route);
 </script>
 
 <template>

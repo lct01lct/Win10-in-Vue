@@ -3,7 +3,7 @@ import DesktopIcon from './base/desktop-icon.vue';
 import type { BaseAppContructorOpt } from './base/baseApp';
 import { deskTopIconMap, getNewlyPosIdx } from './base/desktop-icon';
 
-interface WinAppConstructorOpt extends BaseAppContructorOpt {}
+export interface WinAppConstructorOpt extends BaseAppContructorOpt {}
 
 export default class WinApp extends BaseApp {
   constructor({ name, comp, icon }: WinAppConstructorOpt) {

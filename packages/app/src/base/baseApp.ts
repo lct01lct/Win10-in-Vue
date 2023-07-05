@@ -29,7 +29,7 @@ interface BaseApp {
   _dom: WinAppDOM;
 }
 
-type InfoByOpened = {
+export type InfoByOpened = {
   folderName?: string;
   folderPointer?: Desc | Folder;
   minWidth?: number;
