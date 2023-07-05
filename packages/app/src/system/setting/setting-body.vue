@@ -10,8 +10,8 @@
 
 <template>
   <div>
-    <SettingOverview v-if="!pageRoute"></SettingOverview>
-    <SettingPage v-else :pageOptions="pageOptions"></SettingPage>
+    <SettingPage v-if="pageRoute && pageOptions?.length" :pageOptions="pageOptions!"></SettingPage>
+    <SettingOverview v-else></SettingOverview>
   </div>
 </template>
 

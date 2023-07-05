@@ -2,9 +2,12 @@
   import { setPageRoute } from './route';
   import { SettingPageOpenRoute, settingPageInfo } from './setting-page';
   import SearchInput from './components/search-input.vue';
+  import { pageOptions } from './route';
+  import { EXPECT, UNDFINED_ROUTE_IN_SETTING_APP } from 'i18n';
 
   const onPageBlockClick = (route: SettingPageOpenRoute) => {
     setPageRoute(route);
+    if (!pageOptions.value.length) alert(`${UNDFINED_ROUTE_IN_SETTING_APP},${EXPECT}`);
   };
 </script>
 
