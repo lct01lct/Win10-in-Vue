@@ -1,4 +1,4 @@
-import { Component } from 'vue';
+import { AsyncComponentOptions, Component } from 'vue';
 import accountIcon from './img/item-icon/account.png';
 import applicationIcon from './img/item-icon/application.png';
 import deviceIcon from './img/item-icon/device.png';
@@ -64,7 +64,11 @@ export const settingPageInfo: SettingInfoItem[] = [
     icon: accountIcon,
     options: [
       // @ts-ignore
-      { icon: account_infoIcon, subName: '账户信息' },
+      {
+        icon: account_infoIcon,
+        subName: '账户信息',
+        comp: () => import('./account-components/account-info.vue'),
+      },
       { icon: account_emailIcon, subName: '电子邮箱和账户' },
       { icon: account_loginIcon, subName: '登录选项' },
       { icon: account_connectIcon, subName: '连接工作或学校账户' },
@@ -110,10 +114,13 @@ export const settingPageInfo: SettingInfoItem[] = [
   },
 ];
 
+type AsyncComp = {
+  new (): Component;
+};
 export interface SettingPageOptionItem {
   readonly icon: string;
   readonly subName: string;
-  readonly comp?: Component;
+  readonly comp?: () => Promise<Component>;
 }
 export type SettingPageOpenRoute = (typeof settingPageInfo)[number]['name'];
 

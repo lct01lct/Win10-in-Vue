@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import { defineAsyncComponent } from 'vue';
   import { SettingPageOptionItem } from './setting-page';
   import SearchInput from './components/search-input.vue';
   import { setPageRoute } from './route';
@@ -7,9 +8,9 @@
 
   const goBack = () => setPageRoute();
   const activeIndex = ref(0);
-  const activeComp = ref(props.pageOptions[0].comp);
+  const activeComp = computed(() => props.pageOptions[activeIndex.value].comp);
 
-  const changePage = (item: SettingPageOptionItem, index: number) => {
+  const changePage = (index: number) => {
     activeIndex.value = index;
   };
 </script>
@@ -26,7 +27,7 @@
       </div>
       <div class="setting-page__title">{{ title }}</div>
       <div class="setting-page__list" v-for="(item, index) in pageOptions">
-        <div class="setting-page__item" @click="changePage(item, index)">
+        <div class="setting-page__item" @click="changePage(index)">
           <div class="isActive" v-if="index === activeIndex"></div>
           <img class="item-img" :src="item.icon" alt="" />
           <span class="item-text">{{ item.subName }}</span>
@@ -34,7 +35,8 @@
       </div>
     </div>
     <div class="setting-page__right">
-      <component v-if="activeComp" :is="activeComp"></component>
+      <div class="comp-title">{{ pageOptions[activeIndex].subName }}</div>
+      <component v-if="activeComp" :is="defineAsyncComponent(activeComp)"></component>
     </div>
   </div>
 </template>
@@ -83,7 +85,14 @@
   }
 
   .setting-page__right {
+    overflow: auto;
     flex: 1;
-    height: 100%;
+    padding: 30px 20px;
+    max-height: 100%;
+    .comp-title {
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
   }
 </style>
