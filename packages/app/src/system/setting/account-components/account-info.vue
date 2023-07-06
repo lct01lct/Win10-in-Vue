@@ -5,7 +5,7 @@
   import { Role_CN } from 'i18n';
 
   const userStore = useUserStore();
-  const user: User = userStore.user;
+  const user: User = userStore.user!;
   const role = user.role === Role.Admin ? Role_CN.Admin : Role.User;
 </script>
 
