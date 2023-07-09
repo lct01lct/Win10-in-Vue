@@ -49,7 +49,7 @@ import { Base } from 'app';
 `win10` 需要获取你的 app 应用信息，所以还需要将 `app.vue` 应用通过 `WinApp` 创建出 app 实例
 
 ```ts
-import { WinApp } from 'app';
+import { WinApp } from 'render-core/app';
 import App from 'app.vue';
 
 const app = new WinApp({
