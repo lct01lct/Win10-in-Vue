@@ -1,4 +1,4 @@
 export const handleBackendPath = (path: string) => {
-  // @ts-ignore
-  return import.meta.env.VITE_BACKEND_ROOT + path;
+  const env = import.meta.env;
+  return env.MODE === 'development' ? env.VITE_BACKEND_ROOT + path : path;
 };
