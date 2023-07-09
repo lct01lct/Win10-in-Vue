@@ -2,7 +2,6 @@
   import { Ref } from 'vue';
   import { Desc, Files, Folder, isFile } from 'win10/src/share/file';
   import { Icon } from 'win10/src/components';
-  import { DISPLAY_FILE, EXPECT } from 'i18n';
   const currPointer = inject<Ref<Folder | Desc>>('currPointer');
   const setCurrPointer = inject<(currPointer: Folder | Desc) => void>('setCurrPointer');
 
@@ -32,7 +31,7 @@
   const onItemBblClick = (item: Folder | Files) => {
     if (isFile(item)) {
       // parse TODO:
-      alert(`${DISPLAY_FILE}，${EXPECT}`);
+      alert(`当前功能暂未实现，敬请期待`);
     } else {
       if (item && setCurrPointer) {
         setCurrPointer(item);

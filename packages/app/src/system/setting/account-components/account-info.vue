@@ -1,8 +1,7 @@
 <script lang="ts" setup>
   import { handleBackendPath } from 'utils';
   import { useUserStore } from 'win10/src/store';
-  import { User, Role } from 'win10/src/types';
-  import { Role_CN } from 'i18n';
+  import { User, Role, Role_CN } from 'win10/src/types';
   import CompTitle from '../components/comp-title.vue';
   import CardItem from '../components/card-item.vue';
   import CameraIcon from './img/camera.png';
