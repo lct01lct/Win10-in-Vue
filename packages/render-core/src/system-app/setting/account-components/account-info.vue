@@ -1,15 +1,17 @@
 <script lang="ts" setup>
   import { useUserStore } from 'model-core';
-  import { User, Role, Role_CN } from 'model-core';
+  import { User, Role, Role_CN, R_updateMe } from 'model-core';
   import CompTitle from '../components/comp-title.vue';
   import CardItem from '../components/card-item.vue';
   import CameraIcon from './img/camera.png';
   import WhiteBoardIcon from './img/whiteboard.png';
   import { cameraApp } from '@/system-app';
+  import { storeToRefs } from 'pinia';
 
   const userStore = useUserStore();
-  const user: User = userStore.user!;
-  const role = user.role === Role.Admin ? Role_CN.Admin : Role.User;
+  const { user } = storeToRefs(userStore)!;
+
+  const role = user.value?.role === Role.Admin ? Role_CN.Admin : Role.User;
   const fileIptRef = shallowRef<HTMLInputElement>();
 
   const onCameraClick = () => {
@@ -29,11 +31,17 @@
     }
   };
 
-  const onFileIptChange = () => {
+  const onFileIptChange = async () => {
     const oFile = fileIptRef.value;
 
     if (oFile) {
-      const wallpaper = oFile.files?.[0];
+      const avatar = oFile.files?.[0];
+      if (avatar) {
+        const res = await R_updateMe({ avatar });
+        if (res) {
+          userStore.setUser(res.data?.user);
+        }
+      }
     }
   };
 </script>
@@ -41,10 +49,10 @@
 <template>
   <div class="account-info">
     <div class="account-info__avatar">
-      <img class="avatar-img" :src="user.avatar" />
+      <img class="avatar-img" :src="user?.avatar" />
     </div>
-    <div class="account-info__username">{{ user.username }}</div>
-    <div class="account-info__email">{{ user.email }}</div>
+    <div class="account-info__username">{{ user?.username }}</div>
+    <div class="account-info__email">{{ user?.email }}</div>
     <div class="account-info__role">{{ role }}</div>
   </div>
 

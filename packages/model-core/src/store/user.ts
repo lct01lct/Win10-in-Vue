@@ -2,7 +2,6 @@ import { Role, User } from '../types';
 import { defineStore } from 'pinia';
 import DefaultAvatar from '../assets/default/user_avatar_default.png';
 import DefaultWallpaper from '../assets/default/wallpaper_default.jpg';
-import { handleBackendPath } from 'utils';
 
 const TOKEN_KEY = 'token';
 
@@ -16,8 +15,8 @@ export const useUserStore = defineStore('user', () => {
     if (_user) {
       user.value = {
         ..._user,
-        avatar: handleBackendPath(_user.avatar),
-        wallpaper: handleBackendPath(_user.wallpaper),
+        avatar: new URL(_user.avatar).href,
+        wallpaper: new URL(_user.wallpaper).href,
       };
     } else {
       user.value = defaultUser;

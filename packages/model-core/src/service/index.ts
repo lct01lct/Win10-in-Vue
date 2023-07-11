@@ -43,13 +43,20 @@ type BaseMethodRequestFnType = <Data>(
   anyConfig?: AxiosRequestConfig
 ) => Promise<Data | null>;
 
+type FormatRequestFnType = <Data>(
+  url: string,
+  data?: any,
+  type?: 'json' | 'form',
+  anyConfig?: AxiosRequestConfig
+) => Promise<Data | null>;
+
 export interface RequestFn {
   <Data = any, Config = any>(params: AxiosRequestConfig<Config>): Promise<Data | null>;
-  get: BaseMethodRequestFnType;
-  post: BaseMethodRequestFnType;
-  delete: BaseMethodRequestFnType;
-  patch: BaseMethodRequestFnType;
-  put: BaseMethodRequestFnType;
+  get: FormatRequestFnType;
+  post: FormatRequestFnType;
+  delete: FormatRequestFnType;
+  patch: FormatRequestFnType;
+  put: FormatRequestFnType;
 }
 
 // @ts-ignore
@@ -61,7 +68,7 @@ export const request: RequestFn = <Data = any, Config = any>(
       http(params)
         .then((res) => resolve(res.data))
         .catch((err) => {
-          return resolve(err.response.data);
+          return resolve(err.response?.data);
         });
     });
   }
@@ -70,6 +77,9 @@ export const request: RequestFn = <Data = any, Config = any>(
 };
 
 requestMethods.forEach((method) => {
-  request[method] = ((url, data, config) =>
-    request({ method, url, data, ...config })) as BaseMethodRequestFnType;
+  request[method] = (url, data, type, config) => {
+    const headers = config?.headers || {};
+    if (type === 'form') headers['Content-Type'] = 'multipart/form-data';
+    return request({ method, url, data, ...{ ...config, headers } });
+  };
 });
