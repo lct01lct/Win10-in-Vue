@@ -1,9 +1,9 @@
 {
   "homepage": "https://lct01lct.github.io/",
   "scripts": {
-    "dev": "pnpm -F render-core dev",
-    "build": "pnpm -F render-core build",
-    "preview": "pnpm -F render-core preview",
+    "dev": "pnpm -F win dev",
+    "build": "pnpm -F win build",
+    "preview": "pnpm -F win preview",
     "commit": "git add . && git cz"
   },
   "dependencies": {
