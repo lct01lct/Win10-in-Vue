@@ -21,12 +21,14 @@ importers:
       chinese-lunar-calendar: ^1.0.1
       dayjs: ^1.11.9
       pinia: ^2.1.4
+      utils: workspace:^1.0.0
       vue-router: ^4.2.4
     dependencies:
       axios: 1.4.0
       chinese-lunar-calendar: 1.0.1
       dayjs: 1.11.9
       pinia: 2.1.4
+      utils: link:../utils
       vue-router: 4.2.4
 
   packages/render-core:

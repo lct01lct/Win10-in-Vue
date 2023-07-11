@@ -32,7 +32,7 @@ export class WinApp extends BaseApp {
     vueApp.mount(oContainer);
 
     setTimeout(() => {
-      document.querySelector('.deskTop-wrapper')!.appendChild(oContainer);
+      document.querySelector('.deskTop-wrapper')?.appendChild(oContainer);
     });
 
     return this;

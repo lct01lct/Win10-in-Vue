@@ -31,8 +31,7 @@ const checkLoginForm = async () => {
     if (status === 'failed') return false;
 
     const userStore = useUserStore();
-
-    userStore.user = res.data?.user ?? null;
+    userStore.setUser(res.data?.user);
     userStore.setToken(res.token ?? '');
     return true;
   } else if (password.value === '123456789') {

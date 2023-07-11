@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { handleBackendPath } from 'utils';
   import { useUserStore } from 'model-core';
   import { User, Role, Role_CN } from 'model-core';
   import CompTitle from '../components/comp-title.vue';
@@ -11,6 +10,7 @@
   const userStore = useUserStore();
   const user: User = userStore.user!;
   const role = user.role === Role.Admin ? Role_CN.Admin : Role.User;
+  const fileIptRef = shallowRef<HTMLInputElement>();
 
   const onCameraClick = () => {
     cameraApp.open({
@@ -20,12 +20,28 @@
       minHeight: 400,
     });
   };
+
+  const onBoardClick = () => {
+    const oFile = fileIptRef.value;
+
+    if (oFile) {
+      oFile.click();
+    }
+  };
+
+  const onFileIptChange = () => {
+    const oFile = fileIptRef.value;
+
+    if (oFile) {
+      const wallpaper = oFile.files?.[0];
+    }
+  };
 </script>
 
 <template>
   <div class="account-info">
     <div class="account-info__avatar">
-      <img class="avatar-img" :src="handleBackendPath(user.avatar)" />
+      <img class="avatar-img" :src="user.avatar" />
     </div>
     <div class="account-info__username">{{ user.username }}</div>
     <div class="account-info__email">{{ user.email }}</div>
@@ -34,7 +50,14 @@
 
   <CompTitle title="创建头像"></CompTitle>
   <CardItem :icon="CameraIcon" name="摄像头" @click="onCameraClick"></CardItem>
-  <CardItem :icon="WhiteBoardIcon" name="从现有图片选择"></CardItem>
+  <CardItem :icon="WhiteBoardIcon" name="从现有图片选择" @click="onBoardClick"></CardItem>
+  <input
+    type="file"
+    ref="fileIptRef"
+    style="display: none"
+    @change="onFileIptChange"
+    accept=".png,.jpg,jpeg,svg"
+  />
 </template>
 
 <style scoped lang="scss">

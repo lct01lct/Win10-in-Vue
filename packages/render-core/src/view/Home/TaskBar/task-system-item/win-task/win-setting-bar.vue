@@ -4,11 +4,11 @@
   import PictureIcon from '@/assets/images/homePage/taskBar-img/picture.png';
   import ShutdownIcon from '@/assets/images/loginPage/RestartNowPower_80.png';
   import { useUserStore, router } from 'model-core';
-  import { handleBackendPath, sleep } from 'utils';
 
   import { R_logout } from 'model-core';
   import { folderApp, settingApp } from '@/system-app';
   import { Popover } from '@/components';
+  import { sleep } from 'utils';
 
   const userStore = useUserStore();
   const triggerRef = ref<HTMLElement>();
@@ -31,7 +31,7 @@
 
   const bottomBar = [
     {
-      icon: handleBackendPath(userStore.user?.avatar!),
+      icon: userStore.user?.avatar!,
       name: userStore.user?.username,
     },
     {

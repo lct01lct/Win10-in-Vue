@@ -60,7 +60,9 @@ export const request: RequestFn = <Data = any, Config = any>(
     return new Promise<Data>((resolve) => {
       http(params)
         .then((res) => resolve(res.data))
-        .catch((err) => resolve(err.response.data));
+        .catch((err) => {
+          return resolve(err.response.data);
+        });
     });
   }
 

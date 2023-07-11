@@ -10,7 +10,7 @@
     if (res?.status === 'failed') {
       userStore.user = null;
     } else {
-      userStore.setUser(res?.data?.user);
+      userStore.setUser(res!.data!.user);
     }
   };
 
