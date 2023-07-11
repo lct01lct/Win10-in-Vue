@@ -13,12 +13,15 @@ export const useUserStore = defineStore('user', () => {
   const token = ref<string>('');
 
   const setUser = (_user?: User) => {
-    user.value =
-      {
+    if (_user) {
+      user.value = {
         ..._user,
-        avatar: handleBackendPath(_user?.avatar),
-        wallpaper: handleBackendPath(_user?.wallpaper),
-      } || defaultUser;
+        avatar: handleBackendPath(_user.avatar),
+        wallpaper: handleBackendPath(_user.wallpaper),
+      };
+    } else {
+      user.value = defaultUser;
+    }
   };
 
   const setToken = (_token: string) => {
