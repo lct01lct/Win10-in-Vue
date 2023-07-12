@@ -47,7 +47,7 @@ export const messageList: Message[] = reactive([
       time: '2022-11-13',
     },
   },
-]) as unknown as Message[];
+]) as Message[];
 
 export const isNotSeenCount = computed(() => {
   let count = 0;

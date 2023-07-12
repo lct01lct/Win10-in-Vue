@@ -198,7 +198,7 @@ export class Folder {
       });
 
       if (tar) {
-        pointer = tar as unknown as Folder;
+        pointer = tar as Folder;
         i++;
       } else {
         return null;
