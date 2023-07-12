@@ -1,4 +1,4 @@
-import { AsyncComponentOptions, Component } from 'vue';
+import { Component } from 'vue';
 import accountIcon from './img/item-icon/account.png';
 import applicationIcon from './img/item-icon/application.png';
 import deviceIcon from './img/item-icon/device.png';
@@ -23,43 +23,43 @@ import account_syncIcon from './img/account-icon/sync.png';
 
 export const settingPageInfo: SettingInfoItem[] = [
   {
-    name: '系统' as const,
+    name: '系统',
     desc: '显示、声音、通知、电源',
     icon: systemIcon,
     options: [],
   },
   {
-    name: '设备' as const,
+    name: '设备',
     desc: '蓝牙、打印机、鼠标',
     icon: deviceIcon,
     options: [],
   },
   {
-    name: '手机' as const,
+    name: '手机',
     desc: '连接 Android 设备和 iPhone',
     icon: phoneIcon,
     options: [],
   },
   {
-    name: '网络和 Internet' as const,
+    name: '网络和 Internet',
     desc: 'WLAN、飞行模式、VPN',
     icon: netIcon,
     options: [],
   },
   {
-    name: '个性化' as const,
+    name: '个性化',
     desc: '背景、锁屏、颜色',
     icon: personalizationIcon,
     options: [],
   },
   {
-    name: '应用' as const,
+    name: '应用',
     desc: '卸载、默认应用、可选功能',
     icon: applicationIcon,
     options: [],
   },
   {
-    name: '账户' as const,
+    name: '账户',
     desc: '你的账户、电子邮箱、同步设置、工作、家庭',
     icon: accountIcon,
     options: [
@@ -76,46 +76,43 @@ export const settingPageInfo: SettingInfoItem[] = [
     ],
   },
   {
-    name: '时间和语言' as const,
+    name: '时间和语言',
     desc: '语音、区域、日期',
     icon: langIcon,
     options: [],
   },
   {
-    name: '游戏' as const,
+    name: '游戏',
     desc: 'Xbox Game Bar、捕获、游戏模式',
     icon: xboxIcon,
     options: [],
   },
   {
-    name: '轻松使用' as const,
+    name: '轻松使用',
     desc: '讲述人、放大镜、高对比度',
     icon: quickIcon,
     options: [],
   },
   {
-    name: '搜索' as const,
+    name: '搜索',
     desc: '查找我的文件、权限',
     icon: searchIcon,
     options: [],
   },
   {
-    name: '隐私' as const,
+    name: '隐私',
     desc: '位置、摄像头、麦克风',
     icon: lockIcon,
     options: [],
   },
   {
-    name: '更新和安全' as const,
+    name: '更新和安全',
     desc: 'Windows 更新、恢复、备份',
     icon: updateIcon,
     options: [],
   },
 ];
 
-type AsyncComp = {
-  new (): Component;
-};
 export interface SettingPageOptionItem {
   readonly icon: string;
   readonly subName: string;
@@ -124,7 +121,20 @@ export interface SettingPageOptionItem {
 export type SettingPageOpenRoute = (typeof settingPageInfo)[number]['name'];
 
 export interface SettingInfoItem {
-  readonly name: string;
+  readonly name:
+    | '系统'
+    | '设备'
+    | '手机'
+    | '网络和 Internet'
+    | '个性化'
+    | '应用'
+    | '账户'
+    | '时间和语言'
+    | '游戏'
+    | '轻松使用'
+    | '搜索'
+    | '隐私'
+    | '更新和安全';
   readonly desc: string;
   readonly icon: string;
   readonly options: SettingPageOptionItem[];

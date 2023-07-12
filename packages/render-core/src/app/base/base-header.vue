@@ -124,19 +124,15 @@
 <template>
   <div class="app-header-wrapper" v-drag="vDragOpt" @dblclick="onMaximizeBtnClick">
     <div class="app-header-left-wrapper">
-      <template v-if="props.appName || props.appLogo">
-        <div class="app-header-inner">
-          <Icon :size="18" v-if="props.appLogo" :style="{ marginRight: '5px' }">
-            <img :src="props.appLogo" alt="" />
-          </Icon>
-          <template v-if="props.appName">
-            {{ props.appName }}
-          </template>
-        </div>
-      </template>
-      <template v-else-if="$slots.default">
-        <slot></slot>
-      </template>
+      <slot v-if="$slots.default"></slot>
+      <div v-else-if="appName || appLogo" class="app-header-inner">
+        <Icon :size="18" v-if="appLogo" :style="{ marginRight: '5px' }">
+          <img :src="appLogo" alt="" />
+        </Icon>
+        <template v-if="appName">
+          {{ appName }}
+        </template>
+      </div>
     </div>
     <div class="app-header-right-wrapper" @mousedown.stop @mouseleave.stop>
       <div class="app-view-opt-item minimize-btn" @click="onMinimizeBtnClick">

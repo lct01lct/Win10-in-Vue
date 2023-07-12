@@ -33,6 +33,10 @@
     {
       icon: userStore.user?.avatar!,
       name: userStore.user?.username,
+      onClick: async () => {
+        await waitPopoverClose();
+        settingApp.open({ route: '账户', width: 1000, height: 600 });
+      },
     },
     {
       icon: DocIcon,
@@ -45,10 +49,7 @@
       name: '设置',
       onClick: async () => {
         await waitPopoverClose();
-        settingApp.open({
-          width: 1000,
-          height: 600,
-        });
+        settingApp.open({ width: 1000, height: 600 });
       },
     },
     {

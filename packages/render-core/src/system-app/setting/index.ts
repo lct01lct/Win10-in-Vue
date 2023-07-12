@@ -4,10 +4,11 @@ import SettingIcon from './img/setting-icon.png';
 import { SettingPageOpenRoute } from './setting-page';
 
 export const settingAppName = '设置';
+export type SettingAppInfoByOpened = InfoByOpened & { route?: SettingPageOpenRoute };
 
 export class SettingApp extends WinApp {
-  declare infoByOpened: InfoByOpened & { route: SettingPageOpenRoute };
-
+  declare infoByOpened: SettingAppInfoByOpened;
+  declare open: (info?: SettingAppInfoByOpened) => void;
   constructor(opt: WinAppConstructorOpt) {
     super(opt);
   }

@@ -133,7 +133,9 @@
       :appName="appName"
       :appLogo="appLogo"
     >
-      <slot v-if="$slots.header" name="header"></slot>
+      <template v-if="$slots.header" #default>
+        <slot name="header"></slot>
+      </template>
     </BaseHeader>
     <BaseBody>
       <slot name="body"></slot>
