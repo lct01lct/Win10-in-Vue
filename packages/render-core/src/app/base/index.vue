@@ -126,7 +126,6 @@
     v-resize="vResizeOpt"
   >
     <BaseHeader
-      v-if="$slots.header"
       :appViewSize="appViewSize"
       @setAppViewSize="setAppViewSize"
       :appRef="appRef!"
@@ -134,17 +133,8 @@
       :appName="props.appName"
       :appLogo="props.appLogo"
     >
-      <slot name="header"></slot>
+      <slot v-if="$slots.header" name="header"></slot>
     </BaseHeader>
-    <BaseHeader
-      v-else-if="props.appName || props.appLogo"
-      :appViewSize="appViewSize"
-      @setAppViewSize="setAppViewSize"
-      :appRef="appRef!"
-      v-model:isShow="isShow"
-      :appName="props.appName"
-      :appLogo="props.appLogo"
-    ></BaseHeader>
     <BaseBody>
       <slot name="body"></slot>
     </BaseBody>

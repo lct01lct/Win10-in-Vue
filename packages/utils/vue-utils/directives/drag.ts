@@ -13,7 +13,7 @@ const directive: Directive = {
     await nextTick();
 
     const tar = binding.value ? findParentElement(el, binding.value.tar) : el;
-    // TODO:
+
     if (!tar) throw new Error('Unable to find the target node of draggable!');
 
     const onMousedown = (e: MouseEvent) => {
