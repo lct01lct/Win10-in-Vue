@@ -11,7 +11,7 @@
   import { toggleZIndex } from './taskBar';
   import { getViewSizeConfig } from './view-config';
 
-  const props = defineProps<{
+  defineProps<{
     appLogo?: string;
     appName?: string;
   }>();
@@ -130,8 +130,8 @@
       @setAppViewSize="setAppViewSize"
       :appRef="appRef!"
       v-model:isShow="isShow"
-      :appName="props.appName"
-      :appLogo="props.appLogo"
+      :appName="appName"
+      :appLogo="appLogo"
     >
       <slot v-if="$slots.header" name="header"></slot>
     </BaseHeader>
