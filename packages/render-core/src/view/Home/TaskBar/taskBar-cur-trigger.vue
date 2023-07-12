@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import { Icon } from '@/components';
   import { getWinAppScope, WinApp, taskBarTriggerList, WinAppDOM } from '@/app';
+  import { toggleZIndex, getOpenedAppLen } from '@/app/base/taskBar';
 
   const { winApp } = defineProps<{ iconPath: string; winApp: WinApp; name: string }>();
 
@@ -15,15 +16,15 @@
   });
 
   const onTriggerClick = () => {
-    for (const item of taskBarTriggerList) {
-      const { isFull } = getWinAppScope(item.winApp._dom as unknown as WinAppDOM);
-      if (isFull.value) {
-        winApp.show(true);
-        return;
-      }
-    }
     if (appIsShow.value) {
-      winApp.hide();
+      const isCovered =
+        taskBarTriggerList.find((item) => item.winApp === winApp)!.zIndex < getOpenedAppLen();
+
+      if (isCovered) {
+        toggleZIndex(winApp._dom);
+      } else {
+        winApp.hide();
+      }
     } else {
       winApp.show();
     }

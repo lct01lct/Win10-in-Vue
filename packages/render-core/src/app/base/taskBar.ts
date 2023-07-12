@@ -17,7 +17,8 @@ export const removeTaskBarTriggerItem = (name: string) => {
 };
 
 export const toggleZIndex = (tar: string | HTMLElement) => {
-  const openedAppLen = taskBarTriggerList.length;
+  const openedAppLen = getOpenedAppLen();
+
   const index = taskBarTriggerList.findIndex(
     (item) => item.name === tar || item.winApp._dom === tar
   );
@@ -25,13 +26,37 @@ export const toggleZIndex = (tar: string | HTMLElement) => {
   if (index === -1) return;
 
   const triggerItem = taskBarTriggerList[index];
-  const oldZIndex = taskBarTriggerList[index].zIndex;
+  const oldZIndex = triggerItem.zIndex;
+
+  if (oldZIndex !== -1) {
+    taskBarTriggerList.forEach((item) => {
+      if (item.zIndex >= oldZIndex && item !== triggerItem) {
+        item.zIndex--;
+      }
+    });
+    triggerItem.zIndex = openedAppLen;
+  } else {
+    triggerItem.zIndex = openedAppLen + 1;
+  }
+};
+
+export const removeZIndex = (tar: HTMLElement) => {
+  const index = taskBarTriggerList.findIndex((item) => item.winApp._dom === tar);
+
+  if (index === -1) return;
+
+  const removedItem = taskBarTriggerList[index];
+
+  const oldZIndex = removedItem.zIndex;
+  removedItem.zIndex = -1;
 
   taskBarTriggerList.forEach((item) => {
-    if (item.zIndex >= oldZIndex && item !== triggerItem) {
+    if (item.zIndex > oldZIndex) {
       item.zIndex--;
     }
   });
+};
 
-  triggerItem.zIndex = openedAppLen;
+export const getOpenedAppLen = () => {
+  return taskBarTriggerList.filter((item) => item.zIndex !== -1).length;
 };

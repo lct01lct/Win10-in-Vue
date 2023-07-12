@@ -1,6 +1,6 @@
 import { App, Component, ComponentPublicInstance, Ref } from 'vue';
 import { animation } from 'utils';
-import { addTaskBarTriggerItem, toggleZIndex, taskBarTriggerList } from './taskBar';
+import { addTaskBarTriggerItem, toggleZIndex, taskBarTriggerList, removeZIndex } from './taskBar';
 import type { TaskBarTriggerItem } from './taskBar';
 import installDirective from 'utils/vue-utils/directives';
 import { Folder, Desc } from 'model-core';
@@ -120,6 +120,7 @@ export class BaseApp {
     } else {
       this._dom[WIN_APP_SCOPE].onMinimizeBtnClick();
     }
+    removeZIndex(this._dom);
   }
 
   onClose(fn: () => void) {

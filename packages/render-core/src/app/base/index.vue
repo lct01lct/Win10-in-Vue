@@ -54,11 +54,11 @@
     const index = taskBarTriggerList.findIndex((item) => item.name === appName);
 
     return {
-      width: appViewSize.width + 'px',
-      height: appViewSize.height + 'px',
-      left: `${appViewSize.left}px`,
-      top: `${appViewSize.top}px`,
-      zIndex: taskBarTriggerList[index].zIndex,
+      width: appViewSize?.width + 'px',
+      height: appViewSize?.height + 'px',
+      left: `${appViewSize?.left}px`,
+      top: `${appViewSize?.top}px`,
+      zIndex: taskBarTriggerList[index]?.zIndex,
     };
   };
 
