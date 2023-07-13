@@ -27,7 +27,7 @@
     await changeWallpaper(wallpaper);
   };
 
-  const onUploadFile = async (file: File) => {
+  const onUploadFileChange = async (file: File) => {
     await changeWallpaper(file);
   };
 
@@ -63,7 +63,7 @@
       </template>
     </div>
 
-    <UploadFile @change="onUploadFile" accept=".png,.jpg,jpeg,svg">
+    <UploadFile @change="onUploadFileChange" accept=".png,.jpg,jpeg,svg">
       <Button @click="">浏览</Button>
     </UploadFile>
   </template>

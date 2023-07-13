@@ -7,6 +7,7 @@
   import WhiteBoardIcon from './img/whiteboard.png';
   import { cameraApp } from '@/system-app';
   import { storeToRefs } from 'pinia';
+  import UploadFile from '../components/upload-file.vue';
 
   const userStore = useUserStore();
   const { user } = storeToRefs(userStore)!;
@@ -23,25 +24,10 @@
     });
   };
 
-  const onBoardClick = () => {
-    const oFile = fileIptRef.value;
-
-    if (oFile) {
-      oFile.click();
-    }
-  };
-
-  const onFileIptChange = async () => {
-    const oFile = fileIptRef.value;
-
-    if (oFile) {
-      const avatar = oFile.files?.[0];
-      if (avatar) {
-        const res = await R_updateMe({ avatar });
-        if (res) {
-          userStore.setUser(res.data?.user);
-        }
-      }
+  const onUploadFileChange = async (avatar: File) => {
+    const res = await R_updateMe({ avatar });
+    if (res) {
+      userStore.setUser(res.data?.user);
     }
   };
 </script>
@@ -56,16 +42,11 @@
     <div class="account-info__role">{{ role }}</div>
   </div>
 
-  <CompTitle>创建头像</CompTitle>
+  <CompTitle title="创建头像"></CompTitle>
   <CardItem :icon="CameraIcon" name="摄像头" @click="onCameraClick"></CardItem>
-  <CardItem :icon="WhiteBoardIcon" name="从现有图片选择" @click="onBoardClick"></CardItem>
-  <input
-    type="file"
-    ref="fileIptRef"
-    style="display: none"
-    @change="onFileIptChange"
-    accept=".png,.jpg,jpeg,svg"
-  />
+  <UploadFile @change="onUploadFileChange" accept=".png,.jpg,jpeg,svg">
+    <CardItem :icon="WhiteBoardIcon" name="从现有图片选择"></CardItem>
+  </UploadFile>
 </template>
 
 <style scoped lang="scss">
