@@ -7,7 +7,7 @@
 
   const props = defineProps(PopoverProps);
 
-  const triggerRef = ref<HTMLElement | null>(null);
+  const triggerRef = ref<HTMLElement>();
   const popoverContentVueRef = ref<InstanceType<typeof PopoverContent>>();
 
   let clickCount = 0;
@@ -78,16 +78,16 @@
 
   const emits = defineEmits(PopoverEmits);
 
-  const beforeEnter = (el: HTMLElement) => {
+  const beforeEnter = (el: Element) => {
     emits('onBeforeEnter');
     nextTick(() => {
-      props.animationDir && beforeEnterAnimeHandler(el, props.animationDir);
+      props.animationDir && beforeEnterAnimeHandler(el as HTMLElement, props.animationDir);
     });
   };
 
-  const enter = (el: HTMLElement, done: any) => {
+  const enter = (el: Element, done: () => void) => {
     nextTick(() => {
-      props.animationDir && enterAnimeHandler(el, props.animationDir);
+      props.animationDir && enterAnimeHandler(el as HTMLElement, props.animationDir);
       done();
     });
   };
@@ -101,7 +101,7 @@
     emits('onBeforeLeave');
   };
 
-  const leave = (el: HTMLElement, done: any) => {
+  const leave = (el: Element, done: any) => {
     done();
   };
 
@@ -111,7 +111,7 @@
     emits('closed');
   };
 
-  const popoverRef = ref<HTMLElement | null>(null);
+  const popoverRef = ref<HTMLElement>();
 
   defineExpose({
     close: () => {
