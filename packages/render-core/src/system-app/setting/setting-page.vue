@@ -18,9 +18,9 @@
 <template>
   <div class="setting-page">
     <div class="setting-page__left">
-      <div class="setting-page__item">
+      <div class="setting-page__item" @click="goBack">
         <img class="item-img" src="./img/home.png" alt="" />
-        <span class="item-text" @click="goBack">主页</span>
+        <span class="item-text">主页</span>
       </div>
       <div class="search-input-wrapper">
         <SearchInput placeholder="查找设置" autofocus></SearchInput>
