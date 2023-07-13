@@ -2,6 +2,7 @@
   import { resetFocusIcon } from '@/app';
   import { useUserStore } from 'model-core';
   import { CSSProperties } from 'vue';
+  import { WinApp } from '@/app';
 
   const reset = () => {
     resetFocusIcon();
@@ -15,7 +16,11 @@
 </script>
 
 <template>
-  <div class="deskTop-wrapper" @click="reset" :style="wallpaperStyle"></div>
+  <div class="deskTop-wrapper" @click="reset" :style="wallpaperStyle">
+    <template v-for="item in WinApp.DeskTopAppList" :key="item.name">
+      <component :is="item.comp"></component>
+    </template>
+  </div>
 </template>
 
 <style scoped>

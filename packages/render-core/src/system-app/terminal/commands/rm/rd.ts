@@ -20,7 +20,7 @@ export default {
         if (isFolder(itemPointer)) {
           prohibitDelDesktop(itemPointer.name);
           currPointer.value!.removeFolder(itemPointer.name);
-          folderApp.deleteShortcut(itemPointer.name);
+          folderApp.deleteShortcut();
         }
       }
     } else {
@@ -29,7 +29,7 @@ export default {
         currPointer.value?.removeFolder(folderName);
 
         if (currPointer.value === getDesktopPointer()) {
-          folderApp.deleteShortcut(folderName);
+          folderApp.deleteShortcut();
         }
       });
     }
