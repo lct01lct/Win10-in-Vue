@@ -21,6 +21,13 @@ import account_loginIcon from './img/account-icon/login.png';
 import account_connectIcon from './img/account-icon/connect.png';
 import account_syncIcon from './img/account-icon/sync.png';
 
+// personalization-icon
+import personalization_backgroundIcon from './img/personalization-icon/background.png';
+import personalization_colorIcon from './img/personalization-icon/color.png';
+import personalization_lockIcon from './img/personalization-icon/lock.png';
+import personalization_themeIcon from './img/personalization-icon/theme.png';
+import personalization_fontIcon from './img/personalization-icon/font.png';
+
 export const settingPageInfo: SettingInfoItem[] = [
   {
     name: '系统',
@@ -50,7 +57,17 @@ export const settingPageInfo: SettingInfoItem[] = [
     name: '个性化',
     desc: '背景、锁屏、颜色',
     icon: personalizationIcon,
-    options: [],
+    options: [
+      {
+        icon: personalization_backgroundIcon,
+        subName: '背景',
+        comp: () => import('./personalization-components/personalization-background.vue'),
+      },
+      { icon: personalization_colorIcon, subName: '颜色' },
+      { icon: personalization_lockIcon, subName: '锁屏桌面' },
+      { icon: personalization_themeIcon, subName: '主题' },
+      { icon: personalization_fontIcon, subName: '字体' },
+    ],
   },
   {
     name: '应用',

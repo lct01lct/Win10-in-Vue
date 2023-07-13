@@ -1,11 +1,9 @@
-<script lang="ts" setup>
-  defineProps<{
-    title: string;
-  }>();
-</script>
+<script lang="ts" setup></script>
 
 <template>
-  <div class="comp-title">{{ title }}</div>
+  <div class="comp-title">
+    <slot></slot>
+  </div>
 </template>
 
 <style scoped>

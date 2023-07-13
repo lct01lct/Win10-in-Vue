@@ -21,7 +21,7 @@ export const R_getMe = async () => {
 
 export type UpdateMeDto = Partial<Omit<User, 'avatar' | 'wallpaper'>> & {
   avatar?: File;
-  wallpaper?: File;
+  wallpaper?: File | string;
 };
 
 export const R_updateMe = async (updateMeDto: UpdateMeDto) => {

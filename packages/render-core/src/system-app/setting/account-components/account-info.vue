@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { useUserStore } from 'model-core';
-  import { User, Role, Role_CN, R_updateMe } from 'model-core';
+  import { Role, Role_CN, R_updateMe } from 'model-core';
   import CompTitle from '../components/comp-title.vue';
   import CardItem from '../components/card-item.vue';
   import CameraIcon from './img/camera.png';
@@ -56,7 +56,7 @@
     <div class="account-info__role">{{ role }}</div>
   </div>
 
-  <CompTitle title="创建头像"></CompTitle>
+  <CompTitle>创建头像</CompTitle>
   <CardItem :icon="CameraIcon" name="摄像头" @click="onCameraClick"></CardItem>
   <CardItem :icon="WhiteBoardIcon" name="从现有图片选择" @click="onBoardClick"></CardItem>
   <input
