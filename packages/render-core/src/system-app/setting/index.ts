@@ -18,6 +18,8 @@ export const settingApp = new SettingApp({
   name: settingAppName,
   comp: Setting,
   icon: SettingIcon,
+  defaultWidth: 1000,
+  defaultHeight: 600,
 });
 
 export { SettingIcon };

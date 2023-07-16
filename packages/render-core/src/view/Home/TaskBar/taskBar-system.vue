@@ -65,7 +65,7 @@
     }
   }
   .system-task-detail {
-    background-color: rgb(62, 62, 62, 0.8);
+    background-color: rgb(36, 36, 36, 0.95);
     color: #fff;
   }
 </style>

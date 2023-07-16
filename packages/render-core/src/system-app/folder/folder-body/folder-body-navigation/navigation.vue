@@ -11,7 +11,7 @@
 
   const subscribeResizeMoving = inject<SubscribeResizeMovingType>('subscribeResizeMoving')!;
 
-  subscribeResizeMoving(({ width, height, top, left }: Required<AppViewSizeOpt>) => {
+  subscribeResizeMoving(({ width }: Required<AppViewSizeOpt>) => {
     let reWidth: number = 0;
     if (width - 300 < 200) {
       reWidth = 200;

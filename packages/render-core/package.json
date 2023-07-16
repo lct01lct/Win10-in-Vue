@@ -18,6 +18,7 @@
     "lodash": "^4.17.21",
     "model-core": "workspace:^1.0.0",
     "pinia": "^2.1.4",
+    "pinyin-pro": "^3.15.4",
     "utils": "workspace:^1.0.0",
     "vue": "^3.3.4",
     "vue-router": "^4.1.6"

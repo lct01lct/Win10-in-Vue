@@ -8,6 +8,7 @@ export const terminalApp = new WinApp({
   name: terminalAppName,
   comp: Terminal,
   icon: terminalIcon,
+  isFromSystem: true,
 }).createShortcut(terminalIcon, terminalAppName);
 
 export { terminalIcon };

@@ -22,6 +22,8 @@ export interface BaseAppContructorOpt {
   name: string;
   comp: Component;
   icon: string;
+  defaultWidth?: number;
+  defaultHeight?: number;
 }
 
 export interface BaseApp {
@@ -42,20 +44,29 @@ export type InfoByOpened = {
 
 export class BaseApp {
   name: string;
-  infoByOpened?: InfoByOpened;
+  infoByOpened: InfoByOpened = {};
   _logo: string;
   _isRender: boolean = false;
   private _vm?: ComponentPublicInstance;
   closeCbs: (() => void)[] = [];
 
-  constructor({ name, comp, icon }: BaseAppContructorOpt) {
-    this.name = name;
-    this._logo = icon;
-    installWinApp(name, comp);
+  constructor(opt: BaseAppContructorOpt) {
+    this.name = opt.name;
+    this._logo = opt.icon;
+
+    if (opt.defaultWidth) {
+      this.infoByOpened.width = opt.defaultWidth;
+    }
+
+    if (opt.defaultHeight) {
+      this.infoByOpened.height = opt.defaultHeight;
+    }
+
+    installWinApp(opt.name, opt.comp);
   }
 
   open(info?: InfoByOpened) {
-    this.infoByOpened = info;
+    this.infoByOpened = { ...this.infoByOpened, ...info };
 
     if (!this._isRender) {
       // 必须先生成 taskBarList 中的 zIndex 信息

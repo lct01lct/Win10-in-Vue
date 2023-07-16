@@ -13,6 +13,7 @@ export const folderApp = new FolderApp({
   name: folderAppName,
   comp: Folder,
   icon: FolderIcon,
+  isFromSystem: true,
 });
 
 export const initDeskTopFolder = (app: FolderApp) => {

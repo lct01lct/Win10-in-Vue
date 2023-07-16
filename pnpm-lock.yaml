@@ -47,6 +47,7 @@ importers:
       lodash: ^4.17.21
       model-core: workspace:^1.0.0
       pinia: ^2.1.4
+      pinyin-pro: ^3.15.4
       prettier: ^2.8.7
       sass: ^1.61.0
       typescript: ^5.1.6
@@ -68,6 +69,7 @@ importers:
       lodash: 4.17.21
       model-core: link:../model-core
       pinia: 2.1.4_typescript@5.1.6+vue@3.3.4
+      pinyin-pro: 3.15.4
       utils: link:../utils
       vue: 3.3.4
       vue-router: 4.2.4_vue@3.3.4
@@ -2621,6 +2623,10 @@ packages:
     resolution: {integrity: sha512-MnUuEycAemtSaeFSjXKW/aroV7akBbY+Sv+RkyqFjgAe73F+MR0TBWKBRDkmfWq/HiFmdavfZ1G7h4SPZXaCSg==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /pinyin-pro/3.15.4:
+    resolution: {integrity: sha512-v438qrWYcjhMNHxBvreNLU3i378GZrz2Za5KeWZDIH9YCwa3AOXsp4VrufnBur5tSLb79Hqc4rX9LHK7hxUFiw==}
+    dev: false
 
   /pkg-dir/4.2.0:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}

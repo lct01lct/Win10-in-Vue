@@ -49,7 +49,7 @@
       name: '设置',
       onClick: async () => {
         await waitPopoverClose();
-        settingApp.open({ width: 1000, height: 600 });
+        settingApp.open();
       },
     },
     {

@@ -17,7 +17,7 @@
 
 <template>
   <div class="deskTop-wrapper" @click="reset" :style="wallpaperStyle">
-    <template v-for="item in WinApp.DeskTopAppList" :key="item.name">
+    <template v-for="item in WinApp.deskTopAppList" :key="item.name">
       <component :is="item.comp"></component>
     </template>
   </div>

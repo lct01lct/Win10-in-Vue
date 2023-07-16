@@ -22,6 +22,5 @@
     display: flex;
     width: 650px;
     height: 600px;
-    background-color: #000;
   }
 </style>
