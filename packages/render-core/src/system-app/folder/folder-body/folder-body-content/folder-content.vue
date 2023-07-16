@@ -28,7 +28,7 @@
     },
   ]);
 
-  const onItemBblClick = (item: Folder | Files) => {
+  const onItemDblClick = (item: Folder | Files) => {
     if (isFile(item)) {
       // parse TODO:
       alert(`当前功能暂未实现，敬请期待`);
@@ -68,7 +68,7 @@
           :key="item.name"
           :class="selectedFoldersAndFiles.includes(item) && 'isActive'"
           @click.stop="onItemClick(item)"
-          @dblclick.stop="onItemBblClick(item)"
+          @dblclick.stop="onItemDblClick(item)"
           class="folder-content-table-row"
         >
           <span
