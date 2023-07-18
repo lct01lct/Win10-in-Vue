@@ -99,6 +99,7 @@
     .app-name {
       color: #fff;
       font-size: 12px;
+      text-align: center;
     }
 
     &:hover {
