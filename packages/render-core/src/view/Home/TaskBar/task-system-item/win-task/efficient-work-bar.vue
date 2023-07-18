@@ -1,7 +1,6 @@
 <script lang="ts" setup>
   import { MicrosoftStoreIcon, microsoftStoreName, microsoftStoreApp } from '@/system-app';
   import { Popover } from '@/components';
-  import { inject } from 'vue';
 
   const popoverRef = inject<InstanceType<typeof Popover>>('popoverRef');
 
