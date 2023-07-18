@@ -5,7 +5,7 @@
 
 <template>
   <Base :app-logo="MicrosoftStoreIcon" :app-name="microsoftStoreName">
-    <template #body>123</template>
+    <template #body>Microsoft-store</template>
   </Base>
 </template>
 
