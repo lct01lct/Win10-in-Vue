@@ -1,11 +1,19 @@
 <script lang="ts" setup>
-  import { MicrosoftStoreIcon, microsoftStoreName, microsoftStoreApp } from '@/system-app';
+  import {
+    MicrosoftStoreIcon,
+    microsoftStoreName,
+    microsoftStoreApp,
+    edgeAppIcon,
+    edgeAppName,
+    edgeApp,
+  } from '@/system-app';
   import { Popover } from '@/components';
 
   const popoverRef = inject<InstanceType<typeof Popover>>('popoverRef');
 
   const blocks = [
     { icon: MicrosoftStoreIcon, name: microsoftStoreName, click: () => microsoftStoreApp.open() },
+    { icon: edgeAppIcon, name: edgeAppName, click: () => edgeApp.open() },
   ];
 
   const wrapperBlockClick = async (fn: Function) => {
@@ -45,12 +53,15 @@
       }
       .block-list {
         display: flex;
-        justify-content: space-between;
+        flex-wrap: wrap;
+
         .block-item {
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
+          margin-right: 5px;
+          margin-bottom: 5px;
           width: 100px;
           height: 100px;
           background-color: #454545;
