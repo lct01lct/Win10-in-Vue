@@ -1,8 +1,8 @@
 import { WinApp } from 'win';
-import Game from './index.vue';
+import Movie from './index.vue';
 
 export default new WinApp({
-  comp: Game,
+  comp: Movie,
   icon: '',
-  name: 'game',
+  name: 'movie',
 });
