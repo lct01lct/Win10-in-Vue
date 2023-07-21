@@ -4,6 +4,7 @@
     "dev": "pnpm -F win dev",
     "build": "pnpm -F win build",
     "preview": "pnpm -F win preview",
+    "build:app": "pnpm -F win build:app",
     "commit": "git add . && git cz"
   },
   "dependencies": {

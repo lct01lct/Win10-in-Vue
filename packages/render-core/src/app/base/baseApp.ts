@@ -91,7 +91,9 @@ export class BaseApp {
       const _dom = oContainer.querySelector('.app-wrapper')! as WinAppDOM;
       this._dom = _dom;
 
-      document.querySelector('.deskTop-wrapper')!.appendChild(oContainer);
+      (
+        document.querySelector('.deskTop-wrapper') || document.querySelector<HTMLElement>('body')
+      )?.appendChild(oContainer);
 
       initWinAppStyle(_dom, this);
       createWinAppScope(_dom, vueApp, this);

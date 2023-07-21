@@ -1,17 +1,17 @@
-<script lang="ts" setup generic="T">
+<script lang="ts" setup>
   import { onClickOutside } from '@vueuse/core';
 
-  interface Option {
-    value: T;
+  interface SelectOption {
+    value: string;
     label: string;
   }
 
-  defineProps<{ modelValue: T; options: Option[] }>();
+  defineProps<{ modelValue: string; options: SelectOption[] }>();
   const emits = defineEmits<{
-    'update:modelValue': [value: T];
+    'update:modelValue': [value: string];
   }>();
 
-  const onItemClick = (item: Option) => {
+  const onItemClick = (item: SelectOption) => {
     emits('update:modelValue', item.value);
     visible.value = false;
   };

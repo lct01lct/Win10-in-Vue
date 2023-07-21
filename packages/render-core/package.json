@@ -3,10 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "main": "./dist/render-core.js",
+  "types": "./dist/types/render-core/src/app/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build --emptyOutDir",
-    "preview": "vite preview"
+    "build": "vue-tsc --noEmit && vite build --emptyOutDir ",
+    "preview": "vite preview",
+    "build:app": "vite build --config vite.app-config.ts && vue-tsc --emitDeclarationOnly --declaration"
   },
   "dependencies": {
     "@vueuse/core": "^10.2.1",
@@ -37,10 +40,5 @@
     "vite-plugin-cdn2": "^0.3.3",
     "vite-plugin-compression": "^0.5.1",
     "vue-tsc": "^1.8.4"
-  },
-  "exports": {
-    ".": "./src",
-    "./win": "./src/win",
-    "./app": "./src/app"
   }
 }
