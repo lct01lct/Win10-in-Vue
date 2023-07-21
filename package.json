@@ -1,11 +1,12 @@
 {
   "homepage": "https://lct01lct.github.io/",
   "scripts": {
-    "dev": "pnpm -F win dev",
-    "dev:play": "pnpm -F app-store dev",
-    "build": "pnpm -F win build",
-    "preview": "pnpm -F win preview",
-    "build:app": "pnpm -F win build:app",
+    "dev": "pnpm -C packages/render-core dev",
+    "dev:play": "pnpm -C packages/app-store dev",
+    "build": "pnpm -C packages/render-core build",
+    "build:app-core": "pnpm -C packages/render-core build:app-core",
+    "build:app-store": "pnpm -C packages/app-store build:app-store",
+    "preview": "pnpm -C packages/render-core preview",
     "commit": "git add . && git cz"
   },
   "dependencies": {

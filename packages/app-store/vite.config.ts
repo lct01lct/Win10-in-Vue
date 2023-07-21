@@ -9,4 +9,12 @@ export default defineConfig({
     },
   },
   plugins: [vue()],
+  build: {
+    rollupOptions: {
+      input: './src/index.ts',
+      output: {
+        entryFileNames: 'app-store.js',
+      },
+    },
+  },
 });

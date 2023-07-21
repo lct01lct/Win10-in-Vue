@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { dayArr } from '../../config/time';
+// @ts-ignore
 import { getLunar } from 'chinese-lunar-calendar';
 
 type Dayjs = dayjs.Dayjs;

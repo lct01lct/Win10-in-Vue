@@ -13,13 +13,13 @@
     "isolatedModules": false,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
-    "types": ["node", "./env.d.ts"],
+    "types": ["node", "../../env.d.ts"],
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["./*.d.ts", "../../vite-env.d.ts", "./src/*.ts"],
+  "include": ["./src/app/index.ts", "./*.d.ts", "../../env.d.ts", "../../vite-env.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

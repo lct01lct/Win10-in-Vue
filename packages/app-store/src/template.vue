@@ -5,8 +5,8 @@
   defineProps<{ apps: WinApp[] }>();
   const defaultActiveIndex = '0';
 
-  const onBtnClick = (item: WinApp) => {
-    item.open();
+  const onBtnClick = (app: WinApp) => {
+    app.open();
   };
 </script>
 

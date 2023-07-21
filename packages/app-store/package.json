@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build --emptyOutDir"
+    "build:app-store": "pnpm collect-app &&  vue-tsc --noEmit && vite build --emptyOutDir &&  vue-tsc -p tsconfig.app.json --emitDeclarationOnly --declaration",
+    "collect-app": "node ./scripts/collect-apps.js"
   },
   "devDependencies": {
     "@types/node": "^20.4.2",

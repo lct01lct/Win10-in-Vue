@@ -4,12 +4,12 @@
   "version": "1.0.0",
   "type": "module",
   "main": "./dist/render-core.js",
-  "types": "./dist/types/render-core/src/app/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build --emptyOutDir ",
     "preview": "vite preview",
-    "build:app": "vite build --config vite.app-config.ts && vue-tsc --emitDeclarationOnly --declaration"
+    "build:app-core": "vite build --config vite.app-config.ts && vue-tsc -p tsconfig.app.json --emitDeclarationOnly --declaration"
   },
   "dependencies": {
     "@vueuse/core": "^10.2.1",
