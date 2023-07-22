@@ -24,11 +24,12 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      plugins: [
-        AutoImport({
-          imports: ['vue'], // 同样在输出中静态导入模块
-        }),
-      ],
+      // plugins: [
+      //   AutoImport({
+      //     imports: ['vue'], // 同样在输出中静态导入模块
+      //   }),
+      // ],
+      external: ['vue'],
     },
     outDir: './dist',
   },

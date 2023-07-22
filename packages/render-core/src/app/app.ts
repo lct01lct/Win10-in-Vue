@@ -14,10 +14,9 @@ interface DeskTopApp {
   comp: Component;
 }
 
+export const registeredAppList: WinApp[] = reactive([]);
+export const deskTopAppList: DeskTopApp[] = reactive([]);
 export class WinApp extends BaseApp {
-  static registeredAppList: WinApp[] = reactive([]);
-  static deskTopAppList: DeskTopApp[] = reactive([]);
-
   deskTopName = '';
   pinyin_name = '';
   isFromSystem = false;
@@ -27,13 +26,13 @@ export class WinApp extends BaseApp {
 
     this.isFromSystem = opt.isFromSystem || false;
     this.pinyin_name = pinyin(opt.name);
-    WinApp.registeredAppList.push(this);
+    registeredAppList.push(this);
   }
 
   // 创建快捷方式
   createShortcut(appIcon: string, appName: string) {
     this.deskTopName = appName;
-    WinApp.deskTopAppList.push({
+    deskTopAppList.push({
       name: appName,
       comp: () => h(DesktopIcon, { appInstance: this, appIcon, appName }),
     });
@@ -48,8 +47,8 @@ export class WinApp extends BaseApp {
   }
 
   deleteShortcut() {
-    const index = WinApp.deskTopAppList.findIndex((item) => item.name === this.deskTopName);
-    WinApp.deskTopAppList.splice(index, 1);
+    const index = deskTopAppList.findIndex((item) => item.name === this.deskTopName);
+    deskTopAppList.splice(index, 1);
     deskTopIconMap.delete(this.deskTopName);
   }
 }

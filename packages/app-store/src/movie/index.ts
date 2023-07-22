@@ -1,8 +1,8 @@
-import { WinApp } from 'win';
 import Movie from './index.vue';
+import { WinAppConstructorOpt } from 'win';
 
-export default new WinApp({
+export default {
   comp: Movie,
   icon: '',
   name: 'movie',
-});
+} as WinAppConstructorOpt;

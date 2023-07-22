@@ -1,2 +1,3 @@
-export { default as game } from './game';
-export { default as movie } from './movie';
+import 'win/dist/style.css';
+export { default as gameAppOrigin } from './game';
+export { default as movieAppOrigin } from './movie';

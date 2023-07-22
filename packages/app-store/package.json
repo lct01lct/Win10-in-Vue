@@ -1,9 +1,11 @@
 {
   "name": "app-store",
   "version": "1.0.0",
+  "main": "./dist/app-store.mjs",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build:app-store": "pnpm collect-app &&  vue-tsc --noEmit && vite build --emptyOutDir &&  vue-tsc -p tsconfig.app.json --emitDeclarationOnly --declaration",
+    "build:app-store": "pnpm collect-app && vite build --emptyOutDir &&  vue-tsc -p tsconfig.app.json --emitDeclarationOnly --declaration",
     "collect-app": "node ./scripts/collect-apps.js"
   },
   "devDependencies": {
@@ -15,6 +17,7 @@
   },
   "dependencies": {
     "element-plus": "^2.3.8",
+    "unplugin-auto-import": "^0.15.2",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
     "win": "workspace:^1.0.0"

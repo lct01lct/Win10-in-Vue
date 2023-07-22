@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-  import { WinApp } from '@/app';
+  import { WinApp, registeredAppList } from '@/app';
   import { Popover } from '@/components';
 
-  const apps = WinApp.registeredAppList;
+  const apps = registeredAppList;
   const popoverRef = inject<InstanceType<typeof Popover>>('popoverRef');
 
   interface AppGroup {

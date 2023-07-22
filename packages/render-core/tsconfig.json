@@ -13,7 +13,7 @@
     "isolatedModules": false,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
-    "types": ["node", "../../env.d.ts"],
+    "types": ["node", "./env.d.ts"],
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
@@ -26,7 +26,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "./auto-imports.d.ts",
-    "../../vite-env.d.ts",
+    "vite-env.d.ts",
     "../model-core/src/**/*.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]

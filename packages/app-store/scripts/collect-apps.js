@@ -7,10 +7,9 @@ const directories = fs
   .map((dir) => dir.name);
 
 const exportsContent = directories
-  .map((file) => `export { default as ${file} } from './${file}';`)
+  .map((file) => `export { default as ${file}AppOrigin } from './${file}';`)
   .join('\n');
 
-const outputContent = `${exportsContent}\n`;
-
+const outputContent = `import 'win/dist/style.css';\n${exportsContent}\n`;
 const outputFilePath = path.join(__dirname, './../src/index.ts');
 fs.writeFileSync(outputFilePath, outputContent);
