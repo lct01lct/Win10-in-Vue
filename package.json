@@ -10,9 +10,7 @@
     "commit": "git add . && git cz"
   },
   "dependencies": {
-    "cz-conventional-changelog": "^3.3.0",
-    "vite": "^4.3.9",
-    "vue": "^3.3.4"
+    "cz-conventional-changelog": "^3.3.0"
   },
   "config": {
     "commitizen": {
