@@ -9,15 +9,13 @@
     "preview": "pnpm -C packages/render-core preview",
     "commit": "git add . && git cz"
   },
-  "dependencies": {
-    "cz-conventional-changelog": "^3.3.0"
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
     "gh-pages": "^5.0.0"
   }
 }
