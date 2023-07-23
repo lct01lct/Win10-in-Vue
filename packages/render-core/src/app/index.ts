@@ -5,5 +5,6 @@ export * from './base/desktop-icon';
 export * from './base/base';
 export * from './hooks';
 export { taskBarTriggerList } from './base/taskBar';
+export * from './types';
 
 export { Base };

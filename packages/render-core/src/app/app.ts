@@ -4,6 +4,8 @@ import type { BaseAppContructorOpt } from './base/baseApp';
 import { deskTopIconMap, getNewlyPosIdx } from './base/desktop-icon';
 import { Component } from 'vue';
 import { pinyin } from 'pinyin-pro';
+import { AppOrigin } from './types';
+import { Base } from '.';
 
 export interface WinAppConstructorOpt extends BaseAppContructorOpt {
   isFromSystem?: boolean;
@@ -50,5 +52,19 @@ export class WinApp extends BaseApp {
     const index = deskTopAppList.findIndex((item) => item.name === this.deskTopName);
     deskTopAppList.splice(index, 1);
     deskTopIconMap.delete(this.deskTopName);
+  }
+
+  static install(appOrigin: AppOrigin) {
+    const slots: Record<string, () => Component> = {};
+
+    if (appOrigin.headerComp) slots.header = () => h(appOrigin.headerComp!);
+    if (appOrigin.bodyComp) slots.body = () => h(appOrigin.bodyComp!);
+
+    const _app = h(Base, {
+      appIcon: appOrigin.icon,
+      appName: appOrigin.name,
+    });
+
+    return new WinApp(Object.assign(appOrigin, { comp: _app }));
   }
 }

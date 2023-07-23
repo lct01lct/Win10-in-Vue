@@ -1,8 +1,8 @@
 import Game from './index.vue';
-import { WinAppConstructorOpt } from 'win';
+import { AppOrigin } from 'win';
 
 export default {
-  comp: Game,
+  bodyComp: Game,
   icon: '',
   name: 'game',
-} as WinAppConstructorOpt;
+} as AppOrigin;

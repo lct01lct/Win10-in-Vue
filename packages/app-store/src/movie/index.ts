@@ -1,8 +1,8 @@
 import Movie from './index.vue';
-import { WinAppConstructorOpt } from 'win';
+import { AppOrigin } from 'win';
 
 export default {
-  comp: Movie,
   icon: '',
   name: 'movie',
-} as WinAppConstructorOpt;
+  bodyComp: Movie,
+} as AppOrigin;

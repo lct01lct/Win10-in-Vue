@@ -1,13 +1,5 @@
-<script lang="ts" setup>
-  import { Base } from 'win';
-</script>
+<script lang="ts" setup></script>
 
-<template>
-  <div>
-    <Base :app-logo="''" :app-name="'game'">
-      <template #body>2535353</template>
-    </Base>
-  </div>
-</template>
+<template>Game App</template>
 
 <style scoped></style>
