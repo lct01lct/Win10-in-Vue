@@ -9,6 +9,8 @@ export const R_getAllWallpapers = async () => {
 export interface ApplicationDesc {
   _id: string;
   name: string;
+  icon: string;
+  desc: '';
   downloadlink: string;
 }
 

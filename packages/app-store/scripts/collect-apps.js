@@ -8,7 +8,7 @@ const directories = fs
   .map((dir) => dir.name);
 
 const exportsContent = directories
-  .map((name) => `export { default as ${name}AppOrigin } from './${name}/${name}';`)
+  .map((name) => `export { default as ${name}AppOrigin } from './${name}';`)
   .join('\n');
 
 const outputContent = `import 'win/dist/style.css';\n${exportsContent}\n`;
