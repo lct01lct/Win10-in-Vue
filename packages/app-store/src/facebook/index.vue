@@ -1,5 +1,5 @@
 <script lang="ts" setup></script>
 
-<template>Game App</template>
+<template>facebook App</template>
 
 <style scoped></style>
