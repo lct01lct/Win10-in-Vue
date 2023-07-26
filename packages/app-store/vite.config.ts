@@ -4,10 +4,11 @@ import path from 'path';
 import AutoImport from 'unplugin-auto-import/vite';
 import fs from 'fs';
 
-const appInputs = fs
+const appNames = fs
   .readdirSync(path.join(__dirname, './src'), { withFileTypes: true })
   .filter((dir) => dir.isDirectory())
-  .map(({ name }) => path.join(__dirname, `./src/${name}`));
+  .map(({ name }) => name);
+const appInputs = appNames.map((name) => path.join(__dirname, `./src/${name}`));
 
 export default defineConfig({
   resolve: {
@@ -20,40 +21,34 @@ export default defineConfig({
     minify: false,
 
     rollupOptions: {
-      plugins: [
-        {
-          name: 'my-plugin',
-          transform(code, id) {
-            // 在 transform 钩子中获取文件所在的目录并保存在闭包中
-            let originalDir; // 保存文件所在的目录
-
-            originalDir = path.dirname(id);
-
-            // 处理代码并返回
-            const transformedCode = doSomethingWithCode(code);
-            return {
-              code: transformedCode,
-              map: null, // 如果要支持 sourcemap，请提供正确的 sourcemap
-            };
-          },
-
-          generateBundle(outputOptions, bundle) {
-            // 在 generateBundle 钩子中使用闭包中保存的文件所在的目录
-            for (const fileName in bundle) {
-              const entry = bundle[fileName];
-              // console.log(entry);
-              // console.log(entry.facadeModuleId);
-            }
-          },
-        },
-      ],
       external: ['vue'],
       input: appInputs,
       output: {
         format: 'es',
-        entryFileNames: '{folderName}-app.js',
-        assetFileNames: () => {
-          return 'assets/{folderName}-[hash].[ext]';
+        entryFileNames: (chunkInfo) => {
+          const appName = path.basename(path.dirname(chunkInfo.facadeModuleId));
+
+          return `${appName}/index.js`;
+        },
+        assetFileNames: (chunkInfo) => {
+          let folderName = '';
+          const originBuffer = chunkInfo.source as Buffer;
+
+          const isFind = appNames.some((name) => {
+            const res = fs
+              .readFileSync(path.join(__dirname, `./src/${name}/img/logo.png`))
+              .equals(originBuffer);
+            if (res) {
+              folderName = name;
+            }
+            return res;
+          });
+
+          if (isFind) {
+            return `${folderName}/logo.[ext]`;
+          } else {
+            return `${folderName}/assets/[name]-[hash].[ext]`;
+          }
         },
       },
 
@@ -61,10 +56,3 @@ export default defineConfig({
     },
   },
 });
-
-function doSomethingWithCode(code) {
-  // 在这里可以使用闭包中保存的文件所在的目录来进行处理
-  // 例如，根据目录执行不同的操作
-  // 这里只是一个示例，实际逻辑可能会更复杂
-  return code;
-}
