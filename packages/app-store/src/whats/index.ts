@@ -1,6 +1,7 @@
 import Whats from './index.vue';
-import WhatsIcon from './img/logo.png';
+import WhatsIcon from './public/logo.png';
 import { AppOrigin } from 'win';
+import 'win/dist/style.css';
 
 export default {
   icon: WhatsIcon,

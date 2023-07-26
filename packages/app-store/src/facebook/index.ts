@@ -1,6 +1,7 @@
 import Facebook from './index.vue';
 import { AppOrigin } from 'win';
-import FacebookIcon from './img/logo.png';
+import FacebookIcon from './public/logo.png';
+import 'win/dist/style.css';
 
 export default {
   bodyComp: Facebook,

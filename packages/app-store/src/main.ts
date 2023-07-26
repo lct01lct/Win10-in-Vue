@@ -1,4 +1,3 @@
-import 'win/dist/style.css';
 import 'element-plus/dist/index.css';
 import Template from './template.vue';
 import { Component, createApp } from 'vue';

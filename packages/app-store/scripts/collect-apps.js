@@ -11,12 +11,5 @@ const exportsContent = directories
   .map((name) => `export { default as ${name}AppOrigin } from './${name}';`)
   .join('\n');
 
-const outputContent = `import 'win/dist/style.css';\n${exportsContent}\n`;
 const outputFilePath = path.join(__dirname, './../src/index.ts');
-fs.writeFileSync(outputFilePath, outputContent);
-
-// write json
-fs.writeFileSync(
-  path.join(__dirname, '../../../../backend/src/dev-data/app.json'),
-  JSON.stringify(directories.map((name) => ({ name })))
-);
+fs.writeFileSync(outputFilePath, exportsContent);

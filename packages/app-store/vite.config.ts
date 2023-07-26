@@ -31,12 +31,14 @@ export default defineConfig({
           return `${appName}/index.js`;
         },
         assetFileNames: (chunkInfo) => {
+          if (chunkInfo.name !== 'logo.png') return `assets/[name]-[hash].[ext]`;
+
           let folderName = '';
           const originBuffer = chunkInfo.source as Buffer;
 
           const isFind = appNames.some((name) => {
             const res = fs
-              .readFileSync(path.join(__dirname, `./src/${name}/img/logo.png`))
+              .readFileSync(path.join(__dirname, `./src/${name}/public/logo.png`))
               .equals(originBuffer);
             if (res) {
               folderName = name;
