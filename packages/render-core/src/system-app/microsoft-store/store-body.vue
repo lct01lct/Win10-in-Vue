@@ -42,7 +42,7 @@
           </div>
           <div class="app-info">
             <div class="app-name">{{ app.name }}</div>
-            <div class="app-desc">免费应用</div>
+            <div class="app-desc">{{ app.rating.toFixed(1) }} {{ app.desc }}</div>
           </div>
           <div class="download-btn" @click="downloadApp(app)">点击下载</div>
         </div>

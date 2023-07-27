@@ -12,6 +12,7 @@ export interface ApplicationDesc {
   icon: string;
   desc: '';
   downloadLink: string;
+  rating: number;
 }
 
 export const R_getAllApplications = async () => {
