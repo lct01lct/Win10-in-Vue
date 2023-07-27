@@ -3,6 +3,7 @@
   import TaskBar from './TaskBar/index.vue';
   import Modal from './Modal/index.vue';
   import { R_getMe, useUserStore } from 'model-core';
+  import { initDownloadedApps } from '@/system-app/microsoft-store/download';
 
   const userStore = useUserStore();
   const checkIsLogin = async () => {
@@ -14,7 +15,10 @@
     }
   };
 
-  checkIsLogin();
+  (async () => {
+    await checkIsLogin();
+    await initDownloadedApps();
+  })();
 </script>
 
 <template>

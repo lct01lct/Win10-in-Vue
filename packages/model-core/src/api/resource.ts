@@ -19,3 +19,7 @@ export const R_getAllApplications = async () => {
     '/resources/applications'
   );
 };
+
+export const R_getApplicationById = async (id: string) => {
+  return await request.get<Response<{ app: ApplicationDesc }>>(`/resources/applications/${id}`);
+};

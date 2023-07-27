@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-  import { AppOrigin, WinApp } from '@/app';
-  import { R_getAllApplications, ApplicationDesc } from 'model-core';
-
+  import { R_getAllApplications, ApplicationDesc, useUserStore } from 'model-core';
+  import { useDownloadApp } from './download';
+  const userStore = useUserStore();
   const apps = reactive<ApplicationDesc[]>([]);
+  const filterAppIds = computed(() => userStore.user?.downloadedApp);
+  const showApps = computed(() => apps.filter((app) => !filterAppIds.value?.includes(app._id)));
+
   const getApps = async () => {
     const res = await R_getAllApplications();
     if (res?.status === 'success') {
@@ -13,12 +16,9 @@
 
   getApps();
 
-  const downloadApp = async ({ downloadLink, icon }: ApplicationDesc) => {
+  const downloadApp = async (app: ApplicationDesc) => {
     try {
-      const appModule = await import(/* @vite-ignore */ downloadLink);
-      const appOrigin: AppOrigin = appModule.default;
-      appOrigin.icon = icon;
-      WinApp.install(appOrigin).createShortcut(icon, appOrigin.name);
+      useDownloadApp(app);
     } catch (err) {
       throw new Error('Microsoft-store: Something was wrong!');
     }
@@ -34,7 +34,7 @@
         <i class="iconfont icon-xiangyou"></i>
       </div>
       <div class="apps-wrapper">
-        <div class="app-item" v-for="app in apps" :key="app._id">
+        <div class="app-item" v-for="app in showApps" :key="app._id">
           <div class="app-logo">
             <img class="app-icon" :src="app.icon" alt="" />
           </div>
