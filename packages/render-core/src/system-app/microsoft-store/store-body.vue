@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import { AppOrigin, WinApp } from '@/app';
   import { R_getAllApplications, ApplicationDesc } from 'model-core';
 
   const apps = reactive<ApplicationDesc[]>([]);
@@ -11,28 +12,47 @@
   };
 
   getApps();
+
+  const downloadApp = async ({ downloadLink, icon }: ApplicationDesc) => {
+    try {
+      const appModule = await import(/* @vite-ignore */ downloadLink);
+      const appOrigin: AppOrigin = appModule.default;
+      appOrigin.icon = icon;
+      WinApp.install(appOrigin).createShortcut(icon, appOrigin.name);
+    } catch (err) {
+      throw new Error('Microsoft-store: Something was wrong!');
+    }
+  };
 </script>
 
 <template>
-  <div class="microsoft-slider"></div>
-  <div class="app-list">
-    <div class="app-block__title">
-      热门免费应用
-      <i class="iconfont icon-xiangyou"></i>
-    </div>
-    <div class="app-item" v-for="app in apps" :key="app._id">
-      <div class="app-logo">
-        <img :src="app.icon" alt="" />
+  <div class="microsoft-store-body">
+    <div class="microsoft-slider"></div>
+    <div class="app-list">
+      <div class="app-block__title">
+        热门免费应用
+        <i class="iconfont icon-xiangyou"></i>
       </div>
-      <div class="app-info">
-        <div class="app-name">{{ app.name }}</div>
-        <div class="desc">{{ app.icon }}</div>
+      <div class="apps-wrapper">
+        <div class="app-item" v-for="app in apps" :key="app._id">
+          <div class="app-logo">
+            <img class="app-icon" :src="app.icon" alt="" />
+          </div>
+          <div class="app-info">
+            <div class="app-name">{{ app.name }}</div>
+            <div class="app-desc">免费应用</div>
+          </div>
+          <div class="download-btn" @click="downloadApp(app)">点击下载</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+  .microsoft-store-body {
+    background-color: #f9f9f9;
+  }
   .app-list {
     padding: 10px;
     .app-block__title {
@@ -49,6 +69,49 @@
     }
   }
 
+  .apps-wrapper {
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .app-item {
+      position: relative;
+      width: 280px;
+      padding: 20px;
+      display: flex;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      border-radius: 10px;
+      .app-icon {
+        width: 80px;
+        height: 80px;
+      }
+      .app-info {
+        margin-left: 20px;
+        font-size: 14px;
+        .app-name {
+          font-weight: 700;
+        }
+        .app-desc {
+          margin-top: 10px;
+          color: #8c8c8c;
+        }
+      }
+      .download-btn {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 12px;
+        background-color: #f7f7f7;
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+      &:hover {
+        animation: app-transform 0.5s forwards;
+      }
+    }
+  }
+
   @keyframes title-transform {
     100% {
       transform: translate(10px, 0);
@@ -57,7 +120,7 @@
 
   @keyframes app-transform {
     100% {
-      transform: translate(0, 20px);
+      transform: translate(0, -5px);
     }
   }
 </style>

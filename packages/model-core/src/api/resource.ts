@@ -11,7 +11,7 @@ export interface ApplicationDesc {
   name: string;
   icon: string;
   desc: '';
-  downloadlink: string;
+  downloadLink: string;
 }
 
 export const R_getAllApplications = async () => {

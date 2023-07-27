@@ -60,10 +60,14 @@ export class WinApp extends BaseApp {
     if (appOrigin.headerComp) slots.header = () => h(appOrigin.headerComp!);
     if (appOrigin.bodyComp) slots.body = () => h(appOrigin.bodyComp!);
 
-    const _app = h(Base, {
-      appIcon: appOrigin.icon,
-      appName: appOrigin.name,
-    });
+    const _app = h(
+      Base,
+      {
+        appLogo: appOrigin.icon,
+        appName: appOrigin.name,
+      },
+      slots
+    );
 
     return new WinApp(Object.assign(appOrigin, { comp: _app }));
   }

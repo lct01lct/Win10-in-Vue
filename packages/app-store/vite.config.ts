@@ -21,7 +21,6 @@ export default defineConfig({
     minify: false,
 
     rollupOptions: {
-      external: ['vue'],
       input: appInputs,
       output: {
         format: 'es',
