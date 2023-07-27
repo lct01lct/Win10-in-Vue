@@ -6,13 +6,14 @@
 <template>
   <Base :app-logo="edgeAppIcon" :app-name="edgeAppName">
     <template #body>
-      <iframe @mouseenter.stop class="edgeApp-iframe" src="https://bing.com"></iframe>
+      <iframe class="edgeApp-iframe" @mouseenter.stop src="https://bing.com"></iframe>
     </template>
   </Base>
 </template>
 
 <style scoped lang="scss">
   .edgeApp-iframe {
+    position: absolute;
     width: 100%;
     height: 100%;
     border: none;
