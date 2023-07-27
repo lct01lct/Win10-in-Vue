@@ -76,13 +76,14 @@
   }
 
   .apps-wrapper {
-    padding: 20px 60px;
+    padding: 20px 35px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     .app-item {
       position: relative;
       width: 280px;
+      margin-bottom: 12px;
       padding: 20px;
       display: flex;
       border: 1px solid #ccc;
