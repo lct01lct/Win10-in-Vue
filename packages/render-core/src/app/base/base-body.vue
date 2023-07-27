@@ -9,5 +9,6 @@
 <style scoped>
   .app-body-wrapper {
     flex: 1;
+    overflow: auto;
   }
 </style>

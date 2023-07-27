@@ -27,7 +27,9 @@
 
 <template>
   <div class="microsoft-store-body">
-    <div class="microsoft-slider"></div>
+    <div class="microsoft-slider">
+      <img class="slider-img" src="./img/lucacover.jpg" alt="" />
+    </div>
     <div class="app-list">
       <div class="app-block__title">
         热门免费应用
@@ -50,7 +52,11 @@
 </template>
 
 <style scoped lang="scss">
+  .slider-img {
+    width: 100%;
+  }
   .microsoft-store-body {
+    padding: 20px;
     background-color: #f9f9f9;
   }
   .app-list {
