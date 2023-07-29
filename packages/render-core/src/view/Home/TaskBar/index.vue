@@ -2,10 +2,16 @@
   import TaskBarSystem from './taskBar-system.vue';
   import TaskBarCur from './taskBar-cur.vue';
   import TaskBarBg from './taskBar-bg.vue';
+  import { taskBarContentZIndex } from 'model-core';
+  import { CSSProperties } from 'vue';
+
+  const style = computed<CSSProperties>(() => {
+    return { zIndex: taskBarContentZIndex };
+  });
 </script>
 
 <template>
-  <div class="taskBar-wrapper">
+  <div class="taskBar-wrapper" :style="style">
     <TaskBarSystem></TaskBarSystem>
     <TaskBarCur></TaskBarCur>
     <TaskBarBg></TaskBarBg>
@@ -16,7 +22,6 @@
   .taskBar-wrapper {
     display: flex;
     position: absolute;
-    z-index: 998;
     justify-content: space-between;
     bottom: 0;
     width: 100%;

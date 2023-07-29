@@ -2,6 +2,7 @@
   import { WinApp, maxAppHeight } from '../.';
   import { FolderApp } from '@/system-app';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
+  import { useContextMenu } from '@/win';
 
   const props = defineProps<{ appInstance: WinApp; appIcon: string; appName: string }>();
 
@@ -65,12 +66,34 @@
       deskIconOpt.isFocus = false;
     }
   };
+  const { open: openMenu } = useContextMenu();
+  const onIconContextMenu = (event: MouseEvent) => {
+    openMenu({
+      props: {
+        options: [
+          {
+            name: '打开',
+            onClick() {
+              onIconDbclick();
+            },
+          },
+        ],
+        event,
+      },
+    });
+
+    resetFocusIcon();
+    if (deskIconOpt) {
+      deskIconOpt.isFocus = true;
+    }
+  };
 </script>
 
 <template>
   <div
     class="desktop-icon-wrapper"
     @dblclick="onIconDbclick"
+    @contextmenu="onIconContextMenu"
     :style="styles"
     @click.stop="onIconClick"
     :class="[deskIconOpt?.isFocus ? 'focus' : '']"
