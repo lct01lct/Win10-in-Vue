@@ -8,3 +8,12 @@ export const getViewPort = () => {
     height: w.innerHeight || document.documentElement.clientWidth || b.clientHeight,
   };
 };
+
+export const getDeskTopPort = () => {
+  const viewPort = getViewPort();
+
+  return {
+    width: viewPort.width,
+    height: viewPort.height - 50,
+  };
+};

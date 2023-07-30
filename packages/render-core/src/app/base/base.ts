@@ -1,4 +1,4 @@
-import { getViewPort } from 'utils';
+import { getDeskTopPort, getViewPort } from 'utils';
 import { useEventListener } from '@vueuse/core';
 
 export interface AppViewSizeOpt {
@@ -8,8 +8,10 @@ export interface AppViewSizeOpt {
   top?: number;
 }
 
-export let maxAppHeight = getViewPort().height - 50;
-export let maxAppWidth = getViewPort().width;
+const appMaxPort = getDeskTopPort();
+
+export let maxAppHeight = appMaxPort.height;
+export let maxAppWidth = appMaxPort.width;
 
 useEventListener(window, 'resize', () => {
   maxAppHeight = getViewPort().height - 50;

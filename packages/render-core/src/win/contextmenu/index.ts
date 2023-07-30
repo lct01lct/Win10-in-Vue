@@ -16,7 +16,7 @@ export interface ContextMenuProps {
 
 type ContextMenuVm = ComponentPublicInstance & { close: () => void; visible: boolean };
 
-export const useContextMenu = () => {
+export const createContextMenu = () => {
   let vm: ContextMenuVm;
   let app: App;
   const open = ({ props }: { props?: ContextMenuProps; slot?: number }) => {

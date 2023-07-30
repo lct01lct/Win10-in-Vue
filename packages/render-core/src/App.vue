@@ -4,6 +4,7 @@
   onMounted(() => {
     document.addEventListener('selectstart', preventDefault);
     document.addEventListener('contextmenu', preventDefault);
+    document.addEventListener('contextmenu', preventDefault, true);
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.altKey && e.keyCode === 37) preventDefault(e);
       if (e.altKey && e.keyCode === 38) preventDefault(e);
