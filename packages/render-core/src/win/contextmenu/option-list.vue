@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { getDeskTopPort, limitPosition } from 'utils';
+  import { getDeskTopPort } from 'utils';
   import { OptionItem } from '.';
 
   const props = defineProps<{ options: OptionItem[]; close?: () => void }>();
