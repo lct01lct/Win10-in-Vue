@@ -3,7 +3,7 @@ import { Directive, DirectiveBinding } from 'vue';
 const name = 'drag';
 
 export interface DragBindingValue {
-  tar: string;
+  tar?: string;
   movedFn?: (x: number, y: number) => void;
   onMousedownCb?: (tar: HTMLElement) => void;
 }
@@ -12,7 +12,7 @@ const directive: Directive = {
   async mounted(el: HTMLElement, binding: DirectiveBinding<DragBindingValue | undefined>) {
     await nextTick();
 
-    const tar = binding.value ? findParentElement(el, binding.value.tar) : el;
+    const tar = binding.value?.tar ? findParentElement(el, binding.value.tar) : el;
 
     if (!tar) throw new Error('Unable to find the target node of draggable!');
 
@@ -32,12 +32,11 @@ const directive: Directive = {
 
         tar.style.left = tarPos1.left + movePx.x + 'px';
         tar.style.top = tarPos1.top + movePx.y + 'px';
+        console.log(tar.style.left);
       };
 
       const onMouseUp = () => {
-        binding.value &&
-          binding.value.movedFn &&
-          binding.value.movedFn(tarPos1.left + movePx.x, tarPos1.top + movePx.y);
+        binding.value?.movedFn?.(tarPos1.left + movePx.x, tarPos1.top + movePx.y);
 
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);

@@ -3,6 +3,7 @@
   import { FolderApp } from '@/system-app';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
   import { createContextMenu } from '@/win';
+  import { DragBindingValue } from 'utils';
 
   const props = defineProps<{ appInstance: WinApp; appIcon: string; appName: string }>();
 
@@ -96,10 +97,13 @@
       deskIconOpt.isFocus = true;
     }
   };
+
+  const vDragOpt: DragBindingValue = {};
 </script>
 
 <template>
   <div
+    v-drag="vDragOpt"
     class="desktop-icon-wrapper"
     @dblclick="onIconDbclick"
     @contextmenu="onIconContextMenu"
