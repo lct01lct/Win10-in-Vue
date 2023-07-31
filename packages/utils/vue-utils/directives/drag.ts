@@ -32,7 +32,6 @@ const directive: Directive = {
 
         tar.style.left = tarPos1.left + movePx.x + 'px';
         tar.style.top = tarPos1.top + movePx.y + 'px';
-        console.log(tar.style.left);
       };
 
       const onMouseUp = () => {

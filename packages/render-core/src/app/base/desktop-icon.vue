@@ -2,8 +2,9 @@
   import { WinApp, maxAppHeight } from '../.';
   import { FolderApp } from '@/system-app';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
-  import { createContextMenu } from '@/win';
   import { DragBindingValue } from 'utils';
+  import EdgeIcon from './img/contextmenu/edge.png';
+  import { openMenu, baseOptions } from './desktop-icon-contextmenu';
 
   const props = defineProps<{ appInstance: WinApp; appIcon: string; appName: string }>();
 
@@ -67,7 +68,7 @@
       deskIconOpt.isFocus = false;
     }
   };
-  const { open: openMenu } = createContextMenu();
+
   const onIconContextMenu = (event: MouseEvent) => {
     openMenu({
       props: {
@@ -78,15 +79,7 @@
               onIconDbclick();
             },
           },
-          {
-            name: '打开方式',
-            onClick() {},
-            subOptions: [{ name: '(T)' }, { name: '(C)' }, { name: '(D)' }, { name: '(M)' }],
-          },
-          { name: '剪切(T)' },
-          { name: '复制(C)' },
-          { name: '删除快捷方式(D)' },
-          { name: '重命名(M)' },
+          ...baseOptions,
         ],
         event,
       },

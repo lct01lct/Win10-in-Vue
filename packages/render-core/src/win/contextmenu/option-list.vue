@@ -1,10 +1,10 @@
 <script lang="ts" setup>
   import { getDeskTopPort } from 'utils';
-  import { OptionItem } from '.';
+  import { ContextMenuOptionItem } from '.';
 
-  const props = defineProps<{ options: OptionItem[]; close?: () => void }>();
+  const props = defineProps<{ options: ContextMenuOptionItem[]; close?: () => void }>();
 
-  const onOptionItemClick = (item: OptionItem) => {
+  const onOptionItemClick = (item: ContextMenuOptionItem) => {
     const fn = item.onClick;
     fn?.();
     if (!item.subOptions) {
@@ -88,6 +88,11 @@
       .option-icon {
         width: 14px;
         height: 14px;
+        margin-right: 5px;
+        .option-img {
+          width: 100%;
+          height: 100%;
+        }
       }
 
       .option-more {

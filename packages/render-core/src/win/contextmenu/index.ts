@@ -2,15 +2,15 @@ import { App, ComponentPublicInstance } from 'vue';
 import ContextMenu from './contextmenu.vue';
 import { createApp } from 'vue';
 
-export interface OptionItem {
+export interface ContextMenuOptionItem {
   icon?: string;
   name: string;
   onClick?: () => void;
-  subOptions?: OptionItem[];
+  subOptions?: ContextMenuOptionItem[];
 }
 
 export interface ContextMenuProps {
-  options: OptionItem[];
+  options: ContextMenuOptionItem[];
   event: MouseEvent;
 }
 
