@@ -9,7 +9,6 @@
   const props = defineProps<ContextMenuProps>();
 
   const visible = ref(true);
-  const menucontextRef = shallowRef<HTMLElement>();
 
   const close = () => {
     visible.value = false;
@@ -21,8 +20,10 @@
     };
   });
 
-  onMounted(() => {
-    const oContextMenu = menucontextRef.value;
+  const optionListRefVue = ref<InstanceType<typeof OptionList>>();
+
+  onMounted(async () => {
+    const oContextMenu = optionListRefVue.value?.optionListRef;
     const point = props.event;
     if (oContextMenu) {
       const contextMenuRect: DOMRect = oContextMenu.getBoundingClientRect();
@@ -66,28 +67,22 @@
 
 <template>
   <Teleport to="body">
-    <div v-if="visible" class="menucontext-wrapper" ref="menucontextRef" :style="style">
-      <slot v-if="$slots.default"></slot>
-      <div class="menucontext-default">
-        <OptionList :options="options" :close="close">
-          <template #default="{ subOptions }">
-            <template v-if="subOptions">
-              <OptionList class="sub-option-list" :options="subOptions" :close="close"></OptionList>
-            </template>
-          </template>
-        </OptionList>
-      </div>
-    </div>
+    <slot v-if="$slots.default"></slot>
+
+    <OptionList
+      v-else
+      :options="options"
+      :close="close"
+      v-if="visible"
+      :style="style"
+      ref="optionListRefVue"
+    ></OptionList>
   </Teleport>
 </template>
 
 <style scoped lang="scss">
   .menucontext-wrapper {
     position: absolute;
-
-    .menucontext-default {
-      background-color: #eeeeee;
-    }
 
     &:hover {
       cursor: default;

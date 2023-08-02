@@ -1,12 +1,16 @@
-export interface LimitPositionParamter {
-  target: HTMLElement;
+interface Pos {
   x: number;
   y: number;
+}
+
+export type LimitPositionParamter = {
+  target: HTMLElement;
   maxX?: number;
   maxY?: number;
   minX?: number;
   minY?: number;
-}
+  onDone?: (x: number, y: number) => void | Pos;
+} & Pos;
 
 export const limitPosition = (option: LimitPositionParamter) => {
   let { target, maxX, maxY, minY, minX, x, y } = option;
@@ -25,6 +29,7 @@ export const limitPosition = (option: LimitPositionParamter) => {
     y = maxY;
   }
 
+  option.onDone?.(x, y);
   target.style.left = `${x}px`;
   target.style.top = `${y}px`;
 };
