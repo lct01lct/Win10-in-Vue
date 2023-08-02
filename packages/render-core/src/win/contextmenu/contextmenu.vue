@@ -88,5 +88,9 @@
     .menucontext-default {
       background-color: #eeeeee;
     }
+
+    &:hover {
+      cursor: default;
+    }
   }
 </style>

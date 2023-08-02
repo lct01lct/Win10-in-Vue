@@ -24,7 +24,7 @@
         const desktopPort = getDeskTopPort();
 
         let x = parentDomRect.width - distance;
-        let y = parentDomRect.height - distance;
+        let y = -distance;
         const maxX = desktopPort.width - elDomRect.width;
         const maxY = desktopPort.height - elDomRect.height;
 
@@ -75,6 +75,7 @@
     background-color: #eeeeee;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
     .option-item {
+      position: relative;
       justify-content: flex-start;
       display: flex;
       align-items: center;

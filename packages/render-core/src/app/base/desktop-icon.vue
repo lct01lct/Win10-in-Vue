@@ -99,7 +99,7 @@
     v-drag="vDragOpt"
     class="desktop-icon-wrapper"
     @dblclick="onIconDbclick"
-    @contextmenu="onIconContextMenu"
+    @contextmenu.stop="onIconContextMenu"
     :style="styles"
     @click.stop="onIconClick"
     :class="[deskIconOpt?.isFocus ? 'focus' : '']"
