@@ -47,6 +47,7 @@
     width: 220px;
     background-color: #eeeeee;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+    cursor: default;
     .option-item {
       position: relative;
       justify-content: flex-start;

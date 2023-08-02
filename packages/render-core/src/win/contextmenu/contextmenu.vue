@@ -80,12 +80,4 @@
   </Teleport>
 </template>
 
-<style scoped lang="scss">
-  .menucontext-wrapper {
-    position: absolute;
-
-    &:hover {
-      cursor: default;
-    }
-  }
-</style>
+<style scoped lang="scss"></style>

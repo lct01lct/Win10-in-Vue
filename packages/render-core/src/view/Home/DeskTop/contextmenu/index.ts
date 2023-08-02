@@ -1,6 +1,7 @@
 import { ContextMenuOptionItem, createContextMenu } from '@/win';
 import BlackCircleIcon from './img/black-circle.png';
 import HookIcon from './img/hook.png';
+import { settingApp } from '@/system-app';
 
 export const { open: openMenu } = createContextMenu();
 
@@ -37,6 +38,11 @@ export const contextMenuOptions: ContextMenuOptionItem[] = [
       { name: '压缩文件夹' },
     ],
   },
-  { name: '显示设置' },
-  { name: '个性化' },
+  { name: '显示设置(D)' },
+  {
+    name: '个性化(R)',
+    onClick: () => {
+      settingApp.open({ route: '个性化' });
+    },
+  },
 ];

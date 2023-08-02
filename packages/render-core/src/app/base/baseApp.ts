@@ -49,24 +49,25 @@ export class BaseApp {
   _isRender: boolean = false;
   private _vm?: ComponentPublicInstance;
   closeCbs: (() => void)[] = [];
+  private _defaultOption: { width?: number; height?: number } = {};
 
   constructor(opt: BaseAppContructorOpt) {
     this.name = opt.name;
     this._logo = opt.icon;
 
     if (opt.defaultWidth) {
-      this.infoByOpened.width = opt.defaultWidth;
+      this._defaultOption.width = opt.defaultWidth;
     }
 
     if (opt.defaultHeight) {
-      this.infoByOpened.height = opt.defaultHeight;
+      this._defaultOption.height = opt.defaultHeight;
     }
 
     installWinApp(opt.name, opt.comp);
   }
 
   open(info?: InfoByOpened) {
-    this.infoByOpened = { ...this.infoByOpened, ...info };
+    this.infoByOpened = { ...this._defaultOption, ...info };
 
     if (!this._isRender) {
       // 必须先生成 taskBarList 中的 zIndex 信息
