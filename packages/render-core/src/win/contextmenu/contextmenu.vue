@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { getDeskTopPort, limitPosition } from 'utils';
-  import { ContextMenuProps } from '.';
+  import { ContextMenuProps, ContextMenuOptionItem } from '.';
   import { onClickOutside } from '@vueuse/core';
   import { contextmenuZIndex } from 'model-core';
   import { CSSProperties } from 'vue';
@@ -47,15 +47,14 @@
         close();
       });
 
-      document.addEventListener(
-        'contextmenu',
-        (e) => {
-          if (!e.composedPath().includes(oContextMenu)) {
-            close();
-          }
-        },
-        true
-      );
+      const onDocContextmenu = (e: MouseEvent) => {
+        if (!e.composedPath().includes(oContextMenu)) {
+          close();
+        }
+      };
+
+      document.addEventListener('contextmenu', onDocContextmenu, true);
+      document.addEventListener('mousedown', close);
     }
   });
 
@@ -68,10 +67,9 @@
 <template>
   <Teleport to="body">
     <slot v-if="$slots.default"></slot>
-
     <OptionList
       v-else
-      :options="options"
+      :options="(options as ContextMenuOptionItem[][])"
       :close="close"
       v-if="visible"
       :style="style"

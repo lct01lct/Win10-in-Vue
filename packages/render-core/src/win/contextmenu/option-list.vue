@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { ContextMenuOptionItem } from '.';
+  import { ContextMenuProps, ContextMenuOptionItem } from '.';
   import OptionItem from './option-item.vue';
   import { CSSProperties } from 'vue';
   import { contextmenuZIndex } from 'model-core';
@@ -7,7 +7,7 @@
   const optionListRef = shallowRef<HTMLElement>();
   const props = withDefaults(
     defineProps<{
-      options: ContextMenuOptionItem[];
+      options: ContextMenuOptionItem[][];
       close: () => void;
       deep?: number;
     }>(),
@@ -29,14 +29,16 @@
 
 <template>
   <div class="option-list" :style="style" ref="optionListRef">
-    <OptionItem
-      v-if="options.length"
-      v-for="(option, index) in options"
-      :option="option"
-      :close="close"
-      :deep="deep"
-      :key="index"
-    ></OptionItem>
+    <template v-for="(opts, idx) in options" :key="idx">
+      <OptionItem
+        v-if="opts.length"
+        v-for="(option, index) in opts"
+        :option="option"
+        :close="close"
+        :deep="deep"
+        :key="index"
+      ></OptionItem>
+    </template>
   </div>
 </template>
 

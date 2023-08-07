@@ -10,7 +10,7 @@ export interface ContextMenuOptionItem {
 }
 
 export interface ContextMenuProps {
-  options: ContextMenuOptionItem[];
+  options: ContextMenuOptionItem[] | ContextMenuOptionItem[][];
   event: MouseEvent;
 }
 
@@ -20,6 +20,10 @@ export const createContextMenu = () => {
   let vm: ContextMenuVm;
   let app: App;
   const open = ({ props }: { props?: ContextMenuProps; slot?: number }) => {
+    if (props) {
+      props.options = Array.isArray(props?.options) ? props?.options : [props.options];
+    }
+
     const container = document.createDocumentFragment() as unknown as Element;
     app = createApp(ContextMenu, { ...props });
     vm = app.mount(container) as ContextMenuVm;

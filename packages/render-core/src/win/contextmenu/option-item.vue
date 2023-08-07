@@ -85,7 +85,7 @@
     <template v-if="option.subOptions?.length && childVisible">
       <OptionList
         :close="close"
-        :options="option.subOptions"
+        :options="[option.subOptions]"
         :deep="deep + 1"
         ref="optionListVue"
       ></OptionList>

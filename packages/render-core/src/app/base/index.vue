@@ -122,6 +122,7 @@
     ref="appRef"
     v-show="isShow"
     @click.stop
+    @contextmenu.stop
     @click.capture="onAppClick"
     v-resize="vResizeOpt"
   >
