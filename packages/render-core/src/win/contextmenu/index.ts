@@ -1,12 +1,14 @@
 import { App, ComponentPublicInstance } from 'vue';
 import ContextMenu from './contextmenu.vue';
 import { createApp } from 'vue';
+import { isTwoArray } from 'utils';
 
 export interface ContextMenuOptionItem {
   icon?: string;
   name: string;
   onClick?: () => void;
   subOptions?: ContextMenuOptionItem[];
+  disabled?: boolean;
 }
 
 export interface ContextMenuProps {
@@ -16,12 +18,14 @@ export interface ContextMenuProps {
 
 type ContextMenuVm = ComponentPublicInstance & { close: () => void; visible: boolean };
 
+export const createContextMenuOptionGroup = (group: ContextMenuOptionItem[]) => group;
+
 export const createContextMenu = () => {
   let vm: ContextMenuVm;
   let app: App;
   const open = ({ props }: { props?: ContextMenuProps; slot?: number }) => {
     if (props) {
-      props.options = Array.isArray(props?.options) ? props?.options : [props.options];
+      props.options = isTwoArray(props?.options) ? props?.options : [props.options];
     }
 
     const container = document.createDocumentFragment() as unknown as Element;
@@ -32,6 +36,7 @@ export const createContextMenu = () => {
 
   const close = () => {
     vm.close();
+    app.unmount();
   };
 
   return {

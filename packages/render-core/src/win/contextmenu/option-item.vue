@@ -11,10 +11,12 @@
   }>();
 
   const onOptionItemClick = (item: ContextMenuOptionItem) => {
-    const fn = item.onClick;
-    fn?.();
-    if (!item.subOptions) {
-      props.close?.();
+    if (!item.disabled) {
+      const fn = item.onClick;
+      fn?.();
+      if (!item.subOptions) {
+        props.close?.();
+      }
     }
   };
 
@@ -71,6 +73,7 @@
 <template>
   <div
     class="option-item"
+    :class="[option.disabled && 'disabled']"
     :key="option.name"
     @click.stop="onOptionItemClick(option)"
     @contextmenu.stop="onOptionItemClick(option)"
@@ -103,7 +106,7 @@
     height: 16px;
     line-height: 16px;
     font-size: 12px;
-    &:hover {
+    &:not(.disabled):hover {
       background-color: #ffffff;
     }
     .option-icon {
@@ -120,6 +123,10 @@
       margin-left: auto;
       color: #390000;
       font-size: 14px;
+    }
+
+    &.disabled {
+      color: #a0a0a0;
     }
   }
 </style>

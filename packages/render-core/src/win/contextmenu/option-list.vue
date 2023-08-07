@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { ContextMenuProps, ContextMenuOptionItem } from '.';
+  import { ContextMenuOptionItem } from '.';
   import OptionItem from './option-item.vue';
   import { CSSProperties } from 'vue';
   import { contextmenuZIndex } from 'model-core';
@@ -38,6 +38,7 @@
         :deep="deep"
         :key="index"
       ></OptionItem>
+      <div class="divider" v-if="idx < options.length - 1"></div>
     </template>
   </div>
 </template>
@@ -50,33 +51,12 @@
     background-color: #eeeeee;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
     cursor: default;
-    .option-item {
-      position: relative;
-      justify-content: flex-start;
-      display: flex;
-      align-items: center;
-      padding: 2px 10px;
-      height: 16px;
-      line-height: 16px;
-      font-size: 12px;
-      &:hover {
-        background-color: #ffffff;
-      }
-      .option-icon {
-        width: 14px;
-        height: 14px;
-        margin-right: 5px;
-        .option-img {
-          width: 100%;
-          height: 100%;
-        }
-      }
+  }
 
-      .option-more {
-        margin-left: auto;
-        color: #390000;
-        font-size: 14px;
-      }
-    }
+  .divider {
+    height: 0.5px;
+    margin: 2px 10px;
+    width: calc(100% - 20px);
+    background-color: #aaa;
   }
 </style>

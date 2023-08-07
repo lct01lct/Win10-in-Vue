@@ -1,18 +1,17 @@
 <script lang="ts" setup>
-  import { getDeskTopPort, limitPosition } from 'utils';
+  import { getDeskTopPort, limitPosition, sleep } from 'utils';
   import { ContextMenuProps, ContextMenuOptionItem } from '.';
   import { onClickOutside } from '@vueuse/core';
   import { contextmenuZIndex } from 'model-core';
   import { CSSProperties } from 'vue';
   import OptionList from './option-list.vue';
 
-  const props = defineProps<ContextMenuProps>();
-
   const visible = ref(true);
-
   const close = () => {
     visible.value = false;
   };
+
+  const props = defineProps<ContextMenuProps & { options: ContextMenuOptionItem[][] }>();
 
   const style = computed<CSSProperties>(() => {
     return {
@@ -43,18 +42,31 @@
         maxY: maxTop,
       });
 
-      onClickOutside(oContextMenu, () => {
+      const clearup = onClickOutside(oContextMenu, () => {
         close();
+        clearup?.();
       });
 
       const onDocContextmenu = (e: MouseEvent) => {
         if (!e.composedPath().includes(oContextMenu)) {
           close();
+          document.removeEventListener('contextmenu', onDocContextmenu, true);
+        }
+      };
+
+      const onDocMousedown = (e: MouseEvent) => {
+        const isOnContextMenu = e
+          .composedPath()
+          .includes(optionListRefVue.value?.optionListRef as EventTarget);
+
+        if (!isOnContextMenu) {
+          close();
+          document.removeEventListener('mousedown', onDocMousedown);
         }
       };
 
       document.addEventListener('contextmenu', onDocContextmenu, true);
-      document.addEventListener('mousedown', close);
+      document.addEventListener('mousedown', onDocMousedown);
     }
   });
 
@@ -69,7 +81,7 @@
     <slot v-if="$slots.default"></slot>
     <OptionList
       v-else
-      :options="(options as ContextMenuOptionItem[][])"
+      :options="options"
       :close="close"
       v-if="visible"
       :style="style"

@@ -10,3 +10,4 @@ export * from './hook';
 export * from './handleBackendPath';
 export * from './EnterHandlers';
 export * from './object';
+export * from './array';
