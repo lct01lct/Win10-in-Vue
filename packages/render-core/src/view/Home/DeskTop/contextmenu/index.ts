@@ -4,6 +4,17 @@ import HookIcon from './img/hook.png';
 import { addFolderInDeskTop, settingApp } from '@/system-app';
 import { Folder } from 'model-core';
 
+import DisplaySettingIcon from './img/display-settings.png';
+import PersonaliztionIcon from './img/personalization.png';
+import FolderIcon from './img/folder.png';
+import ShortcutsIcon from './img/shortcuts.png';
+import DocumentIcon from './img/document.png';
+import ZipIcon from './img/zip.png';
+import WordIcon from './img/WORD.png';
+import ExcelIcon from './img/excel.png';
+import PptIcon from './img/PPT.png';
+import RtfIcon from './img/rtf.png';
+
 export const { open: openMenu } = createContextMenu();
 
 const contextMenuGroup1 = createContextMenuOptionGroup([
@@ -49,28 +60,30 @@ const contextMenuGroup3 = createContextMenuOptionGroup([
             const newFolder = Folder.getDeskTop().addFolder();
             addFolderInDeskTop(newFolder.name);
           },
+          icon: FolderIcon,
         },
-        { name: '快捷方式(S)' },
+        { name: '快捷方式(S)', icon: ShortcutsIcon },
       ],
       [
-        { name: 'Microsoft Word 文档' },
-        { name: 'Microsoft PowerPoint 演示文稿' },
-        { name: 'RTF 格式' },
-        { name: '文本文档' },
-        { name: 'Microsoft Excel 工作表' },
-        { name: '压缩文件夹' },
+        { name: 'Microsoft Word 文档', icon: WordIcon },
+        { name: 'Microsoft PowerPoint 演示文稿', icon: PptIcon },
+        { name: 'RTF 格式', icon: RtfIcon },
+        { name: '文本文档', icon: DocumentIcon },
+        { name: 'Microsoft Excel 工作表', icon: ExcelIcon },
+        { name: '压缩文件夹', icon: ZipIcon },
       ],
     ],
   },
 ]);
 
 const contextMenuGroup4 = createContextMenuOptionGroup([
-  { name: '显示设置(D)' },
+  { name: '显示设置(D)', icon: DisplaySettingIcon },
   {
     name: '个性化(R)',
     onClick: () => {
       settingApp.open({ route: '个性化' });
     },
+    icon: PersonaliztionIcon,
   },
 ]);
 
