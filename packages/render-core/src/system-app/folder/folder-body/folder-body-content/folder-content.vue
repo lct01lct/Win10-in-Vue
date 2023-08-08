@@ -80,13 +80,24 @@
               <img v-else src="../../img/file-empty.png" alt="" />
             </Icon>
 
-            {{ item.name }}
+            <span class="folder-name">{{ item.name }}</span>
           </span>
-          <span :style="{ minWidth: headerItemsConfig[1].width + 'px' }">{{ item.createdAt }}</span>
-          <span :style="{ minWidth: headerItemsConfig[2].width + 'px' }">
+          <span
+            class="folder-content-table-cell"
+            :style="{ minWidth: headerItemsConfig[1].width + 'px' }"
+          >
+            {{ item.createdAt }}
+          </span>
+          <span
+            class="folder-content-table-cell"
+            :style="{ minWidth: headerItemsConfig[2].width + 'px' }"
+          >
             {{ isFile(item) ? item.extension : '文件夹' }}
           </span>
-          <span :style="{ minWidth: headerItemsConfig[3].width + 'px' }">
+          <span
+            class="folder-content-table-cell"
+            :style="{ minWidth: headerItemsConfig[3].width + 'px' }"
+          >
             {{ parseInt(item.size) + 'kb' }}
           </span>
         </div>
@@ -111,9 +122,10 @@
       .folder-content-table-header {
         font-size: 12px;
         color: #4c607a;
+        margin-bottom: 10px;
         .folder-content-table-header-item {
-          height: 24px;
-          padding: 0;
+          height: 16px;
+          padding-left: 10px;
           &:nth-child(n + 2) {
             border-left: 1px solid #e5e5e5;
           }
@@ -128,10 +140,18 @@
       }
 
       .folder-content-table-cell.name {
+        padding-left: 10px;
         overflow: hidden;
         display: inline-flex;
         align-items: center;
         color: #000;
+      }
+
+      .folder-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 190px;
       }
 
       .isActive {
