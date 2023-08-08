@@ -1,4 +1,4 @@
-import { WinApp } from '@/app';
+import { WinApp, addFolderInDesktopFolder } from '@/app';
 import { deskTopData } from 'model-core';
 import fileFullIcon from './img/file-full.png';
 import FolderIcon from './img/logo.png';
@@ -16,10 +16,12 @@ export const folderApp = new FolderApp({
   isFromSystem: true,
 });
 
-export const initDeskTopFolder = (app: FolderApp) => {
-  deskTopData.children.forEach((item: { name: string }) => {
-    app.createShortcut(fileFullIcon, item.name);
-  });
+export const addFolderInDeskTop = (name: string) => {
+  folderApp.createShortcut(fileFullIcon, name);
 };
 
-initDeskTopFolder(folderApp);
+(function init() {
+  deskTopData.children.forEach((item: { name: string }) => {
+    folderApp.createShortcut(fileFullIcon, item.name);
+  });
+})();

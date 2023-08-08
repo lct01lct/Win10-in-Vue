@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { getDeskTopPort } from 'utils';
+  import { getDeskTopPort, isTwoArray } from 'utils';
   import { ContextMenuOptionItem } from '.';
   import OptionList from './option-list.vue';
 
@@ -68,6 +68,16 @@
       flush: 'post',
     }
   );
+
+  const subOptions = computed(() => {
+    const subOptions = props.option.subOptions;
+
+    if (!subOptions) {
+      return undefined;
+    } else {
+      return isTwoArray(subOptions) ? subOptions : [subOptions];
+    }
+  });
 </script>
 
 <template>
@@ -84,11 +94,11 @@
       <img v-if="option.icon" class="option-img" :src="option.icon" alt="" />
     </div>
     <div class="option-name">{{ option.name }}</div>
-    <span v-if="option.subOptions?.length" class="option-more iconfont icon-xiangyou"></span>
-    <template v-if="option.subOptions?.length && childVisible">
+    <span v-if="subOptions?.length" class="option-more iconfont icon-xiangyou"></span>
+    <template v-if="subOptions?.length && childVisible">
       <OptionList
         :close="close"
-        :options="[option.subOptions]"
+        :options="subOptions"
         :deep="deep + 1"
         ref="optionListVue"
       ></OptionList>

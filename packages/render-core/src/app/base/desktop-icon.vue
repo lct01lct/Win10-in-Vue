@@ -15,8 +15,8 @@
       const posIdx = deskIconOpt.posIdx;
       const deskTopHeight = maxAppHeight;
       const deskTopPaddingTop = 8;
-      const iconMarginX = 2;
-      const iconMarginY = 10;
+      const iconMarginX = 4;
+      const iconMarginY = 15;
       const iconSize = 76.8;
       const colMaxCount = Math.floor(
         (deskTopHeight - deskTopPaddingTop) / (iconSize + iconMarginY)
@@ -47,6 +47,10 @@
 
   const onIconClick = () => {
     resetFocusIcon();
+    onIconMouseDown();
+  };
+
+  const onIconMouseDown = () => {
     if (deskIconOpt) {
       deskIconOpt.isFocus = true;
     }
@@ -102,10 +106,11 @@
     @contextmenu.stop="onIconContextMenu"
     :style="styles"
     @click.stop="onIconClick"
+    @mousedown.stop="onIconMouseDown"
     :class="[deskIconOpt?.isFocus ? 'focus' : '']"
   >
     <img class="app-icon" :src="appIcon" alt="" draggable="false" />
-    <span class="app-name">{{ appName }}</span>
+    <span class="app-name" :class="[deskIconOpt?.isFocus ? '' : 'omit']">{{ appName }}</span>
   </div>
 </template>
 
@@ -117,15 +122,18 @@
     align-items: center;
     justify-content: center;
     width: 76.8px;
-    height: 76.8px;
+    padding: 5px 0px;
     box-sizing: border-box;
     border: 1px solid transparent;
     cursor: default;
+    z-index: 1;
     .app-icon {
       width: 50px;
       height: 50px;
     }
     .app-name {
+      display: inline-block;
+      padding: 0 5px;
       color: #fff;
       font-size: 12px;
       text-align: center;
@@ -139,5 +147,15 @@
   .desktop-icon-wrapper.focus {
     background: rgba(195, 234, 247, 0.3);
     border: 1px solid #ddd;
+    z-index: 2;
+  }
+
+  .desktop-icon-wrapper .omit {
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 27.6px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
   }
 </style>

@@ -27,6 +27,10 @@ export class Folder {
   parent: Folder | Desc;
   createdAt: string;
 
+  static getDDesc = () => Folder.findByPath('D:\\') as Desc;
+  static getCDesc = () => Folder.findByPath('C:\\') as Desc;
+  static getDeskTop = () => Folder.search('Desktop')[0] as Folder;
+
   constructor(initFolderOpt: InitFolderOpt, parent: Folder | Desc) {
     const { name, children, createdAt } = initFolderOpt;
 
@@ -68,24 +72,26 @@ export class Folder {
     };
 
     if (content instanceof Folder) {
-      if (isOverMemory(this, content.size)) return `超出当前磁盘内存`;
+      if (isOverMemory(this, content.size)) {
+        throw new Error(`超出当前磁盘内存`);
+      }
 
       content.name = resolveName(content.name);
 
       this.children.push(content);
 
-      return content.name;
+      return content;
     } else {
       content = resolveName(content);
-
-      this.children.push(new Folder({ name: content, children: [] }, this));
-      return content;
+      const newFolder = new Folder({ name: content, children: [] }, this);
+      this.children.push(newFolder);
+      return newFolder;
     }
   }
 
   addFile(content: string | Files, size: string = '0KB') {
     if (isOverMemory(this, size)) {
-      return `超出当前磁盘内存`;
+      throw new Error(`超出当前磁盘内存`);
     }
 
     const resolveName = (name: string): string => {
@@ -99,6 +105,8 @@ export class Folder {
       content.name = resolveName(content.name);
 
       this.children.push(content);
+
+      return content;
     } else {
       const file = new Files({
         name: '',
@@ -108,6 +116,8 @@ export class Folder {
       file.fullName = content;
       file.name = resolveName(file.name);
       this.children.push(file);
+
+      return file;
     }
   }
 

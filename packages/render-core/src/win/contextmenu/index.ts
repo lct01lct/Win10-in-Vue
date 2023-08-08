@@ -7,7 +7,7 @@ export interface ContextMenuOptionItem {
   icon?: string;
   name: string;
   onClick?: () => void;
-  subOptions?: ContextMenuOptionItem[];
+  subOptions?: ContextMenuProps['options'];
   disabled?: boolean;
 }
 
@@ -32,11 +32,18 @@ export const createContextMenu = () => {
     app = createApp(ContextMenu, { ...props });
     vm = app.mount(container) as ContextMenuVm;
     document.body.appendChild(container);
+
+    const clearup = watch(
+      () => vm.visible,
+      () => {
+        app.unmount();
+        clearup();
+      }
+    );
   };
 
   const close = () => {
     vm.close();
-    app.unmount();
   };
 
   return {

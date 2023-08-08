@@ -18,6 +18,15 @@ interface DeskTopApp {
 
 export const registeredAppList: WinApp[] = reactive([]);
 export const deskTopAppList: DeskTopApp[] = reactive([]);
+
+export const addFolderInDesktopFolder = (folderApp: WinApp) => {
+  deskTopAppList.push({
+    name: folderApp.name,
+    comp: () =>
+      h(DesktopIcon, { appInstance: folderApp, appIcon: folderApp._logo, appName: folderApp.name }),
+  });
+};
+
 export class WinApp extends BaseApp {
   deskTopName = '';
   pinyin_name = '';
