@@ -4,6 +4,7 @@ export interface DeskTopIconItem {
   appInstance: WinApp;
   posIdx: number;
   isFocus: boolean;
+  isEditting: boolean;
 }
 
 export const deskTopIconMap = reactive<Map<string, DeskTopIconItem>>(new Map());
@@ -15,6 +16,7 @@ export const isFocusIcons = computed(() =>
 export const resetFocusIcon = () => {
   deskTopIconMap.forEach((item) => {
     item.isFocus = false;
+    item.isEditting = false;
   });
 };
 

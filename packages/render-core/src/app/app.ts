@@ -52,6 +52,7 @@ export class WinApp extends BaseApp {
       appInstance: this,
       posIdx: getNewlyPosIdx(),
       isFocus: false,
+      isEditting: false,
     });
 
     return this;

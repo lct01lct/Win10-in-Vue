@@ -3,10 +3,15 @@
   import { FolderApp } from '@/system-app';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
   import { DragBindingValue } from 'utils';
+  import { openMenu } from './desktop-icon-contextmenu';
   import EdgeIcon from './img/contextmenu/edge.png';
-  import { openMenu, baseOptions } from './desktop-icon-contextmenu';
+  import ChromeIcon from './img/contextmenu/chrome.png';
 
-  const props = defineProps<{ appInstance: WinApp; appIcon: string; appName: string }>();
+  const props = defineProps<{
+    appInstance: WinApp;
+    appIcon: string;
+    appName: string;
+  }>();
 
   const deskIconOpt = deskTopIconMap.get(props.appName);
 
@@ -77,13 +82,33 @@
     openMenu({
       props: {
         options: [
-          {
-            name: '打开',
-            onClick() {
-              onIconDbclick();
+          [
+            {
+              name: '打开',
+              onClick() {
+                onIconDbclick();
+              },
             },
-          },
-          ...baseOptions,
+            {
+              name: '打开方式',
+              onClick() {},
+              subOptions: [
+                { name: 'Google chrome', icon: ChromeIcon },
+                { name: 'Microsoft edge', icon: EdgeIcon },
+                { name: '选择其他应用' },
+              ],
+            },
+          ],
+          [{ name: '剪切(T)' }, { name: '复制(C)' }],
+          [
+            { name: '删除快捷方式(D)' },
+            {
+              name: '重命名(M)',
+              onClick() {
+                if (deskIconOpt) deskIconOpt.isEditting = true;
+              },
+            },
+          ],
         ],
         event,
       },
@@ -96,6 +121,7 @@
   };
 
   const vDragOpt: DragBindingValue = {};
+  const appTempName = ref(deskIconOpt?.appInstance?.name);
 </script>
 
 <template>
@@ -110,7 +136,10 @@
     :class="[deskIconOpt?.isFocus ? 'focus' : '']"
   >
     <img class="app-icon" :src="appIcon" alt="" draggable="false" />
-    <span class="app-name" :class="[deskIconOpt?.isFocus ? '' : 'omit']">{{ appName }}</span>
+    <div v-if="deskIconOpt?.isEditting && deskIconOpt?.isFocus" class="app-temp-name">
+      <win-textarea class="app-name-textarea" v-model="appTempName"></win-textarea>
+    </div>
+    <span v-else class="app-name" :class="[deskIconOpt?.isFocus ? '' : 'omit']">{{ appName }}</span>
   </div>
 </template>
 
@@ -130,7 +159,19 @@
     .app-icon {
       width: 50px;
       height: 50px;
+      margin-bottom: 5px;
     }
+    .app-temp-name {
+      .app-name-textarea {
+        resize: none;
+        outline: none;
+        font-size: 12px;
+        line-height: 12px;
+        max-width: calc(76.8px - 2 * 5px);
+        padding: 0;
+      }
+    }
+
     .app-name {
       display: inline-block;
       padding: 0 5px;

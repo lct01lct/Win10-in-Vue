@@ -4,6 +4,7 @@ import { addTaskBarTriggerItem, toggleZIndex, taskBarTriggerList, removeZIndex }
 import type { TaskBarTriggerItem } from './taskBar';
 import installDirective from 'utils/vue-utils/directives';
 import { Folder, Desc } from 'model-core';
+import Win10UI from '@/plugin/Win10UI';
 
 export const compMap: Map<string, Component> = new Map();
 
@@ -83,6 +84,7 @@ export class BaseApp {
       const oContainer = document.createDocumentFragment() as unknown as HTMLElement;
       const vueApp = createApp(compMap.get(this.name)!);
       installDirective(vueApp);
+      vueApp.use(Win10UI);
 
       vueApp.provide('appInstance', this);
       vueApp.provide('appName', this.name);
