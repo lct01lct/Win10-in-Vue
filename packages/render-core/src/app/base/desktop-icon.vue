@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { WinApp, maxAppHeight } from '../.';
+  import { WinApp, deskTopAppList, maxAppHeight } from '../.';
   import { FolderApp } from '@/system-app';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
   import { DragBindingValue } from 'utils';
@@ -10,14 +10,17 @@
   const props = defineProps<{
     appInstance: WinApp;
     appIcon: string;
-    appName: string;
+    appName: Ref<string>;
   }>();
 
-  const deskIconOpt = deskTopIconMap.get(props.appName);
+  const deskIconOpt = computed(() => {
+    const res = deskTopIconMap.get(props.appName.value);
+    return res;
+  });
 
   const getPosition = () => {
-    if (deskIconOpt) {
-      const posIdx = deskIconOpt.posIdx;
+    if (deskIconOpt.value) {
+      const posIdx = deskIconOpt.value.posIdx;
       const deskTopHeight = maxAppHeight;
       const deskTopPaddingTop = 8;
       const iconMarginX = 4;
@@ -56,8 +59,9 @@
   };
 
   const onIconMouseDown = () => {
-    if (deskIconOpt) {
-      deskIconOpt.isFocus = true;
+    if (deskIconOpt.value) {
+      deskIconOpt.value.isFocus = true;
+      deskIconOpt.value.isEditting = false;
     }
   };
 
@@ -65,7 +69,7 @@
     const appInstance = props.appInstance;
 
     appInstance.open({
-      folderName: props.appName,
+      folderName: props.appName.value,
     });
 
     // reRender folder
@@ -73,8 +77,8 @@
       (appInstance as FolderApp).init?.();
     }
 
-    if (deskIconOpt) {
-      deskIconOpt.isFocus = false;
+    if (deskIconOpt.value) {
+      deskIconOpt.value.isFocus = false;
     }
   };
 
@@ -105,7 +109,7 @@
             {
               name: '重命名(M)',
               onClick() {
-                if (deskIconOpt) deskIconOpt.isEditting = true;
+                if (deskIconOpt.value) deskIconOpt.value.isEditting = true;
               },
             },
           ],
@@ -115,13 +119,41 @@
     });
 
     resetFocusIcon();
-    if (deskIconOpt) {
-      deskIconOpt.isFocus = true;
+    if (deskIconOpt.value) {
+      deskIconOpt.value.isFocus = true;
     }
   };
 
   const vDragOpt: DragBindingValue = {};
-  const appTempName = ref(deskIconOpt?.appInstance?.name);
+
+  const appTempName = ref(props.appName);
+
+  watch(
+    () => deskIconOpt.value?.isEditting,
+    () => {
+      if (deskIconOpt.value) {
+        if (!deskIconOpt.value.isEditting) {
+          appTempName.value = props.appName.value;
+
+          const deskTopItem = deskTopAppList.find((item) => item.name === props.appName.value);
+
+          if (deskTopItem) {
+            deskTopItem.displayName = appTempName.value;
+          }
+
+          if (deskIconOpt.value) {
+            deskIconOpt.value.appInstance.displayName = appTempName.value;
+          }
+        }
+      }
+    }
+  );
+
+  const onTextareaEnter = () => {
+    if (deskIconOpt.value) {
+      deskIconOpt.value.isEditting = false;
+    }
+  };
 </script>
 
 <template>
@@ -137,9 +169,15 @@
   >
     <img class="app-icon" :src="appIcon" alt="" draggable="false" />
     <div v-if="deskIconOpt?.isEditting && deskIconOpt?.isFocus" class="app-temp-name">
-      <win-textarea class="app-name-textarea" v-model="appTempName"></win-textarea>
+      <win-textarea
+        class="app-name-textarea"
+        v-model="appTempName"
+        @enter="onTextareaEnter"
+      ></win-textarea>
     </div>
-    <span v-else class="app-name" :class="[deskIconOpt?.isFocus ? '' : 'omit']">{{ appName }}</span>
+    <span v-else class="app-name omit" :class="[deskIconOpt?.isFocus ? '' : '']">
+      {{ appName.value }}
+    </span>
   </div>
 </template>
 
@@ -163,12 +201,9 @@
     }
     .app-temp-name {
       .app-name-textarea {
-        resize: none;
-        outline: none;
         font-size: 12px;
         line-height: 12px;
         max-width: calc(76.8px - 2 * 5px);
-        padding: 0;
       }
     }
 

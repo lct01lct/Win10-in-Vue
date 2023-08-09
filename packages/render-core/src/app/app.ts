@@ -6,13 +6,14 @@ import { Component } from 'vue';
 import { pinyin } from 'pinyin-pro';
 import { AppOrigin } from './types';
 import { Base } from '.';
-
+import { Ref } from 'vue';
 export interface WinAppConstructorOpt extends BaseAppContructorOpt {
   isFromSystem?: boolean;
 }
 
 interface DeskTopApp {
   name: string;
+  displayName: string;
   comp: Component;
 }
 
@@ -20,15 +21,35 @@ export const registeredAppList: WinApp[] = reactive([]);
 export const deskTopAppList: DeskTopApp[] = reactive([]);
 
 export const addFolderInDesktopFolder = (folderApp: WinApp) => {
-  deskTopAppList.push({
-    name: folderApp.name,
-    comp: () =>
-      h(DesktopIcon, { appInstance: folderApp, appIcon: folderApp._logo, appName: folderApp.name }),
+  return createDeskTopAppItem(folderApp, folderApp._logo, folderApp.name);
+};
+
+export const createDeskTopAppItem = (app: WinApp, appIcon: string, _displayName: string) => {
+  const displayName = ref(_displayName);
+
+  const item = reactive({
+    name: _displayName,
+    displayName: displayName as unknown as string,
+    comp: () => h(DesktopIcon, { appInstance: app, appIcon, appName: displayName }),
   });
+
+  watch(displayName, (val) => {
+    item.name = val;
+  });
+  deskTopAppList.push(item);
+
+  return item;
 };
 
 export class WinApp extends BaseApp {
-  deskTopName = '';
+  set displayName(val: string) {
+    this._displayName = val;
+    this.pinyin_name = pinyin(this.displayName);
+  }
+  get displayName() {
+    return this._displayName;
+  }
+  _displayName = '';
   pinyin_name = '';
   isFromSystem = false;
 
@@ -36,32 +57,42 @@ export class WinApp extends BaseApp {
     super(opt);
 
     this.isFromSystem = opt.isFromSystem || false;
-    this.pinyin_name = pinyin(opt.name);
     registeredAppList.push(this);
   }
 
   // 创建快捷方式
   createShortcut(appIcon: string, appName: string) {
-    this.deskTopName = appName;
-    deskTopAppList.push({
-      name: appName,
-      comp: () => h(DesktopIcon, { appInstance: this, appIcon, appName }),
+    checkAppisNotFolderApp(this, () => {
+      this.displayName = appName;
     });
 
-    deskTopIconMap.set(appName, {
-      appInstance: this,
-      posIdx: getNewlyPosIdx(),
-      isFocus: false,
-      isEditting: false,
-    });
+    const deskTopAppItem = createDeskTopAppItem(this, appIcon, appName);
+
+    watch(
+      () => deskTopAppItem.displayName,
+      (val, oldVal) => {
+        const originApp = (oldVal && deskTopIconMap.get(oldVal)) || {
+          appInstance: this,
+          posIdx: getNewlyPosIdx(),
+          isFocus: false,
+          isEditting: false,
+        };
+
+        if (originApp && oldVal) deskTopIconMap.delete(oldVal);
+        deskTopIconMap.set(val, originApp);
+      },
+      {
+        immediate: true,
+      }
+    );
 
     return this;
   }
 
   deleteShortcut() {
-    const index = deskTopAppList.findIndex((item) => item.name === this.deskTopName);
+    const index = deskTopAppList.findIndex((item) => item.name === this.displayName);
     deskTopAppList.splice(index, 1);
-    deskTopIconMap.delete(this.deskTopName);
+    deskTopIconMap.delete(this.displayName);
   }
 
   static install(appOrigin: AppOrigin) {
@@ -82,3 +113,9 @@ export class WinApp extends BaseApp {
     return new WinApp(Object.assign(appOrigin, { comp: _app }));
   }
 }
+
+export const checkAppisNotFolderApp = (app: WinApp, fn: Function) => {
+  if (app.name !== '文件夹') {
+    fn();
+  }
+};

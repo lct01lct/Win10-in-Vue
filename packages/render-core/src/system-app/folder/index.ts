@@ -1,4 +1,4 @@
-import { WinApp, addFolderInDesktopFolder } from '@/app';
+import { WinApp } from '@/app';
 import { deskTopData } from 'model-core';
 import fileFullIcon from './img/file-full.png';
 import FolderIcon from './img/logo.png';
