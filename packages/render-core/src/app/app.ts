@@ -80,6 +80,15 @@ export class WinApp extends BaseApp {
 
         if (originApp && oldVal) deskTopIconMap.delete(oldVal);
         deskTopIconMap.set(val, originApp);
+
+        // Sort by posIdx of desktopIconItem
+        const deskTopEntries = Array(...deskTopIconMap.entries()).sort((e1, e2) => {
+          return e1[1].posIdx - e2[1].posIdx;
+        });
+        deskTopIconMap.clear();
+        deskTopEntries.forEach(([displayName, desktopIconItem]) => {
+          deskTopIconMap.set(displayName, desktopIconItem);
+        });
       },
       {
         immediate: true,

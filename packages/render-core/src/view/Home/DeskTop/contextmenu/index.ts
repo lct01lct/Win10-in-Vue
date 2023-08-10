@@ -12,9 +12,8 @@ import DocumentIcon from './img/document.png';
 import ZipIcon from './img/zip.png';
 import WordIcon from './img/word.png';
 import ExcelIcon from './img/excel.png';
-import PptIcon from './img/PPT.png';
+import PptIcon from './img/ppt.png';
 import RtfIcon from './img/rtf.png';
-import { deskTopIconMap } from '@/app';
 
 export const { open: openMenu } = createContextMenu();
 

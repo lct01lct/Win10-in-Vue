@@ -22,7 +22,7 @@ export const resetFocusIcon = () => {
 
 export const getNewlyPosIdx = (): number => {
   const nextIdx: number[] = [];
-  const iconList = Array.from(deskTopIconMap.values()).sort((a, b) => a.posIdx - b.posIdx);
+  const iconList = Array(...deskTopIconMap.values()).sort((a, b) => a.posIdx - b.posIdx);
 
   for (let icon of iconList) {
     const index = nextIdx.indexOf(icon.posIdx);
@@ -32,6 +32,5 @@ export const getNewlyPosIdx = (): number => {
       nextIdx[index] = icon.posIdx + 1;
     }
   }
-
   return deskTopIconMap.size ? Math.min(...nextIdx) : 1;
 };
