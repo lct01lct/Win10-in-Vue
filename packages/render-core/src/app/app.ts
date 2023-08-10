@@ -1,7 +1,7 @@
 import { BaseApp } from './base/baseApp';
 import DesktopIcon from './base/desktop-icon.vue';
 import type { BaseAppContructorOpt } from './base/baseApp';
-import { deskTopIconMap, getNewlyPosIdx } from './base/desktop-icon';
+import { DeskTopIconItem, deskTopIconMap, getNewlyPosIdx } from './base/desktop-icon';
 import { Component } from 'vue';
 import { pinyin } from 'pinyin-pro';
 import { AppOrigin } from './types';
@@ -71,12 +71,14 @@ export class WinApp extends BaseApp {
     watch(
       () => deskTopAppItem.displayName,
       (val, oldVal) => {
-        const originApp = (oldVal && deskTopIconMap.get(oldVal)) || {
-          appInstance: this,
-          posIdx: getNewlyPosIdx(),
-          isFocus: false,
-          isEditting: false,
-        };
+        const originApp =
+          (oldVal && deskTopIconMap.get(oldVal)) ||
+          (reactive<DeskTopIconItem>({
+            appInstance: this,
+            posIdx: getNewlyPosIdx(),
+            isFocus: false,
+            isEditting: false,
+          }) as DeskTopIconItem);
 
         if (originApp && oldVal) deskTopIconMap.delete(oldVal);
         deskTopIconMap.set(val, originApp);

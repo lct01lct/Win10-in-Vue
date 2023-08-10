@@ -10,10 +10,11 @@ import FolderIcon from './img/folder.png';
 import ShortcutsIcon from './img/shortcuts.png';
 import DocumentIcon from './img/document.png';
 import ZipIcon from './img/zip.png';
-import WordIcon from './img/WORD.png';
+import WordIcon from './img/word.png';
 import ExcelIcon from './img/excel.png';
 import PptIcon from './img/PPT.png';
 import RtfIcon from './img/rtf.png';
+import { deskTopIconMap } from '@/app';
 
 export const { open: openMenu } = createContextMenu();
 
@@ -59,6 +60,9 @@ const contextMenuGroup3 = createContextMenuOptionGroup([
           onClick() {
             const newFolder = Folder.getDeskTop().addFolder();
             addFolderInDeskTop(newFolder.name);
+            console.log(deskTopIconMap.get(newFolder.name));
+            // deskTopIconMap.get(newFolder.name).isEditting = true;
+            console.log(deskTopIconMap);
           },
           icon: FolderIcon,
         },
