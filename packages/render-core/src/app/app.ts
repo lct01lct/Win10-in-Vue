@@ -1,12 +1,11 @@
 import { BaseApp } from './base/baseApp';
 import DesktopIcon from './base/desktop-icon.vue';
 import type { BaseAppContructorOpt } from './base/baseApp';
-import { DeskTopIconItem, deskTopIconMap, getNewlyPosIdx } from './base/desktop-icon';
+import { deskTopIconMap, getNewlyPosIdx } from './base/desktop-icon';
 import { Component } from 'vue';
 import { pinyin } from 'pinyin-pro';
 import { AppOrigin } from './types';
 import { Base } from '.';
-import { Ref } from 'vue';
 export interface WinAppConstructorOpt extends BaseAppContructorOpt {
   isFromSystem?: boolean;
 }

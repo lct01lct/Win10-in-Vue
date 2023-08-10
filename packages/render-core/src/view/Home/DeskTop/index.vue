@@ -16,6 +16,7 @@
   }));
 
   const onDeskTopContextMenu = (e: MouseEvent) => {
+    reset();
     openMenu({
       props: {
         options: contextMenuOptions,

@@ -14,6 +14,7 @@ import WordIcon from './img/word.png';
 import ExcelIcon from './img/excel.png';
 import PptIcon from './img/ppt.png';
 import RtfIcon from './img/rtf.png';
+import { deskTopIconMap } from '@/app';
 
 export const { open: openMenu } = createContextMenu();
 
@@ -59,7 +60,11 @@ const contextMenuGroup3 = createContextMenuOptionGroup([
           onClick() {
             const newFolder = Folder.getDeskTop().addFolder();
             addFolderInDeskTop(newFolder.name);
-            // deskTopIconMap.get(newFolder.name).isEditting = true;
+            const deskTopIconConfig = deskTopIconMap.get(newFolder.name);
+            if (deskTopIconConfig) {
+              deskTopIconConfig.isEditting = true;
+              deskTopIconConfig.isFocus = true;
+            }
           },
           icon: FolderIcon,
         },

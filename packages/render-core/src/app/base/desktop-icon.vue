@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { WinApp, deskTopAppList, maxAppHeight } from '../.';
-  import { FolderApp } from '@/system-app';
+  import { FolderApp, folderApp } from '@/system-app';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
   import { DragBindingValue } from 'utils';
   import { openMenu } from './desktop-icon-contextmenu';
