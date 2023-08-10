@@ -175,7 +175,7 @@
         @enter="onTextareaEnter"
       ></win-textarea>
     </div>
-    <span v-else class="app-name omit" :class="[deskIconOpt?.isFocus ? '' : '']">
+    <span v-else class="app-name" :class="[deskIconOpt?.isFocus ? '' : 'omit']">
       {{ appName.value }}
     </span>
   </div>
@@ -209,10 +209,13 @@
 
     .app-name {
       display: inline-block;
-      padding: 0 5px;
+      padding: 0 4px;
       color: #fff;
       font-size: 12px;
       text-align: center;
+      max-width: 66.8px;
+      min-height: 16px;
+      word-break: break-word;
     }
 
     &:hover {
@@ -229,9 +232,10 @@
   .desktop-icon-wrapper .omit {
     -webkit-box-orient: vertical;
     overflow: hidden;
-    max-height: 27.6px;
+    max-height: 29.7px;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    word-break: break-word;
   }
 </style>
