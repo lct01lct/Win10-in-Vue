@@ -60,9 +60,7 @@ const contextMenuGroup3 = createContextMenuOptionGroup([
           onClick() {
             const newFolder = Folder.getDeskTop().addFolder();
             addFolderInDeskTop(newFolder.name);
-            console.log(deskTopIconMap.get(newFolder.name));
             // deskTopIconMap.get(newFolder.name).isEditting = true;
-            console.log(deskTopIconMap);
           },
           icon: FolderIcon,
         },

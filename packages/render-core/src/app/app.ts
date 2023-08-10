@@ -71,14 +71,12 @@ export class WinApp extends BaseApp {
     watch(
       () => deskTopAppItem.displayName,
       (val, oldVal) => {
-        const originApp =
-          (oldVal && deskTopIconMap.get(oldVal)) ||
-          (reactive<DeskTopIconItem>({
-            appInstance: this,
-            posIdx: getNewlyPosIdx(),
-            isFocus: false,
-            isEditting: false,
-          }) as DeskTopIconItem);
+        const originApp = (oldVal && deskTopIconMap.get(oldVal)) || {
+          appInstance: this,
+          posIdx: getNewlyPosIdx(),
+          isFocus: false,
+          isEditting: false,
+        };
 
         if (originApp && oldVal) deskTopIconMap.delete(oldVal);
         deskTopIconMap.set(val, originApp);
