@@ -189,7 +189,7 @@ export class Folder {
    * @returns Folder
    */
   static findOne(query: string): Folder | null {
-    let folderNode: Folder = null;
+    let folderNode: Folder | null = null;
     try {
       new URL(query);
 
