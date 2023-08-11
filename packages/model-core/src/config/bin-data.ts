@@ -251,7 +251,6 @@ setTimeout(() => {
 export const binData = reactive(ORIGIN_DATA.map((item) => new Desc(item as any)));
 
 export const deskTopData = Desc.search('DeskTop')[0] as Folder;
-deskTopData.addFolder();
 
 export const menuData = [{ name: '快速访问', children: [Desc.search('DeskTop')] }];
 

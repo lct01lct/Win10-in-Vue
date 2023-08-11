@@ -127,3 +127,9 @@ export const checkAppisNotFolderApp = (app: WinApp, fn: Function) => {
     fn();
   }
 };
+
+export const checkAppisFolderApp = (app: WinApp, fn: Function) => {
+  if (app.name === '文件夹') {
+    fn();
+  }
+};

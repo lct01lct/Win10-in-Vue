@@ -184,6 +184,23 @@ export class Folder {
     return result;
   }
 
+  /**
+   * @param query Query may be a path
+   * @returns Folder
+   */
+  static findOne(query: string): Folder | null {
+    let folderNode: Folder = null;
+    try {
+      new URL(query);
+
+      folderNode = Desc.findByPath(query);
+    } catch {
+      folderNode = Desc.search(query)[0] as Folder | null;
+    }
+
+    return folderNode;
+  }
+
   static findByPath(path: string): Folder | Desc | null {
     const idxs = path.split('\\').filter((item) => item);
 

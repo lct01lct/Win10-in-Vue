@@ -1,11 +1,18 @@
 <script lang="ts" setup>
-  import { WinApp, deskTopAppList, maxAppHeight } from '../.';
-  import { FolderApp, folderApp } from '@/system-app';
+  import {
+    WinApp,
+    checkAppisNotFolderApp,
+    checkAppisFolderApp,
+    deskTopAppList,
+    maxAppHeight,
+  } from '../.';
+  import { FolderApp } from '@/system-app';
   import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
   import { DragBindingValue } from 'utils';
   import { openMenu } from './desktop-icon-contextmenu';
   import EdgeIcon from './img/contextmenu/edge.png';
   import ChromeIcon from './img/contextmenu/chrome.png';
+  import { deskTopData, isFolder, renameFolder } from 'model-core';
 
   const props = defineProps<{
     appInstance: WinApp;
@@ -131,20 +138,40 @@
   watch(
     () => deskIconOpt.value?.isEditting,
     () => {
-      if (deskIconOpt.value) {
-        if (!deskIconOpt.value.isEditting) {
-          appTempName.value = props.appName.value;
+      if (!deskIconOpt.value?.isEditting) {
+        appTempName.value = props.appName.value;
 
-          const deskTopItem = deskTopAppList.find((item) => item.name === props.appName.value);
+        const deskTopItem = deskTopAppList.find((item) => item.name === props.appName.value);
 
-          if (deskTopItem) {
-            deskTopItem.displayName = appTempName.value;
-          }
-
-          if (deskIconOpt.value) {
-            deskIconOpt.value.appInstance.displayName = appTempName.value;
-          }
+        if (deskTopItem) {
+          deskTopItem.displayName = appTempName.value;
         }
+
+        if (deskIconOpt.value) {
+          checkAppisNotFolderApp(deskIconOpt.value.appInstance, () => {
+            if (deskIconOpt.value) {
+              deskIconOpt.value.appInstance.displayName = appTempName.value;
+            }
+          });
+        }
+      }
+    }
+  );
+
+  // Change folderName when rename folder name in desktop
+  watch(
+    () => props.appName.value,
+    (newName, oldName) => {
+      if (oldName) {
+        checkAppisFolderApp(props.appInstance, () => {
+          const folderNode = deskTopData.children.find((item) => {
+            return item.name === oldName;
+          });
+
+          if (isFolder(folderNode)) {
+            renameFolder(folderNode.path, newName);
+          }
+        });
       }
     }
   );
