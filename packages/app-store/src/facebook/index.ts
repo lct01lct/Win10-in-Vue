@@ -6,5 +6,5 @@ import 'win/dist/style.css';
 export default {
   bodyComp: Facebook,
   icon: FacebookIcon,
-  name: 'Facebook',
+  name: 'facebook',
 } as AppOrigin;

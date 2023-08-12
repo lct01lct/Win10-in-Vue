@@ -3,7 +3,7 @@
   import { useDownloadApp } from './download';
   const userStore = useUserStore();
   const apps = reactive<ApplicationDesc[]>([]);
-  const filterAppIds = computed(() => userStore.user?.downloadedApp);
+  const filterAppIds = computed(() => userStore.user?.downloadedAppIdList);
   const showApps = computed(() => apps.filter((app) => !filterAppIds.value?.includes(app._id)));
 
   const getApps = async () => {

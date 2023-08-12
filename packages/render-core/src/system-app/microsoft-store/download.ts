@@ -4,6 +4,7 @@ import {
   R_AddDownloadedApp,
   useUserStore,
   R_getApplicationById,
+  useDownloadAppStore,
 } from 'model-core';
 
 export const useDownloadApp = async ({ downloadLink, icon, _id }: ApplicationDesc) => {
@@ -13,15 +14,18 @@ export const useDownloadApp = async ({ downloadLink, icon, _id }: ApplicationDes
   appOrigin.icon = icon;
   WinApp.install(appOrigin).createShortcut(icon, appOrigin.name);
   const res = await R_AddDownloadedApp(_id);
-  const downloadedApp = res?.data?.downloadedApp;
-  if (downloadedApp) {
-    userStore.setUser({ ...userStore.user!, downloadedApp });
+  const downloadedAppIdList = res?.data?.downloadedApp;
+
+  if (downloadedAppIdList) {
+    userStore.setUser({ ...userStore.user!, downloadedAppIdList });
   }
 };
 
 export const initDownloadedApps = async () => {
   const userStore = useUserStore();
-  const downloadAppIds = userStore.user?.downloadedApp;
+  const downloadAppStore = useDownloadAppStore();
+
+  const downloadAppIds = userStore.user?.downloadedAppIdList;
 
   if (downloadAppIds?.length) {
     const reses = await Promise.all(
@@ -34,6 +38,7 @@ export const initDownloadedApps = async () => {
 
       if (app) {
         useDownloadApp(app);
+        downloadAppStore.downloadAppList.push(app);
       }
     });
   }

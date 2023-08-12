@@ -8,6 +8,7 @@
   const userStore = useUserStore();
   const checkIsLogin = async () => {
     const res = await R_getMe();
+
     if (res?.status === 'failed') {
       userStore.user = null;
     } else {

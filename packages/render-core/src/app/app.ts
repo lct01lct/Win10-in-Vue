@@ -13,6 +13,7 @@ export interface WinAppConstructorOpt extends BaseAppContructorOpt {
 interface DeskTopApp {
   name: string;
   displayName: string;
+  appInstance: WinApp;
   comp: Component;
 }
 
@@ -29,13 +30,14 @@ export const createDeskTopAppItem = (app: WinApp, appIcon: string, _displayName:
   const item = reactive({
     name: _displayName,
     displayName: displayName as unknown as string,
+    appInstance: app,
     comp: () => h(DesktopIcon, { appInstance: app, appIcon, appName: displayName }),
   });
 
   watch(displayName, (val) => {
     item.name = val;
   });
-  deskTopAppList.push(item);
+  deskTopAppList.push(item as unknown as DeskTopApp);
 
   return item;
 };
@@ -122,14 +124,20 @@ export class WinApp extends BaseApp {
   }
 }
 
-export const checkAppisNotFolderApp = (app: WinApp, fn: Function) => {
-  if (app.name !== '文件夹') {
-    fn();
+export const checkAppisNotFolderApp = (app: WinApp, fn?: Function) => {
+  const isFolderApp = app.name !== '文件夹';
+  if (isFolderApp) {
+    fn?.();
   }
+
+  return isFolderApp;
 };
 
-export const checkAppisFolderApp = (app: WinApp, fn: Function) => {
-  if (app.name === '文件夹') {
-    fn();
+export const checkAppisFolderApp = (app: WinApp, fn?: Function) => {
+  const isFolderApp = app.name === '文件夹';
+  if (isFolderApp) {
+    fn?.();
   }
+
+  return isFolderApp;
 };

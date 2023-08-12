@@ -12,13 +12,22 @@
   import { openMenu } from './desktop-icon-contextmenu';
   import EdgeIcon from './img/contextmenu/edge.png';
   import ChromeIcon from './img/contextmenu/chrome.png';
-  import { deskTopData, isFolder, renameFolder } from 'model-core';
+  import {
+    deskTopData,
+    isFolder,
+    renameFolder,
+    useDownloadAppStore,
+    deleteFolder,
+  } from 'model-core';
+  import { R_RemoveDownloadedApp } from 'model-core';
 
   const props = defineProps<{
     appInstance: WinApp;
     appIcon: string;
     appName: Ref<string>;
   }>();
+
+  const downloadAppStore = useDownloadAppStore();
 
   const deskIconOpt = computed(() => {
     const res = deskTopIconMap.get(props.appName.value);
@@ -112,7 +121,45 @@
           ],
           [{ name: '剪切(T)' }, { name: '复制(C)' }],
           [
-            { name: '删除快捷方式(D)' },
+            {
+              name: '删除(D)',
+              onClick() {
+                const appInstance = deskIconOpt.value?.appInstance;
+                if (appInstance) {
+                  if (!appInstance.isFromSystem) {
+                    // reslove downloaded app
+                    const downloadedApp = downloadAppStore.downloadAppList;
+                    const downloadId = downloadedApp.find(
+                      (item) => item.name === appInstance.name
+                    )?._id;
+
+                    if (downloadId) {
+                      R_RemoveDownloadedApp(downloadId);
+                    }
+                  } else if (checkAppisFolderApp(appInstance)) {
+                    // resolve folderApp
+                    const folderNode = deskTopData.children.find((item) => {
+                      return item.name === props.appName.value;
+                    });
+
+                    if (isFolder(folderNode)) {
+                      deleteFolder(folderNode.path);
+                      deskTopIconMap.delete(props.appName.value);
+                      const index = deskTopAppList.findIndex(
+                        (item) => item.displayName === props.appName.value
+                      );
+                      const appInstance = deskTopAppList[index].appInstance;
+                      checkAppisFolderApp(appInstance, () => {
+                        deskTopAppList.splice(index, 1);
+                      });
+                      return;
+                    }
+                  }
+
+                  appInstance.deleteShortcut();
+                }
+              },
+            },
             {
               name: '重命名(M)',
               onClick() {

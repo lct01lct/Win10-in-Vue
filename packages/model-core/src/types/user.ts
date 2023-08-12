@@ -15,5 +15,5 @@ export interface User {
   role: Role;
   avatar: string;
   wallpaper: string;
-  downloadedApp: string[];
+  downloadedAppIdList: string[];
 }

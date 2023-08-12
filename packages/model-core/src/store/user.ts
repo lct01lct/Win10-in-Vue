@@ -42,5 +42,5 @@ export const defaultUser: User = {
   email: 'user@qq.com',
   role: Role.User,
   wallpaper: DefaultWallpaper,
-  downloadedApp: [],
+  downloadedAppIdList: [],
 };
