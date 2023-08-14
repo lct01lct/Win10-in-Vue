@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-  import { Base, WinApp } from '@/app';
+  import { Base } from '@/app';
   import FolderHeader from './folder-header.vue';
   import FolderBody from './folder-body/index.vue';
   import { Pointer } from './types';
   import { Folder } from 'model-core';
   import { FolderApp } from '.';
+  import { currPointer } from './folder';
 
   const folderApp = inject<FolderApp>('appInstance')!;
-  const currPointer = ref<Pointer>();
   const visitedList = reactive([]) as Pointer[];
   const currIdxInVisitList = ref<number>(-1);
   let isRecordVisitByOpt = true;

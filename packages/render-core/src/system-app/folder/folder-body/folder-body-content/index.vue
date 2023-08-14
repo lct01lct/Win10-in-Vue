@@ -4,14 +4,14 @@
 </script>
 
 <template>
-  <div class="folder-content-wrapper">
+  <div class="folder-container-wrapper">
     <Menu></Menu>
     <FolderContent></FolderContent>
   </div>
 </template>
 
 <style scoped>
-  .folder-content-wrapper {
+  .folder-container-wrapper {
     display: flex;
     overflow: hidden;
   }

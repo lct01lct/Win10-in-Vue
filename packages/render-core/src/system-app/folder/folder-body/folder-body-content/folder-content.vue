@@ -1,7 +1,12 @@
 <script lang="ts" setup>
   import { Ref } from 'vue';
   import { Desc, Files, Folder, isFile } from 'model-core';
-  import { Icon } from '@/components';
+  import FolderContentItem from './folder-content-item.vue';
+  import {
+    openWrapperContextMenu,
+    wrapperContextmenuOptions,
+  } from './contextmenu/wrapper-contextmenu';
+
   const currPointer = inject<Ref<Folder | Desc>>('currPointer');
   const setCurrPointer = inject<(currPointer: Folder | Desc) => void>('setCurrPointer');
 
@@ -13,7 +18,7 @@
     },
     {
       title: '修改日期',
-      width: 180,
+      width: 160,
       className: 'modified-date',
     },
     {
@@ -46,61 +51,46 @@
 
   const selectedFoldersAndFiles = reactive<(Folder | Files)[]>([]);
   const clearSelectedFoldersAndFiles = () => (selectedFoldersAndFiles.length = 0);
+
+  const onWrapperContextmenu = (event: MouseEvent) => {
+    openWrapperContextMenu({
+      props: {
+        options: wrapperContextmenuOptions,
+        event,
+      },
+    });
+  };
 </script>
 
 <template>
-  <div class="folder-content-wrapper" @click="clearSelectedFoldersAndFiles">
-    <div class="folder-content-table-wrapper">
+  <div
+    class="folder-content-wrapper"
+    @click="clearSelectedFoldersAndFiles"
+    @contextmenu.stop="onWrapperContextmenu"
+  >
+    <div class="folder-content-table-wrapper" @contextmenu.stop>
       <div class="folder-content-table-header">
         <td
           class="folder-content-table-header-item"
           v-for="item in headerItemsConfig"
           :class="item.className"
-          :style="{ minWidth: item.width + 'px' }"
+          :style="{ width: item.width + 'px' }"
         >
           {{ item.title }}
         </td>
       </div>
 
       <div v-if="currPointer?.children.length">
-        <div
+        <FolderContentItem
           v-for="item in currPointer?.children"
           :key="item.name"
+          :item="item"
+          :header-items-config="headerItemsConfig"
           :class="selectedFoldersAndFiles.includes(item) && 'isActive'"
           @click.stop="onItemClick(item)"
           @dblclick.stop="onItemDblClick(item)"
           class="folder-content-table-row"
-        >
-          <span
-            class="folder-content-table-cell name"
-            :style="{ width: headerItemsConfig[0].width + 'px' }"
-          >
-            <Icon :height="20" :width="20" :style="{ marginRight: '4px' }">
-              <img v-if="isFile(item)" src="../../img/file-type/mp3.png" />
-              <img v-else src="../../img/file-empty.png" alt="" />
-            </Icon>
-
-            <span class="folder-name">{{ item.name }}</span>
-          </span>
-          <span
-            class="folder-content-table-cell"
-            :style="{ minWidth: headerItemsConfig[1].width + 'px' }"
-          >
-            {{ item.createdAt }}
-          </span>
-          <span
-            class="folder-content-table-cell"
-            :style="{ minWidth: headerItemsConfig[2].width + 'px' }"
-          >
-            {{ isFile(item) ? item.extension : '文件夹' }}
-          </span>
-          <span
-            class="folder-content-table-cell"
-            :style="{ minWidth: headerItemsConfig[3].width + 'px' }"
-          >
-            {{ parseInt(item.size) + 'kb' }}
-          </span>
-        </div>
+        ></FolderContentItem>
       </div>
       <div v-else class="table--empty">此文件夹为空。</div>
     </div>
@@ -113,10 +103,8 @@
 
     .folder-content-table-wrapper {
       display: grid;
-      padding: 10px;
-      padding-left: 20px;
+      margin: 10px;
       height: fit-content;
-
       color: #acacac;
       font-size: 12px;
       .folder-content-table-header {
@@ -125,7 +113,7 @@
         margin-bottom: 10px;
         .folder-content-table-header-item {
           height: 16px;
-          padding-left: 10px;
+          padding-left: 5px;
           &:nth-child(n + 2) {
             border-left: 1px solid #e5e5e5;
           }

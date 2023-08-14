@@ -2,6 +2,8 @@
   import { getDeskTopPort, isTwoArray } from 'utils';
   import { ContextMenuOptionItem } from '.';
   import OptionList from './option-list.vue';
+  import SelectIcon from './img/black-circle.png';
+  import HookIcon from './img/hook.png';
 
   const childVisible = ref(false);
   const props = defineProps<{
@@ -91,7 +93,12 @@
     @mouseleave="childVisible = false"
   >
     <div class="option-icon">
-      <img v-if="option.icon" class="option-img" :src="option.icon" alt="" />
+      <img
+        v-if="option.icon || option.select || option.tick"
+        class="option-img"
+        :src="option.icon || (option.select && SelectIcon) || (option.tick && HookIcon)"
+        alt=""
+      />
     </div>
     <div class="option-name">{{ option.name }}</div>
     <span v-if="subOptions?.length" class="option-more iconfont icon-xiangyou"></span>

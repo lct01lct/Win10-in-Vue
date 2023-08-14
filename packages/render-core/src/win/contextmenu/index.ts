@@ -9,6 +9,8 @@ export interface ContextMenuOptionItem {
   onClick?: () => void;
   subOptions?: ContextMenuProps['options'];
   disabled?: boolean;
+  select?: boolean;
+  tick?: boolean;
 }
 
 export interface ContextMenuProps {

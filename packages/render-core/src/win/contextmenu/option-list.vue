@@ -49,7 +49,8 @@
     padding: 2px 0px;
     width: 220px;
     background-color: #eeeeee;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+    border: 1px solid #bbb;
+    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.3);
     cursor: default;
   }
 
