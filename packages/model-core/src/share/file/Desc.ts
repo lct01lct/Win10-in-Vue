@@ -1,4 +1,4 @@
-import { InitFileOpt, InitFolderOpt, Folder } from '.';
+import { InitFileOpt, InitFolderOpt, Folder, Middle } from '.';
 
 export interface InitDescOpt {
   name: string;
@@ -6,6 +6,7 @@ export interface InitDescOpt {
   children: (InitFileOpt | InitFolderOpt)[];
 }
 
+Middle();
 export class Desc extends Folder {
   memory: string;
 

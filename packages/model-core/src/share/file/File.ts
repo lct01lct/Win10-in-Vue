@@ -1,4 +1,5 @@
 import { hour, minute, todayStr } from '../time';
+import { Middle } from './middle';
 
 export type Extension = 'mp4' | 'mp3' | 'html' | 'txt' | 'js' | 'ts' | 'css' | '';
 export const extensions: Extension[] = ['mp4', 'mp3', 'html', 'txt', 'js', 'ts', 'css', ''];
@@ -10,6 +11,7 @@ export interface InitFileOpt {
   createdAt?: string;
 }
 
+Middle();
 export class Files {
   name: string;
   extension: Extension;

@@ -8,6 +8,7 @@ import {
   isRepeatFile,
   reSetBinName,
 } from '.';
+import { Middle } from './middle';
 import type { InitFileOpt, BinType } from '.';
 import { binData } from '../../config/bin-data';
 import { hour, minute, todayStr } from '../time';
@@ -20,6 +21,7 @@ export interface InitFolderOpt {
 
 // 禁止在 computed 使用递归
 
+@Middle()
 export class Folder {
   name: string;
   size: string = '0KB';

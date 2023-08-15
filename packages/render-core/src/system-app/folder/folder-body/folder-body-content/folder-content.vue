@@ -6,6 +6,7 @@
     openWrapperContextMenu,
     wrapperContextmenuOptions,
   } from './contextmenu/wrapper-contextmenu';
+  import { selectedFoldersAndFiles } from '../../folder';
 
   const currPointer = inject<Ref<Folder | Desc>>('currPointer');
   const setCurrPointer = inject<(currPointer: Folder | Desc) => void>('setCurrPointer');
@@ -49,7 +50,6 @@
     selectedFoldersAndFiles.push(item);
   };
 
-  const selectedFoldersAndFiles = reactive<(Folder | Files)[]>([]);
   const clearSelectedFoldersAndFiles = () => (selectedFoldersAndFiles.length = 0);
 
   const onWrapperContextmenu = (event: MouseEvent) => {

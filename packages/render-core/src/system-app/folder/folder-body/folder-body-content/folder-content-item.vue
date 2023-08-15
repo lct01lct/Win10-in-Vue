@@ -29,11 +29,11 @@
       </Icon>
 
       <span class="folder-name">{{ item.name }}</span>
-      <!-- <win-textarea
+      <win-textarea
         class="app-name-textarea"
         v-model="folderOrFileTempName"
         @enter="onTextareaEnter"
-      ></win-textarea> -->
+      ></win-textarea>
     </td>
     <td class="folder-content-table-cell" :style="{ width: headerItemsConfig[1].width + 'px' }">
       {{ item.createdAt }}
