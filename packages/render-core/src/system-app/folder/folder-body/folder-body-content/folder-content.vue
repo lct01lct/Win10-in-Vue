@@ -1,15 +1,15 @@
 <script lang="ts" setup>
   import { Ref } from 'vue';
-  import { Desc, Files, Folder, isFile } from 'model-core';
+  import { Desc, Folder } from 'model-core';
   import FolderContentItem from './folder-content-item.vue';
   import {
     openWrapperContextMenu,
     wrapperContextmenuOptions,
   } from './contextmenu/wrapper-contextmenu';
-  import { selectedFoldersAndFiles } from '../../folder';
+
+  import { clearSelectedFoldersAndFiles } from '../../folder';
 
   const currPointer = inject<Ref<Folder | Desc>>('currPointer');
-  const setCurrPointer = inject<(currPointer: Folder | Desc) => void>('setCurrPointer');
 
   const headerItemsConfig = reactive([
     {
@@ -34,25 +34,8 @@
     },
   ]);
 
-  const onItemDblClick = (item: Folder | Files) => {
-    if (isFile(item)) {
-      // parse TODO:
-      alert(`当前功能暂未实现，敬请期待`);
-    } else {
-      if (item && setCurrPointer) {
-        setCurrPointer(item);
-      }
-    }
-  };
-
-  const onItemClick = (item: Folder | Files) => {
-    clearSelectedFoldersAndFiles();
-    selectedFoldersAndFiles.push(item);
-  };
-
-  const clearSelectedFoldersAndFiles = () => (selectedFoldersAndFiles.length = 0);
-
   const onWrapperContextmenu = (event: MouseEvent) => {
+    clearSelectedFoldersAndFiles();
     openWrapperContextMenu({
       props: {
         options: wrapperContextmenuOptions,
@@ -65,7 +48,7 @@
 <template>
   <div
     class="folder-content-wrapper"
-    @click="clearSelectedFoldersAndFiles"
+    @click="clearSelectedFoldersAndFiles()"
     @contextmenu.stop="onWrapperContextmenu"
   >
     <div class="folder-content-table-wrapper" @contextmenu.stop>
@@ -86,9 +69,7 @@
           :key="item.name"
           :item="item"
           :header-items-config="headerItemsConfig"
-          :class="selectedFoldersAndFiles.includes(item) && 'isActive'"
-          @click.stop="onItemClick(item)"
-          @dblclick.stop="onItemDblClick(item)"
+          :class="item.isFocus && 'isActive'"
           class="folder-content-table-row"
         ></FolderContentItem>
       </div>

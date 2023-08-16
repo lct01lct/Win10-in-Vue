@@ -7,7 +7,7 @@ import WordIcon from '@/assets/images/file/word.png';
 import ExcelIcon from '@/assets/images/file/excel.png';
 import PptIcon from '@/assets/images/file/ppt.png';
 import RtfIcon from '@/assets/images/file/rtf.png';
-import { currPointer } from '../../../folder';
+import { currPointer, clearSelectedFoldersAndFiles } from '../../../folder';
 
 export const { open: openWrapperContextMenu } = createContextMenu();
 
@@ -62,7 +62,12 @@ export const wrapperContextmenuOptions: ContextMenuProps['options'] = [
           {
             name: '文件夹(F)',
             onClick() {
-              currPointer.value?.addFolder('新建文件夹');
+              const newFolder = currPointer.value?.addFolder('新建文件夹');
+              if (newFolder) {
+                clearSelectedFoldersAndFiles();
+                newFolder.isEditting = true;
+                newFolder.isFocus = true;
+              }
             },
             icon: FolderIcon,
           },

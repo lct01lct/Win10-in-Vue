@@ -100,7 +100,7 @@
         alt=""
       />
     </div>
-    <div class="option-name">{{ option.name }}</div>
+    <div class="option-name" :class="[option.bold && 'bolder']">{{ option.name }}</div>
     <span v-if="subOptions?.length" class="option-more iconfont icon-xiangyou"></span>
     <template v-if="subOptions?.length && childVisible">
       <OptionList
@@ -134,6 +134,10 @@
         width: 100%;
         height: 100%;
       }
+    }
+
+    .option-name.bolder {
+      font-weight: 700;
     }
 
     .option-more {

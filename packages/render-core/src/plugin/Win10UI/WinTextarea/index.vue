@@ -8,16 +8,21 @@
   const emits = defineEmits<{
     'update:modelValue': [value: string];
     enter: [value: string];
+    input: [value: string];
   }>();
 
   const value = ref<string>(props.modelValue);
   const textareaRef = shallowRef<HTMLTextAreaElement>();
 
-  const onChange = () => {
+  const onInput = () => {
     if (value.value) {
       emits('update:modelValue', value.value);
     }
   };
+
+  watch(value, (newVal) => {
+    emits('update:modelValue', newVal);
+  });
 
   const onFocus = (e: Event) => {
     (e.target as HTMLTextAreaElement).select();
@@ -40,12 +45,12 @@
 </script>
 
 <template>
-  <div class="win-textarea" @click.stop @mousedown.stop>
+  <div class="win-textarea" @click.stop @mousedown.stop @selectstart.stop>
     <span class="textarea-span">{{ value }}</span>
     <textarea
       class="textarea"
       v-model="value"
-      @change="onChange"
+      @input="onInput"
       @keydown.enter="onEnter"
       @focus="onFocus"
       ref="textareaRef"

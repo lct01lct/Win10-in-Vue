@@ -1,4 +1,6 @@
 import { hour, minute, todayStr } from '../time';
+import { Desc } from './Desc';
+import { Folder } from './Folder';
 import { Base, Middle } from './middle';
 
 export type Extension = 'mp4' | 'mp3' | 'html' | 'txt' | 'js' | 'ts' | 'css' | '';
@@ -15,17 +17,30 @@ export interface Files extends Base {}
 
 Middle();
 export class Files {
-  name: string;
+  private _name: string;
   extension: Extension;
   size: string;
   createdAt: string;
+  parent: Folder | Desc;
 
-  constructor(initFileOpt: InitFileOpt) {
+  constructor(initFileOpt: InitFileOpt, parent: Folder | Desc) {
     const { name, extension, size, createdAt } = initFileOpt;
     this.name = name;
     this.extension = extension;
     this.size = size || '0KB';
     this.createdAt = createdAt || `${todayStr} ${hour.value}:${minute.value}`;
+    this.parent = parent;
+  }
+
+  set name(newName) {
+    if (!newName.trim()) {
+      newName = '新建文件';
+    }
+    this._name = newName;
+  }
+
+  get name() {
+    return this._name;
   }
 
   setName(newName: string) {

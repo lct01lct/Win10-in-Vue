@@ -11,6 +11,7 @@ export interface ContextMenuOptionItem {
   disabled?: boolean;
   select?: boolean;
   tick?: boolean;
+  bold?: boolean;
 }
 
 export interface ContextMenuProps {

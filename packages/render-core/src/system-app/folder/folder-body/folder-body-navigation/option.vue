@@ -103,6 +103,8 @@
       color: #dfdfdf;
       &:hover {
         color: #dfdfdf;
+        background-color: transparent;
+        border-color: transparent;
       }
     }
 

@@ -104,13 +104,14 @@
         options: [
           [
             {
-              name: '打开',
+              name: '打开(O)',
               onClick() {
                 onIconDbclick();
               },
+              bold: true,
             },
             {
-              name: '打开方式',
+              name: '打开方式(H)',
               onClick() {},
               subOptions: [
                 { name: 'Google chrome', icon: ChromeIcon },

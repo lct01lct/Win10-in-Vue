@@ -26,17 +26,17 @@ export interface Folder extends Base {}
 
 @Middle()
 export class Folder {
-  name: string;
+  private _name: string;
   size: string = '0KB';
   children: (Files | Folder)[] = [];
-  parent: Folder | Desc;
+  parent: Folder | Desc | undefined;
   createdAt: string;
 
   static getDDesc = () => Folder.findByPath('D:\\') as Desc;
   static getCDesc = () => Folder.findByPath('C:\\') as Desc;
   static getDeskTop = () => Folder.search('Desktop')[0] as Folder;
 
-  constructor(initFolderOpt: InitFolderOpt, parent: Folder | Desc) {
+  constructor(initFolderOpt: InitFolderOpt, parent: Folder | Desc | undefined = undefined) {
     const { name, children, createdAt } = initFolderOpt;
 
     this.name = name;
@@ -47,10 +47,21 @@ export class Folder {
     this.initSize();
   }
 
+  set name(newName) {
+    if (this.name === newName) return;
+    newName = newName.trim() || '新建文件夹';
+
+    this._name = this.resolveName(newName, this.parent?.children);
+  }
+
+  get name() {
+    return this._name;
+  }
+
   private initChildren(children: (InitFileOpt | InitFolderOpt)[]) {
     children.forEach((item) => {
       if ((item as InitFileOpt).extension) {
-        this.children.push(new Files(item as InitFileOpt));
+        this.children.push(new Files(item as InitFileOpt, this));
       } else {
         this.children.push(new Folder(item as InitFolderOpt, this));
       }
@@ -65,29 +76,29 @@ export class Folder {
     );
   }
 
+  private resolveName(name: string, scope: Folder['children'] = []) {
+    let _name = name;
+
+    while (isRepeatFile(scope, _name)) {
+      _name = reSetBinName(_name);
+    }
+
+    return _name;
+  }
+
   addFolder(content: string | Folder = '新建文件夹') {
-    const resolveName = (name: string): string => {
-      let _name = name;
-
-      while (isRepeatFile(this.children, _name)) {
-        _name = reSetBinName(_name);
-      }
-
-      return _name;
-    };
-
     if (content instanceof Folder) {
       if (isOverMemory(this, content.size)) {
         throw new Error(`超出当前磁盘内存`);
       }
 
-      content.name = resolveName(content.name);
+      content.name = this.resolveName(content.name, this.children);
 
       this.children.push(content);
 
       return content;
     } else {
-      content = resolveName(content);
+      content = this.resolveName(content, this.children);
       const newFolder = new Folder({ name: content, children: [] }, this);
       this.children.push(newFolder);
       return newFolder;
@@ -113,11 +124,14 @@ export class Folder {
 
       return content;
     } else {
-      const file = new Files({
-        name: '',
-        extension: '',
-        size,
-      });
+      const file = new Files(
+        {
+          name: '',
+          extension: '',
+          size,
+        },
+        this
+      );
       file.fullName = content;
       file.name = resolveName(file.name);
       this.children.push(file);
@@ -138,7 +152,9 @@ export class Folder {
       });
     }
 
-    index > -1 && this.children.splice(index, 1);
+    const removedFolder = index > -1 && this.children.splice(index, 1);
+
+    return removedFolder;
   }
 
   removeFile(content: string | Files) {
@@ -153,11 +169,13 @@ export class Folder {
       });
     }
 
-    index > -1 && this.children.splice(index, 1);
+    const removedFile = index > -1 && this.children.splice(index, 1);
+
+    return removedFile;
   }
 
   hasParentFolder(pointer: Folder | Desc) {
-    let _pointer: Folder | Desc = this;
+    let _pointer: Folder['parent'] = this;
 
     while (_pointer) {
       if (_pointer === pointer) {
@@ -171,7 +189,7 @@ export class Folder {
   }
 
   get path(): string {
-    return `${this.parent.path}${this.name}\\`;
+    return `${this.parent?.path}${this.name}\\`;
   }
 
   static search(keyword: string) {
