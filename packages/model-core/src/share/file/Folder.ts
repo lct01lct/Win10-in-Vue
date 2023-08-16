@@ -12,12 +12,15 @@ import { Middle } from './middle';
 import type { InitFileOpt, BinType } from '.';
 import { binData } from '../../config/bin-data';
 import { hour, minute, todayStr } from '../time';
+import { Base } from './middle';
 
 export interface InitFolderOpt {
   name: string;
   children: (InitFileOpt | InitFolderOpt)[];
   createdAt?: string;
 }
+
+export interface Folder extends Base {}
 
 // 禁止在 computed 使用递归
 

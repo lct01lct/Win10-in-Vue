@@ -7,7 +7,6 @@ export type Middleware = <T extends new (...args: any[]) => any>(
 function Middle() {
   const mixinedClass = (Class: new (...args: any[]) => any) => {
     return middlewares.reduce((prevClass, mw) => {
-      console.log(mw);
       return mw(prevClass);
     }, Class);
   };
@@ -24,5 +23,10 @@ Middle.use((Class) => {
     isEditting = false;
   };
 });
+
+export interface Base {
+  isFocus: boolean;
+  isEditting: boolean;
+}
 
 export { Middle };
