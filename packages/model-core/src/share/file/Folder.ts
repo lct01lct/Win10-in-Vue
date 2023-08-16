@@ -26,7 +26,7 @@ export interface Folder extends Base {}
 
 @Middle()
 export class Folder {
-  private _name: string;
+  private _name: string = '';
   size: string = '0KB';
   children: (Files | Folder)[] = [];
   parent: Folder | Desc | undefined;

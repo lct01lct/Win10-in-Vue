@@ -17,7 +17,7 @@ export interface Files extends Base {}
 
 Middle();
 export class Files {
-  private _name: string;
+  private _name: string = '';
   extension: Extension;
   size: string;
   createdAt: string;

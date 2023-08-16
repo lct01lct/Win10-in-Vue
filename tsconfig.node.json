@@ -5,6 +5,7 @@
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true
   }
 }

@@ -36,8 +36,8 @@
     <ul class="menu-list" :style="{ height: menuHeight + 'px' }">
       <template v-for="item in ORIGIN_MENU_DATA">
         <MenuItem
+          v-if="!isFile(item)"
           :item="item"
-          v-if="!isFile(item) || !item.extension"
           :key="item.name"
           :leftOffset="leftOffset"
           :icon="item.icon"
