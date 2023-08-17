@@ -13,6 +13,10 @@ export interface WinAppConstructorOpt extends BaseAppContructorOpt {
 
 export const registeredAppList: WinApp[] = reactive([]);
 
+export interface ShortCutOption {
+  posIdx?: number;
+}
+
 export class WinApp extends BaseApp {
   set displayName(val: string) {
     this._displayName = val;
@@ -34,7 +38,7 @@ export class WinApp extends BaseApp {
   }
 
   // 创建快捷方式
-  createShortcut(appIcon: string, displayName: string) {
+  createShortcut(appIcon: string, displayName: string, option?: ShortCutOption) {
     checkAppisNotFolderApp(this, () => {
       this.displayName = displayName;
     });
@@ -43,6 +47,7 @@ export class WinApp extends BaseApp {
       displayName: displayName,
       reference: this,
       icon: appIcon,
+      posIdx: option?.posIdx,
     });
 
     deskTopIcon.addNewDeskTopIcon(() =>

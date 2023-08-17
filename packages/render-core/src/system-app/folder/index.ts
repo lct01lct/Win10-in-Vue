@@ -1,4 +1,4 @@
-import { WinApp } from '@/app';
+import { ShortCutOption, WinApp } from '@/app';
 import { deskTopData } from 'model-core';
 import fileFullIcon from './img/file-full.png';
 import FolderIcon from './img/logo.png';
@@ -16,8 +16,8 @@ export const folderApp = new FolderApp({
   isFromSystem: true,
 });
 
-export const addFolderInDeskTop = (displayName: string) => {
-  folderApp.createShortcut(fileFullIcon, displayName);
+export const addFolderInDeskTop = (displayName: string, options?: ShortCutOption) => {
+  return folderApp.createShortcut(fileFullIcon, displayName, options);
 };
 
 (function init() {

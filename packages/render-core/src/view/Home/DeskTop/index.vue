@@ -75,14 +75,12 @@
                     name: '文件夹(F)',
                     onClick() {
                       const newFolder = Folder.getDeskTop().addFolder();
-                      addFolderInDeskTop(newFolder.name);
-                      const newFolderIcon = DeskTopIcon.deskTopIconList.find(
-                        (item) => item.displayName === newFolder.name
-                      );
-                      if (newFolderIcon) {
-                        newFolderIcon.isEditting = true;
-                        newFolderIcon.isFocus = true;
-                      }
+                      const newFolderIcon = addFolderInDeskTop(newFolder.name, {
+                        posIdx: DeskTopIcon.computePosIdx(e),
+                      });
+
+                      newFolderIcon.isEditting = true;
+                      newFolderIcon.isFocus = true;
                     },
                     icon: FolderIcon,
                   },

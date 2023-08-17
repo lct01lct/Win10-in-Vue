@@ -8,6 +8,11 @@ const DEFAULT_VIEW_LEFT = computed(() => 250 + taskBarTriggerList.length * 30);
 const DEFAULT_VIEW_MINWIDTH = 288;
 const DEFAULT_VIEW_MINHEIGHT = 248;
 
+export const DESKTOP_ICON_PADDING_TOP = 8;
+export const DESKTOP_ICON_MARGINX = 4;
+export const DESKTOP_ICON_MARGINY = 15;
+export const DESKTOP_ICON_SIZE = 76.8;
+
 export const getViewSizeConfig = (appInstance: WinApp) => {
   const info = appInstance.infoByOpened;
 

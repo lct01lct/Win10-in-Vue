@@ -8,6 +8,12 @@
   import ChromeIcon from './img/contextmenu/chrome.png';
   import { deskTopData, isFolder, useDownloadAppStore, deleteFolder } from 'model-core';
   import { R_RemoveDownloadedApp } from 'model-core';
+  import {
+    DESKTOP_ICON_MARGINX,
+    DESKTOP_ICON_MARGINY,
+    DESKTOP_ICON_PADDING_TOP,
+    DESKTOP_ICON_SIZE,
+  } from './view-config';
 
   const props = defineProps<{
     deskTopIcon: DeskTopIcon;
@@ -18,10 +24,10 @@
   const getPosition = () => {
     const posIdx = props.deskTopIcon.posIdx;
     const deskTopHeight = maxAppHeight;
-    const deskTopPaddingTop = 8;
-    const iconMarginX = 4;
-    const iconMarginY = 15;
-    const iconSize = 76.8;
+    const deskTopPaddingTop = DESKTOP_ICON_PADDING_TOP;
+    const iconMarginX = DESKTOP_ICON_MARGINX;
+    const iconMarginY = DESKTOP_ICON_MARGINY;
+    const iconSize = DESKTOP_ICON_SIZE;
     const colMaxCount = Math.floor((deskTopHeight - deskTopPaddingTop) / (iconSize + iconMarginY));
 
     return {
@@ -133,6 +139,7 @@
               },
             },
           ],
+          [{ name: '属性(R)' }],
         ],
         event,
       },
