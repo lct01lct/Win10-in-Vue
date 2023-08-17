@@ -16,8 +16,8 @@ export const folderApp = new FolderApp({
   isFromSystem: true,
 });
 
-export const addFolderInDeskTop = (name: string) => {
-  folderApp.createShortcut(fileFullIcon, name);
+export const addFolderInDeskTop = (displayName: string) => {
+  folderApp.createShortcut(fileFullIcon, displayName);
 };
 
 (function init() {

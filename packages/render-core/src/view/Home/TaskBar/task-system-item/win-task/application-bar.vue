@@ -38,7 +38,7 @@
 <template>
   <div class="application-bar">
     <div class="application-group" v-for="item in appgroups" :key="item.firstChar">
-      <div class="first-char">{{ item.firstChar }}</div>
+      <div class="first-char">{{ item.firstChar?.toUpperCase() }}</div>
       <div class="app-list">
         <div class="app-item" v-for="app in item.apps" @click="onAppClick(app)">
           <img class="img-icon" :src="app._logo" alt="" />

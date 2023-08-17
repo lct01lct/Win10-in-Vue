@@ -12,7 +12,7 @@ import WordIcon from '@/assets/images/file/word.png';
 import ExcelIcon from '@/assets/images/file/excel.png';
 import PptIcon from '@/assets/images/file/ppt.png';
 import RtfIcon from '@/assets/images/file/rtf.png';
-import { deskTopIconMap } from '@/app';
+import { DeskTopIcon } from '@/app';
 
 export const { open: openMenu } = createContextMenu();
 
@@ -58,10 +58,12 @@ const contextMenuGroup3 = createContextMenuOptionGroup([
           onClick() {
             const newFolder = Folder.getDeskTop().addFolder();
             addFolderInDeskTop(newFolder.name);
-            const deskTopIconConfig = deskTopIconMap.get(newFolder.name);
-            if (deskTopIconConfig) {
-              deskTopIconConfig.isEditting = true;
-              deskTopIconConfig.isFocus = true;
+            const newFolderIcon = DeskTopIcon.deskTopIconList.find(
+              (item) => item.displayName === newFolder.name
+            );
+            if (newFolderIcon) {
+              newFolderIcon.isEditting = true;
+              newFolderIcon.isFocus = true;
             }
           },
           icon: FolderIcon,

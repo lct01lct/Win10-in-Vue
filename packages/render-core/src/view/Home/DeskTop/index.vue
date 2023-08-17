@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-  import { resetFocusIcon } from '@/app';
+  import { DeskTopIcon } from '@/app';
   import { useUserStore } from 'model-core';
   import { CSSProperties } from 'vue';
-  import { deskTopAppList } from '@/app';
   import { contextMenuOptions, openMenu } from './contextmenu/';
 
   const reset = () => {
-    resetFocusIcon();
+    DeskTopIcon.resetDeskTopIcon();
   };
 
   const userStore = useUserStore();
@@ -33,8 +32,8 @@
     :style="wallpaperStyle"
     @contextmenu.stop="onDeskTopContextMenu"
   >
-    <template v-for="item in deskTopAppList" :key="item.name">
-      <component :is="item.comp"></component>
+    <template v-for="comp in DeskTopIcon.DeskTopComponentMap.values()" :key="comp">
+      <component :is="comp"></component>
     </template>
   </div>
 </template>

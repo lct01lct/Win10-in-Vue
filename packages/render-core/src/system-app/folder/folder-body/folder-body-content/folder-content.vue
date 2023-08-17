@@ -7,7 +7,11 @@
     wrapperContextmenuOptions,
   } from './contextmenu/wrapper-contextmenu';
 
-  import { clearSelectedFoldersAndFiles } from '../../folder';
+  import {
+    clearSelectedFoldersAndFiles,
+    renamePointer,
+    selectedFoldersAndFiles,
+  } from '../../folder';
 
   const currPointer = inject<Ref<Folder | Desc>>('currPointer');
 
@@ -43,12 +47,20 @@
       },
     });
   };
+
+  const folderContentItemVueRefs = shallowRef<InstanceType<typeof FolderContentItem>[]>();
+  const onWrapperClick = () => {
+    folderContentItemVueRefs.value?.forEach((folderContentItemVueRef) => {
+      folderContentItemVueRef.renameFolderOrFile();
+    });
+    clearSelectedFoldersAndFiles();
+  };
 </script>
 
 <template>
   <div
     class="folder-content-wrapper"
-    @click="clearSelectedFoldersAndFiles()"
+    @click="onWrapperClick"
     @contextmenu.stop="onWrapperContextmenu"
   >
     <div class="folder-content-table-wrapper" @contextmenu.stop>
@@ -71,6 +83,7 @@
           :header-items-config="headerItemsConfig"
           :class="item.isFocus && 'isActive'"
           class="folder-content-table-row"
+          ref="folderContentItemVueRefs"
         ></FolderContentItem>
       </div>
       <div v-else class="table--empty">此文件夹为空。</div>

@@ -1,63 +1,40 @@
 <script lang="ts" setup>
-  import {
-    WinApp,
-    checkAppisNotFolderApp,
-    checkAppisFolderApp,
-    deskTopAppList,
-    maxAppHeight,
-  } from '../.';
+  import { checkAppisFolderApp, maxAppHeight } from '../.';
   import { FolderApp } from '@/system-app';
-  import { deskTopIconMap, resetFocusIcon } from './desktop-icon';
+  import { DeskTopIcon } from './desktop-icon';
   import { DragBindingValue } from 'utils';
   import { openMenu } from './desktop-icon-contextmenu';
   import EdgeIcon from './img/contextmenu/edge.png';
   import ChromeIcon from './img/contextmenu/chrome.png';
-  import {
-    deskTopData,
-    isFolder,
-    renameFolder,
-    useDownloadAppStore,
-    deleteFolder,
-  } from 'model-core';
+  import { deskTopData, isFolder, useDownloadAppStore, deleteFolder } from 'model-core';
   import { R_RemoveDownloadedApp } from 'model-core';
 
   const props = defineProps<{
-    appInstance: WinApp;
-    appIcon: string;
-    appName: Ref<string>;
+    deskTopIcon: DeskTopIcon;
   }>();
 
   const downloadAppStore = useDownloadAppStore();
 
-  const deskIconOpt = computed(() => {
-    const res = deskTopIconMap.get(props.appName.value);
-    return res;
-  });
-
   const getPosition = () => {
-    if (deskIconOpt.value) {
-      const posIdx = deskIconOpt.value.posIdx;
-      const deskTopHeight = maxAppHeight;
-      const deskTopPaddingTop = 8;
-      const iconMarginX = 4;
-      const iconMarginY = 15;
-      const iconSize = 76.8;
-      const colMaxCount = Math.floor(
-        (deskTopHeight - deskTopPaddingTop) / (iconSize + iconMarginY)
-      );
+    const posIdx = props.deskTopIcon.posIdx;
+    const deskTopHeight = maxAppHeight;
+    const deskTopPaddingTop = 8;
+    const iconMarginX = 4;
+    const iconMarginY = 15;
+    const iconSize = 76.8;
+    const colMaxCount = Math.floor((deskTopHeight - deskTopPaddingTop) / (iconSize + iconMarginY));
 
-      return {
-        left: `${
-          Math.floor(posIdx % colMaxCount ? posIdx / colMaxCount : posIdx / colMaxCount - 1) *
-          (iconMarginX + iconSize)
-        }px`,
-        top: `${
-          deskTopPaddingTop +
-          (posIdx % colMaxCount ? (posIdx % colMaxCount) - 1 : colMaxCount - 1) *
-            (iconMarginY + iconSize)
-        }px`,
-      };
-    }
+    return {
+      left: `${
+        Math.floor(posIdx % colMaxCount ? posIdx / colMaxCount : posIdx / colMaxCount - 1) *
+        (iconMarginX + iconSize)
+      }px`,
+      top: `${
+        deskTopPaddingTop +
+        (posIdx % colMaxCount ? (posIdx % colMaxCount) - 1 : colMaxCount - 1) *
+          (iconMarginY + iconSize)
+      }px`,
+    };
   };
 
   const styles = computed(() => {
@@ -70,32 +47,28 @@
   });
 
   const onIconClick = () => {
-    resetFocusIcon();
+    DeskTopIcon.resetDeskTopIcon();
     onIconMouseDown();
   };
 
   const onIconMouseDown = () => {
-    if (deskIconOpt.value) {
-      deskIconOpt.value.isFocus = true;
-      deskIconOpt.value.isEditting = false;
-    }
+    props.deskTopIcon.isFocus = true;
+    props.deskTopIcon.isEditting = false;
   };
 
   const onIconDbclick = () => {
-    const appInstance = props.appInstance;
+    const appInstance = props.deskTopIcon.reference;
 
     appInstance.open({
-      folderName: props.appName.value,
+      folderName: props.deskTopIcon.displayName,
     });
 
     // reRender folder
-    if (appInstance._isRender && appInstance.name === '文件夹') {
+    if (appInstance._isRender && checkAppisFolderApp(appInstance)) {
       (appInstance as FolderApp).init?.();
     }
 
-    if (deskIconOpt.value) {
-      deskIconOpt.value.isFocus = false;
-    }
+    props.deskTopIcon.isFocus = false;
   };
 
   const onIconContextMenu = (event: MouseEvent) => {
@@ -125,10 +98,9 @@
             {
               name: '删除(D)',
               onClick() {
-                const appInstance = deskIconOpt.value?.appInstance;
+                const appInstance = props.deskTopIcon.reference;
                 if (appInstance) {
                   if (!appInstance.isFromSystem) {
-                    // reslove downloaded app
                     const downloadedApp = downloadAppStore.downloadAppList;
                     const downloadId = downloadedApp.find(
                       (item) => item.name === appInstance.name
@@ -138,33 +110,26 @@
                       R_RemoveDownloadedApp(downloadId);
                     }
                   } else if (checkAppisFolderApp(appInstance)) {
-                    // resolve folderApp
                     const folderNode = deskTopData.children.find((item) => {
-                      return item.name === props.appName.value;
+                      return item.name === props.deskTopIcon.displayName;
                     });
 
                     if (isFolder(folderNode)) {
                       deleteFolder(folderNode.path);
-                      deskTopIconMap.delete(props.appName.value);
-                      const index = deskTopAppList.findIndex(
-                        (item) => item.displayName === props.appName.value
-                      );
-                      const appInstance = deskTopAppList[index].appInstance;
-                      checkAppisFolderApp(appInstance, () => {
-                        deskTopAppList.splice(index, 1);
-                      });
-                      return;
                     }
                   }
 
-                  appInstance.deleteShortcut();
+                  props.deskTopIcon.removeDeskTopIcon();
                 }
               },
             },
             {
               name: '重命名(M)',
               onClick() {
-                if (deskIconOpt.value) deskIconOpt.value.isEditting = true;
+                if (props.deskTopIcon) {
+                  props.deskTopIcon.isEditting = true;
+                  props.deskTopIcon.isFocus = true;
+                }
               },
             },
           ],
@@ -173,61 +138,36 @@
       },
     });
 
-    resetFocusIcon();
-    if (deskIconOpt.value) {
-      deskIconOpt.value.isFocus = true;
+    DeskTopIcon.resetDeskTopIcon();
+    if (props.deskTopIcon) {
+      props.deskTopIcon.isFocus = true;
     }
   };
 
   const vDragOpt: DragBindingValue = {};
 
-  const appTempName = ref(props.appName);
+  const appTempName = ref(props.deskTopIcon.displayName);
 
   watch(
-    () => deskIconOpt.value?.isEditting,
-    () => {
-      if (!deskIconOpt.value?.isEditting) {
-        appTempName.value = props.appName.value;
-
-        const deskTopItem = deskTopAppList.find((item) => item.name === props.appName.value);
-
-        if (deskTopItem) {
-          deskTopItem.displayName = appTempName.value;
-        }
-
-        if (deskIconOpt.value) {
-          checkAppisNotFolderApp(deskIconOpt.value.appInstance, () => {
-            if (deskIconOpt.value) {
-              deskIconOpt.value.appInstance.displayName = appTempName.value;
-            }
-          });
-        }
-      }
-    }
-  );
-
-  // Change folderName when rename folder name in desktop
-  watch(
-    () => props.appName.value,
-    (newName, oldName) => {
-      if (oldName) {
-        checkAppisFolderApp(props.appInstance, () => {
-          const folderNode = deskTopData.children.find((item) => {
-            return item.name === oldName;
-          });
-
-          if (isFolder(folderNode)) {
-            renameFolder(folderNode.path, newName);
-          }
-        });
-      }
+    () => props.deskTopIcon.displayName,
+    (val) => {
+      appTempName.value = val;
     }
   );
 
   const onTextareaEnter = () => {
-    if (deskIconOpt.value) {
-      deskIconOpt.value.isEditting = false;
+    const originName = props.deskTopIcon.displayName;
+
+    if (checkAppisFolderApp(props.deskTopIcon.reference)) {
+      const oldFolder = deskTopData.children.find((item) => item.name === originName);
+
+      if (oldFolder) {
+        oldFolder.name = appTempName.value;
+      }
     }
+
+    props.deskTopIcon.isEditting = false;
+    props.deskTopIcon.displayName = appTempName.value;
   };
 </script>
 
@@ -240,18 +180,18 @@
     :style="styles"
     @click.stop="onIconClick"
     @mousedown.stop="onIconMouseDown"
-    :class="[deskIconOpt?.isFocus ? 'focus' : '']"
+    :class="[deskTopIcon.isFocus ? 'focus' : '']"
   >
-    <img class="app-icon" :src="appIcon" alt="" draggable="false" />
-    <div v-if="deskIconOpt?.isEditting && deskIconOpt?.isFocus" class="app-temp-name">
+    <img class="app-icon" :src="deskTopIcon.icon" alt="" draggable="false" />
+    <div v-if="deskTopIcon.isEditting && deskTopIcon.isFocus" class="app-temp-name">
       <win-textarea
         class="app-name-textarea"
         v-model="appTempName"
         @enter="onTextareaEnter"
       ></win-textarea>
     </div>
-    <span v-else class="app-name" :class="[deskIconOpt?.isFocus ? '' : 'omit']">
-      {{ appName.value }}
+    <span v-else class="app-name" :class="[deskTopIcon.isFocus ? '' : 'omit']">
+      {{ deskTopIcon.displayName }}
     </span>
   </div>
 </template>

@@ -1,43 +1,31 @@
 import { BaseApp } from './base/baseApp';
 import DesktopIcon from './base/desktop-icon.vue';
 import type { BaseAppContructorOpt } from './base/baseApp';
-import { deskTopIconMap, getNewlyPosIdx } from './base/desktop-icon';
+import { DeskTopIcon } from './base/desktop-icon';
 import { Component } from 'vue';
 import { pinyin } from 'pinyin-pro';
 import { AppOrigin } from './types';
 import { Base } from '.';
+
 export interface WinAppConstructorOpt extends BaseAppContructorOpt {
   isFromSystem?: boolean;
 }
 
-interface DeskTopApp {
-  name: string;
-  displayName: string;
-  appInstance: WinApp;
-  comp: Component;
-}
-
 export const registeredAppList: WinApp[] = reactive([]);
-export const deskTopAppList: DeskTopApp[] = reactive([]);
 
-export const addFolderInDesktopFolder = (folderApp: WinApp) => {
+export const addFolderInDesktop = (folderApp: WinApp) => {
   return createDeskTopAppItem(folderApp, folderApp._logo, folderApp.name);
 };
 
 export const createDeskTopAppItem = (app: WinApp, appIcon: string, _displayName: string) => {
-  const displayName = ref(_displayName);
-
   const item = reactive({
-    name: _displayName,
-    displayName: displayName as unknown as string,
     appInstance: app,
-    comp: () => h(DesktopIcon, { appInstance: app, appIcon, appName: displayName }),
+    comp: () =>
+      h(DesktopIcon, {
+        appInstance: app,
+        appIcon,
+      }),
   });
-
-  watch(displayName, (val) => {
-    item.name = val;
-  });
-  deskTopAppList.push(item as unknown as DeskTopApp);
 
   return item;
 };
@@ -50,7 +38,8 @@ export class WinApp extends BaseApp {
   get displayName() {
     return this._displayName;
   }
-  _displayName = '';
+
+  private _displayName = '';
   pinyin_name = '';
   isFromSystem = false;
 
@@ -62,47 +51,31 @@ export class WinApp extends BaseApp {
   }
 
   // 创建快捷方式
-  createShortcut(appIcon: string, appName: string) {
+  createShortcut(appIcon: string, displayName: string) {
     checkAppisNotFolderApp(this, () => {
-      this.displayName = appName;
+      this.displayName = displayName;
     });
 
-    const deskTopAppItem = createDeskTopAppItem(this, appIcon, appName);
+    const deskTopIcon = new DeskTopIcon({
+      displayName: displayName,
+      reference: this,
+      icon: appIcon,
+    });
 
-    watch(
-      () => deskTopAppItem.displayName,
-      (val, oldVal) => {
-        const originApp = (oldVal && deskTopIconMap.get(oldVal)) || {
-          appInstance: this,
-          posIdx: getNewlyPosIdx(),
-          isFocus: false,
-          isEditting: false,
-        };
-
-        if (originApp && oldVal) deskTopIconMap.delete(oldVal);
-        deskTopIconMap.set(val, originApp);
-
-        // Sort by posIdx of desktopIconItem
-        const deskTopEntries = Array(...deskTopIconMap.entries()).sort((e1, e2) => {
-          return e1[1].posIdx - e2[1].posIdx;
-        });
-        deskTopIconMap.clear();
-        deskTopEntries.forEach(([displayName, desktopIconItem]) => {
-          deskTopIconMap.set(displayName, desktopIconItem);
-        });
-      },
-      {
-        immediate: true,
-      }
+    deskTopIcon.addNewDeskTopIcon(() =>
+      h(DesktopIcon, {
+        deskTopIcon,
+      })
     );
 
     return this;
   }
 
-  deleteShortcut() {
-    const index = deskTopAppList.findIndex((item) => item.name === this.displayName);
-    deskTopAppList.splice(index, 1);
-    deskTopIconMap.delete(this.displayName);
+  deleteShortcut(displayName: string) {
+    // const index = deskTopIconList.findIndex((item) => item.displayName === displayName);
+    // if (index > -1) {
+    //   return deskTopIconList.splice(index, 1);
+    // }
   }
 
   static install(appOrigin: AppOrigin) {

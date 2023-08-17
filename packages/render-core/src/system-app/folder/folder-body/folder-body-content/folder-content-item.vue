@@ -2,7 +2,8 @@
   import { Desc, Files, Folder, isFile } from 'model-core';
   import { Icon } from '@/components';
   import { openPointerContextMenu } from './contextmenu/table-item-contextmenu';
-  import { clearSelectedFoldersAndFiles } from '../../folder';
+  import { clearSelectedFoldersAndFiles, isCurrPointerInDeskTop } from '../../folder';
+  import { checkAppisFolderApp, DeskTopIcon } from '@/app';
 
   const props = defineProps<{
     item: Files | Folder;
@@ -16,13 +17,27 @@
   const folderOrFileTempName = ref(props.item.name);
   const setCurrPointer = inject<(currPointer: Folder | Desc) => void>('setCurrPointer');
   const onTextareaEnter = () => {
-    const currItem = props.item;
-    currItem.name = folderOrFileTempName.value;
-    currItem.isEditting = false;
+    if (props.item.isEditting) {
+      const currItem = props.item;
+      const originName = currItem.name;
+      currItem.name = folderOrFileTempName.value;
+      currItem.isEditting = false;
+
+      if (isCurrPointerInDeskTop()) {
+        const folderIcon = DeskTopIcon.deskTopIconList.find(
+          (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
+        );
+        if (folderIcon) {
+          folderIcon.displayName = currItem.name;
+        }
+      }
+    }
   };
 
   const onItemContextMenu = (event: MouseEvent) => {
+    clearSelectedFoldersAndFiles();
     props.item.isFocus = true;
+
     openPointerContextMenu({
       props: {
         options: [
@@ -47,6 +62,14 @@
                   props.item.parent.removeFile(props.item);
                 } else {
                   props.item.parent?.removeFolder(props.item);
+                }
+                const currItem = props.item;
+                const originName = currItem.name;
+                if (isCurrPointerInDeskTop()) {
+                  const folderIcon = DeskTopIcon.deskTopIconList.find(
+                    (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
+                  );
+                  folderIcon?.removeDeskTopIcon();
                 }
               },
             },
@@ -80,6 +103,10 @@
     clearSelectedFoldersAndFiles();
     props.item.isFocus = true;
   };
+
+  defineExpose({
+    renameFolderOrFile: onTextareaEnter,
+  });
 </script>
 
 <template>
