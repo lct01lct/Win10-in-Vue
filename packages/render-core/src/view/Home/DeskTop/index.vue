@@ -2,7 +2,19 @@
   import { DeskTopIcon } from '@/app';
   import { useUserStore } from 'model-core';
   import { CSSProperties } from 'vue';
-  import { contextMenuOptions, openMenu } from './contextmenu/';
+  import { openMenu } from './contextmenu/';
+  import DisplaySettingIcon from './contextmenu/img/display-settings.png';
+  import PersonaliztionIcon from './contextmenu/img/personalization.png';
+  import FolderIcon from '@/assets/images/file/folder.png';
+  import ShortcutsIcon from '@/assets/images/file/shortcuts.png';
+  import DocumentIcon from '@/assets/images/file/document.png';
+  import ZipIcon from '@/assets/images/file/zip.png';
+  import WordIcon from '@/assets/images/file/word.png';
+  import ExcelIcon from '@/assets/images/file/excel.png';
+  import PptIcon from '@/assets/images/file/ppt.png';
+  import RtfIcon from '@/assets/images/file/rtf.png';
+  import { addFolderInDeskTop, settingApp } from '@/system-app';
+  import { Folder } from 'model-core';
 
   const reset = () => {
     DeskTopIcon.resetDeskTopIcon();
@@ -18,7 +30,86 @@
     reset();
     openMenu({
       props: {
-        options: contextMenuOptions,
+        options: [
+          [
+            {
+              name: '查看方式',
+              subOptions: [
+                [
+                  { name: '大图标(R)' },
+                  {
+                    name: '中等图标(M)',
+                    select: true,
+                  },
+                  { name: '小图标(N)' },
+                ],
+                [{ name: '自动排列图标(A)' }, { name: '将图标与网格对齐(I)', tick: true }],
+
+                [{ name: '显示桌面图标(D)', tick: true }],
+              ],
+            },
+            {
+              name: '排序方式(D)',
+              subOptions: [
+                { name: '名称' },
+                { name: '大小' },
+                { name: '项目类型' },
+                { name: '修改日期' },
+              ],
+            },
+            { name: '刷新(E)', onClick: () => location.reload() },
+          ],
+          [
+            {
+              name: '粘贴',
+              disabled: true,
+            },
+            { name: '粘贴快捷方式', disabled: true },
+          ],
+          [
+            {
+              name: '新建(W)',
+              subOptions: [
+                [
+                  {
+                    name: '文件夹(F)',
+                    onClick() {
+                      const newFolder = Folder.getDeskTop().addFolder();
+                      addFolderInDeskTop(newFolder.name);
+                      const newFolderIcon = DeskTopIcon.deskTopIconList.find(
+                        (item) => item.displayName === newFolder.name
+                      );
+                      if (newFolderIcon) {
+                        newFolderIcon.isEditting = true;
+                        newFolderIcon.isFocus = true;
+                      }
+                    },
+                    icon: FolderIcon,
+                  },
+                  { name: '快捷方式(S)', icon: ShortcutsIcon },
+                ],
+                [
+                  { name: 'Microsoft Word 文档', icon: WordIcon },
+                  { name: 'Microsoft PowerPoint 演示文稿', icon: PptIcon },
+                  { name: 'RTF 格式', icon: RtfIcon },
+                  { name: '文本文档', icon: DocumentIcon },
+                  { name: 'Microsoft Excel 工作表', icon: ExcelIcon },
+                  { name: '压缩文件夹', icon: ZipIcon },
+                ],
+              ],
+            },
+          ],
+          [
+            { name: '显示设置(D)', icon: DisplaySettingIcon },
+            {
+              name: '个性化(R)',
+              onClick: () => {
+                settingApp.open({ route: '个性化' });
+              },
+              icon: PersonaliztionIcon,
+            },
+          ],
+        ],
         event: e,
       },
     });

@@ -1,5 +1,5 @@
 import { BaseApp } from './base/baseApp';
-import DesktopIcon from './base/desktop-icon.vue';
+import DesktopIconVue from './base/desktop-icon.vue';
 import type { BaseAppContructorOpt } from './base/baseApp';
 import { DeskTopIcon } from './base/desktop-icon';
 import { Component } from 'vue';
@@ -12,23 +12,6 @@ export interface WinAppConstructorOpt extends BaseAppContructorOpt {
 }
 
 export const registeredAppList: WinApp[] = reactive([]);
-
-export const addFolderInDesktop = (folderApp: WinApp) => {
-  return createDeskTopAppItem(folderApp, folderApp._logo, folderApp.name);
-};
-
-export const createDeskTopAppItem = (app: WinApp, appIcon: string, _displayName: string) => {
-  const item = reactive({
-    appInstance: app,
-    comp: () =>
-      h(DesktopIcon, {
-        appInstance: app,
-        appIcon,
-      }),
-  });
-
-  return item;
-};
 
 export class WinApp extends BaseApp {
   set displayName(val: string) {
@@ -63,19 +46,12 @@ export class WinApp extends BaseApp {
     });
 
     deskTopIcon.addNewDeskTopIcon(() =>
-      h(DesktopIcon, {
+      h(DesktopIconVue, {
         deskTopIcon,
       })
     );
 
-    return this;
-  }
-
-  deleteShortcut(displayName: string) {
-    // const index = deskTopIconList.findIndex((item) => item.displayName === displayName);
-    // if (index > -1) {
-    //   return deskTopIconList.splice(index, 1);
-    // }
+    return deskTopIcon;
   }
 
   static install(appOrigin: AppOrigin) {

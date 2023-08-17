@@ -8,6 +8,8 @@ export const edgeApp = new WinApp({
   name: edgeAppName,
   icon: edgeAppIcon,
   comp: Edge,
-}).createShortcut(edgeAppIcon, edgeAppName);
+});
+
+export const edgeAppDeskTopIcon = edgeApp.createShortcut(edgeAppIcon, edgeAppName);
 
 export { edgeAppIcon };

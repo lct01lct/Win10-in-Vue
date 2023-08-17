@@ -14,6 +14,7 @@ interface DeskTopIconOpt {
   reference: WinApp;
   displayName: string;
   icon: string;
+  posIdx?: number;
 }
 export class DeskTopIcon {
   displayName: string = '';
@@ -26,7 +27,7 @@ export class DeskTopIcon {
   constructor(option: DeskTopIconOpt) {
     this.displayName = option.displayName;
     this.reference = option.reference;
-    this.posIdx = DeskTopIcon.getNewlyPosIdx();
+    this.posIdx = option.posIdx || DeskTopIcon.getNewlyPosIdx();
     this.icon = option.icon;
 
     return reactive(this) as DeskTopIcon;

@@ -8,4 +8,6 @@ export const userApp = new WinApp({
   comp: Folder,
   icon: ComputerIcon,
   isFromSystem: true,
-}).createShortcut(ComputerLogo, '此电脑');
+});
+
+export const userAppDeskTopIcon = userApp.createShortcut(ComputerLogo, '此电脑');

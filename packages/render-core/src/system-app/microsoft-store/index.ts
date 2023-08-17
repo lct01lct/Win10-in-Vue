@@ -9,6 +9,11 @@ export const microsoftStoreApp = new WinApp({
   icon: MicrosoftStoreIcon,
   defaultHeight: 600,
   isFromSystem: true,
-}).createShortcut(MicrosoftStoreIcon, microsoftStoreName);
+});
+
+export const microsoftStoreAppDeskTopIcon = microsoftStoreApp.createShortcut(
+  MicrosoftStoreIcon,
+  microsoftStoreName
+);
 
 export { MicrosoftStoreIcon };
