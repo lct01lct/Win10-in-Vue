@@ -1,4 +1,4 @@
-import { Desc, Folder } from '../share/file';
+import { Desc, Folder, PptFile } from '../share/file';
 
 const ORIGIN_DATA = [
   {

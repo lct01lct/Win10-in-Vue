@@ -8,6 +8,7 @@ import {
   isRepeatFile,
   reSetBinName,
   isFolder,
+  createFile,
 } from '.';
 import { Middle } from './middle';
 import type { InitFileOpt, BinType } from '.';
@@ -17,7 +18,7 @@ import { Base } from './middle';
 
 export interface InitFolderOpt {
   name: string;
-  children: (InitFileOpt | InitFolderOpt)[];
+  children?: (InitFileOpt | InitFolderOpt)[];
   createdAt?: string;
 }
 
@@ -30,21 +31,21 @@ export class Folder {
   private _name: string = '';
   size: string = '0KB';
   children: (Files | Folder)[] = [];
-  parent: Folder | Desc | undefined;
+  parent?: Folder | Desc;
   createdAt: string;
 
   static getDDesc = () => Folder.findByPath('D:\\') as Desc;
   static getCDesc = () => Folder.findByPath('C:\\') as Desc;
   static getDeskTop = () => Folder.search('Desktop')[0] as Folder;
 
-  constructor(initFolderOpt: InitFolderOpt, parent: Folder | Desc | undefined = undefined) {
+  constructor(initFolderOpt: InitFolderOpt, parent?: Folder | Desc) {
     const { name, children, createdAt } = initFolderOpt;
 
     this.name = name;
     this.parent = parent;
     this.createdAt = createdAt || `${todayStr} ${hour.value}:${minute.value}`;
 
-    this.initChildren(children);
+    this.initChildren(children || []);
     this.initSize();
   }
 
@@ -65,7 +66,7 @@ export class Folder {
   private initChildren(children: (InitFileOpt | InitFolderOpt)[]) {
     children.forEach((item) => {
       if ((item as InitFileOpt).extension) {
-        this.children.push(new Files(item as InitFileOpt, this));
+        this.children.push(createFile(item as InitFileOpt, this));
       } else {
         this.children.push(new Folder(item as InitFolderOpt, this));
       }

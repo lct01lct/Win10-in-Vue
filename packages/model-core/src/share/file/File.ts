@@ -2,34 +2,40 @@ import { hour, minute, todayStr } from '../time';
 import { Desc } from './Desc';
 import { Folder } from './Folder';
 import { Base, Middle } from './middle';
+import FileDefaultIcon from './extent-files/img/document.png';
 
 export const extensions = ['docx', 'pptx', 'xlsx', 'txt', 'rtf', ''] as const;
 export type Extension = (typeof extensions)[number];
 
 export interface InitFileOpt {
   name: string;
-  extension: Extension;
+  extension?: Extension;
   size?: string;
   createdAt?: string;
 }
 
-export interface Files extends Base {}
+export interface CustomFile {
+  parser?: <T>(data: T) => void;
+}
 
-Middle();
-export class Files {
+export interface Files extends Base, CustomFile, CustomFileDefaultOption {}
+
+@Middle()
+export class Files implements CustomFile {
   private _name: string = '';
-  extension: Extension;
+
   size: string;
   createdAt: string;
-  parent: Folder | Desc;
+  parent?: Folder | Desc;
+  icon: string;
 
-  constructor(initFileOpt: InitFileOpt, parent: Folder | Desc) {
-    const { name, extension, size, createdAt } = initFileOpt;
+  constructor(initFileOpt: InitFileOpt, parent?: Folder | Desc) {
+    const { name, size, createdAt } = initFileOpt;
     this.name = name;
-    this.extension = extension;
     this.size = size || '0KB';
     this.createdAt = createdAt || `${todayStr} ${hour.value}:${minute.value}`;
     this.parent = parent;
+    this.icon = this.defaultIcon;
   }
 
   set name(newName) {
@@ -61,5 +67,35 @@ export class Files {
     } else {
       throw new Error(`无法设置 .${extension} 的后缀名`);
     }
+  }
+}
+
+defineFileDefaultOption(Files, { defaultIcon: FileDefaultIcon, extension: '' });
+
+export interface CustomFileDefaultOption {
+  extension: Extension;
+  defaultIcon: string;
+}
+export function defineFileDefaultOption(
+  CustomFile: typeof Files,
+  { defaultIcon, extension }: CustomFileDefaultOption
+) {
+  const prototype = CustomFile.prototype;
+  if (defaultIcon) {
+    Reflect.defineProperty(prototype, 'defaultIcon', {
+      value: defaultIcon,
+      writable: true,
+      configurable: false,
+      enumerable: true,
+    });
+  }
+
+  if (extension) {
+    Reflect.defineProperty(prototype, 'extension', {
+      value: extension,
+      writable: false,
+      configurable: false,
+      enumerable: true,
+    });
   }
 }

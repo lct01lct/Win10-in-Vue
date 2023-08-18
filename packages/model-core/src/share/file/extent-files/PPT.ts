@@ -1,5 +1,13 @@
-import { Extension, Files } from '../File';
+import { CustomFile, Files, defineFileDefaultOption } from '../File';
+import PptIcon from './img/ppt-icon.png';
 
-export class PPTFile extends Files {
-  extension: Extension = 'pptx';
+export class PptFile extends Files implements CustomFile {}
+
+export interface PptFile {
+  extension: 'pptx';
 }
+
+defineFileDefaultOption(PptFile, {
+  defaultIcon: PptIcon,
+  extension: 'pptx',
+});
