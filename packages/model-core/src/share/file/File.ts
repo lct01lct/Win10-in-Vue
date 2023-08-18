@@ -3,8 +3,8 @@ import { Desc } from './Desc';
 import { Folder } from './Folder';
 import { Base, Middle } from './middle';
 
-export type Extension = 'mp4' | 'mp3' | 'html' | 'txt' | 'js' | 'ts' | 'css' | '';
-export const extensions: Extension[] = ['mp4', 'mp3', 'html', 'txt', 'js', 'ts', 'css', ''];
+export const extensions = ['docx', 'pptx', 'xlsx', 'txt', 'rtf', ''] as const;
+export type Extension = (typeof extensions)[number];
 
 export interface InitFileOpt {
   name: string;

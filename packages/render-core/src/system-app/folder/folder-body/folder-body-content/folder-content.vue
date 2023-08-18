@@ -1,17 +1,13 @@
 <script lang="ts" setup>
   import { Ref } from 'vue';
-  import { Desc, Folder } from 'model-core';
+  import { Desc, Folder, isFile } from 'model-core';
   import FolderContentItem from './folder-content-item.vue';
   import {
     openWrapperContextMenu,
     wrapperContextmenuOptions,
   } from './contextmenu/wrapper-contextmenu';
 
-  import {
-    clearSelectedFoldersAndFiles,
-    renamePointer,
-    selectedFoldersAndFiles,
-  } from '../../folder';
+  import { clearSelectedFoldersAndFiles } from '../../folder';
 
   const currPointer = inject<Ref<Folder | Desc>>('currPointer');
 
@@ -78,7 +74,7 @@
       <div v-if="currPointer?.children.length">
         <FolderContentItem
           v-for="item in currPointer?.children"
-          :key="item.name"
+          :key="`${item.name + (isFile(item) ? item.extension : '__Folder__')}`"
           :item="item"
           :header-items-config="headerItemsConfig"
           :class="item.isFocus && 'isActive'"

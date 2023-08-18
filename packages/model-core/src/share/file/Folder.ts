@@ -7,6 +7,7 @@ import {
   getBytes,
   isRepeatFile,
   reSetBinName,
+  isFolder,
 } from '.';
 import { Middle } from './middle';
 import type { InitFileOpt, BinType } from '.';
@@ -51,7 +52,10 @@ export class Folder {
     if (this.name === newName) return;
     newName = newName.trim() || '新建文件夹';
 
-    this._name = this.resolveName(newName, this.parent?.children);
+    this._name = this.resolveName(
+      newName,
+      this.parent?.children.filter((item) => isFolder(item))
+    );
   }
 
   get name() {
@@ -87,18 +91,20 @@ export class Folder {
   }
 
   addFolder(content: string | Folder = '新建文件夹') {
+    const currPointerFolders = this.children.filter((item) => isFolder(item));
+
     if (content instanceof Folder) {
       if (isOverMemory(this, content.size)) {
         throw new Error(`超出当前磁盘内存`);
       }
 
-      content.name = this.resolveName(content.name, this.children);
+      content.name = this.resolveName(content.name, currPointerFolders);
 
       this.children.push(content);
 
       return content;
     } else {
-      content = this.resolveName(content, this.children);
+      content = this.resolveName(content, currPointerFolders);
       const newFolder = new Folder({ name: content, children: [] }, this);
       this.children.push(newFolder);
       return newFolder;
