@@ -35,6 +35,7 @@ export class Files implements CustomFile {
     this.size = size || '0KB';
     this.createdAt = createdAt || `${todayStr} ${hour.value}:${minute.value}`;
     this.parent = parent;
+    this.parent?.addFile(this);
     this.icon = this.defaultIcon;
   }
 

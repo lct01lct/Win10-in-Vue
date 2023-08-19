@@ -11,7 +11,7 @@ import {
   createFile,
 } from '.';
 import { Middle } from './middle';
-import type { InitFileOpt, BinType } from '.';
+import type { InitFileOpt, BinType, Extension } from '.';
 import { binData } from '../../config/bin-data';
 import { hour, minute, todayStr } from '../time';
 import { Base } from './middle';
@@ -66,7 +66,8 @@ export class Folder {
   private initChildren(children: (InitFileOpt | InitFolderOpt)[]) {
     children.forEach((item) => {
       if ((item as InitFileOpt).extension) {
-        this.children.push(createFile(item as InitFileOpt, this));
+        createFile(item as InitFileOpt, this);
+        // this.children.push();
       } else {
         this.children.push(new Folder(item as InitFolderOpt, this));
       }
@@ -94,7 +95,7 @@ export class Folder {
   addFolder(content: string | Folder = '新建文件夹') {
     const currPointerFolders = this.children.filter((item) => isFolder(item));
 
-    if (content instanceof Folder) {
+    if (isFolder(content)) {
       if (isOverMemory(this, content.size)) {
         throw new Error(`超出当前磁盘内存`);
       }
@@ -117,19 +118,21 @@ export class Folder {
       throw new Error(`超出当前磁盘内存`);
     }
 
-    const resolveName = (name: string): string => {
-      if (isRepeatFile(this.children, name)) {
-        name = reSetBinName(name);
+    const resolveName = (name: string, extension: Extension = ''): string => {
+      let _name = name;
+      const scope = this.children.filter((item) => isFile(item) && item.extension === extension);
+      while (isRepeatFile(scope, _name)) {
+        _name = reSetBinName(_name);
       }
-      return name;
+      return _name;
     };
 
-    if (content instanceof Files) {
+    if (isFile(content)) {
       content.name = resolveName(content.name);
 
       this.children.push(content);
 
-      return content;
+      return this;
     } else {
       const file = new Files(
         {
@@ -140,10 +143,10 @@ export class Folder {
         this
       );
       file.fullName = content;
-      file.name = resolveName(file.name);
+      file.name = resolveName(file.name, file.extension);
       this.children.push(file);
 
-      return file;
+      return this;
     }
   }
 
@@ -272,7 +275,7 @@ const isOverMemory = (curr: Folder | Desc, size: string): boolean => {
     pointer = pointer.parent;
   }
 
-  if (getBytes(addStorageUnit(pointer.size, size)) > getBytes((pointer as Desc).memory)) {
+  if (getBytes(addStorageUnit(pointer.size, size)) > getBytes((pointer as Desc).size)) {
     return true;
   }
   return false;

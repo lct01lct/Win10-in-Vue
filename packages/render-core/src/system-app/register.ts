@@ -6,3 +6,4 @@ export * from './microsoft-store';
 export * from './my-computer';
 export * from './folder';
 export * from './edge';
+export * from './notepad';

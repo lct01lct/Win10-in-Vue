@@ -59,7 +59,7 @@
               name: '删除(D)',
               onClick() {
                 if (isFile(props.item)) {
-                  props.item.parent.removeFile(props.item);
+                  props.item.parent?.removeFile(props.item);
                 } else {
                   props.item.parent?.removeFolder(props.item);
                 }

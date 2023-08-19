@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { DeskTopIcon } from '@/app';
-  import { useUserStore } from 'model-core';
+  import { createFile, useUserStore } from 'model-core';
   import { CSSProperties } from 'vue';
   import { openMenu } from './contextmenu/';
   import DisplaySettingIcon from './contextmenu/img/display-settings.png';
@@ -87,7 +87,21 @@
                   { name: '快捷方式(S)', icon: ShortcutsIcon },
                 ],
                 [
-                  { name: 'Microsoft Word 文档', icon: WordIcon },
+                  {
+                    name: 'Microsoft Word 文档',
+                    icon: WordIcon,
+                    onClick() {
+                      const newFile = createFile(
+                        { name: '新建 Microsoft Word 文档', extension: 'docx' },
+                        Folder.getDeskTop()
+                      );
+                      const newFileIcon = addFolderInDeskTop(newFile.name, {
+                        posIdx: DeskTopIcon.computePosIdx(e),
+                      });
+                      newFileIcon.isEditting = true;
+                      newFileIcon.isFocus = true;
+                    },
+                  },
                   { name: 'Microsoft PowerPoint 演示文稿', icon: PptIcon },
                   { name: 'RTF 格式', icon: RtfIcon },
                   { name: '文本文档', icon: DocumentIcon },
