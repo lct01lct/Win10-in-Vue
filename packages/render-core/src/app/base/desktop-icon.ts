@@ -1,4 +1,4 @@
-import { WinApp, maxAppHeight } from '..';
+import { ShortCutOption, WinApp, maxAppHeight, registeredAppList } from '..';
 import { Component } from 'vue';
 import {
   DESKTOP_ICON_MARGINX,
@@ -6,6 +6,9 @@ import {
   DESKTOP_ICON_PADDING_TOP,
   DESKTOP_ICON_SIZE,
 } from './view-config';
+import fileFullIcon from '@/system-app/folder/img/file-full.png';
+import { folderAppName, notepadAppName } from '@/system-app';
+import { Folder, InitFileOpt, createFile, deskTopData } from 'model-core';
 
 export interface DeskTopIconItem {
   appInstance: WinApp;

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { DeskTopIcon } from '@/app';
-  import { createFile, useUserStore } from 'model-core';
+  import { useUserStore } from 'model-core';
   import { CSSProperties } from 'vue';
   import { openMenu } from './contextmenu/';
   import DisplaySettingIcon from './contextmenu/img/display-settings.png';
@@ -13,7 +13,7 @@
   import ExcelIcon from '@/assets/images/file/excel.png';
   import PptIcon from '@/assets/images/file/ppt.png';
   import RtfIcon from '@/assets/images/file/rtf.png';
-  import { addFolderInDeskTop, settingApp } from '@/system-app';
+  import { settingApp, createNewFileIconInDeskTop, addFolderInDeskTop } from '@/system-app';
   import { Folder } from 'model-core';
 
   const reset = () => {
@@ -75,7 +75,7 @@
                     name: '文件夹(F)',
                     onClick() {
                       const newFolder = Folder.getDeskTop().addFolder();
-                      const newFolderIcon = addFolderInDeskTop(newFolder.name, {
+                      const newFolderIcon = addFolderInDeskTop(newFolder, {
                         posIdx: DeskTopIcon.computePosIdx(e),
                       });
 
@@ -91,21 +91,46 @@
                     name: 'Microsoft Word 文档',
                     icon: WordIcon,
                     onClick() {
-                      const newFile = createFile(
+                      createNewFileIconInDeskTop(
                         { name: '新建 Microsoft Word 文档', extension: 'docx' },
-                        Folder.getDeskTop()
+                        e
                       );
-                      const newFileIcon = addFolderInDeskTop(newFile.name, {
-                        posIdx: DeskTopIcon.computePosIdx(e),
-                      });
-                      newFileIcon.isEditting = true;
-                      newFileIcon.isFocus = true;
                     },
                   },
-                  { name: 'Microsoft PowerPoint 演示文稿', icon: PptIcon },
-                  { name: 'RTF 格式', icon: RtfIcon },
-                  { name: '文本文档', icon: DocumentIcon },
-                  { name: 'Microsoft Excel 工作表', icon: ExcelIcon },
+                  {
+                    name: 'Microsoft PowerPoint 演示文稿',
+                    icon: PptIcon,
+                    onClick() {
+                      createNewFileIconInDeskTop(
+                        { name: '新建 Microsoft PowerPoint 演示文稿', extension: 'pptx' },
+                        e
+                      );
+                    },
+                  },
+                  {
+                    name: 'RTF 格式',
+                    icon: RtfIcon,
+                    onClick() {
+                      createNewFileIconInDeskTop({ name: '新建 RTF 文档', extension: 'rtf' }, e);
+                    },
+                  },
+                  {
+                    name: '文本文档',
+                    icon: DocumentIcon,
+                    onClick() {
+                      createNewFileIconInDeskTop({ name: '新建文本文档', extension: 'txt' }, e);
+                    },
+                  },
+                  {
+                    name: 'Microsoft Excel 工作表',
+                    icon: ExcelIcon,
+                    onClick() {
+                      createNewFileIconInDeskTop(
+                        { name: '新建 Microsoft Excel 工作表', extension: 'xlsx' },
+                        e
+                      );
+                    },
+                  },
                   { name: '压缩文件夹', icon: ZipIcon },
                 ],
               ],
