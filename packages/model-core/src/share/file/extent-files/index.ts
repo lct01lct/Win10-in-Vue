@@ -1,4 +1,4 @@
-import { PptFile } from './Ppt';
+import { PptFile } from './PPT';
 import { RtfFile } from './Rtf';
 import { TxtFile } from './Txt';
 import { WordFile } from './Word';
