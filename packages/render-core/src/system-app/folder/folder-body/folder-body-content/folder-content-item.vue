@@ -1,9 +1,23 @@
 <script lang="ts" setup>
-  import { Desc, Files, Folder, isFile } from 'model-core';
+  import { Desc, Extension, Files, Folder, isFile, isFolder } from 'model-core';
   import { Icon } from '@/components';
   import { openPointerContextMenu } from './contextmenu/table-item-contextmenu';
   import { clearSelectedFoldersAndFiles, isCurrPointerInDeskTop } from '../../folder';
   import { checkAppisFolderApp, DeskTopIcon } from '@/app';
+  import DocumentIcon from '@/assets/images/file/document.png';
+  import WordIcon from '@/assets/images/file/word.png';
+  import ExcelIcon from '@/assets/images/file/excel.png';
+  import PptIcon from '@/assets/images/file/ppt.png';
+  import RtfIcon from '@/assets/images/file/rtf.png';
+
+  const fileIconMap: Record<Extension, string> = {
+    docx: WordIcon,
+    '': DocumentIcon,
+    xlsx: ExcelIcon,
+    pptx: PptIcon,
+    txt: DocumentIcon,
+    rtf: RtfIcon,
+  };
 
   const props = defineProps<{
     item: Files | Folder;
@@ -121,8 +135,17 @@
       :style="{ width: headerItemsConfig[0].width + 'px' }"
     >
       <Icon :height="20" :width="20" :style="{ marginRight: '4px' }">
-        <img v-if="isFile(item)" src="../../img/file-type/mp3.png" />
-        <img v-else src="../../img/file-empty.png" alt="" />
+        <img v-if="isFile(item)" :src="fileIconMap[item.extension]" />
+        <img
+          v-else-if="isFolder(item) && !item.children.length"
+          src="../../img/file-empty.png"
+          alt=""
+        />
+        <img
+          v-else-if="isFolder(item) && item.children.length"
+          src="../../img/file-full.png"
+          alt=""
+        />
       </Icon>
 
       <span class="folder-name" v-if="!item?.isEditting">{{ item.name }}</span>

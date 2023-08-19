@@ -74,7 +74,6 @@
       <div v-if="currPointer?.children.length">
         <FolderContentItem
           v-for="item in currPointer?.children"
-          :key="`${item.name + (isFile(item) ? item.extension : '__Folder__')}`"
           :item="item"
           :header-items-config="headerItemsConfig"
           :class="item.isFocus && 'isActive'"
