@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { DeskTopIcon } from '@/app';
-  import { useUserStore } from 'model-core';
+  import { defaultFileNameMap, useUserStore } from 'model-core';
   import { CSSProperties } from 'vue';
   import { openMenu } from './contextmenu/';
   import DisplaySettingIcon from './contextmenu/img/display-settings.png';
@@ -92,7 +92,7 @@
                     icon: WordIcon,
                     onClick() {
                       createNewFileIconInDeskTop(
-                        { name: '新建 Microsoft Word 文档', extension: 'docx' },
+                        { name: defaultFileNameMap['docx'], extension: 'docx' },
                         e
                       );
                     },
@@ -102,7 +102,7 @@
                     icon: PptIcon,
                     onClick() {
                       createNewFileIconInDeskTop(
-                        { name: '新建 Microsoft PowerPoint 演示文稿', extension: 'pptx' },
+                        { name: defaultFileNameMap['pptx'], extension: 'pptx' },
                         e
                       );
                     },
@@ -111,14 +111,20 @@
                     name: 'RTF 格式',
                     icon: RtfIcon,
                     onClick() {
-                      createNewFileIconInDeskTop({ name: '新建 RTF 文档', extension: 'rtf' }, e);
+                      createNewFileIconInDeskTop(
+                        { name: defaultFileNameMap['rtf'], extension: 'rtf' },
+                        e
+                      );
                     },
                   },
                   {
                     name: '文本文档',
                     icon: DocumentIcon,
                     onClick() {
-                      createNewFileIconInDeskTop({ name: '新建文本文档', extension: 'txt' }, e);
+                      createNewFileIconInDeskTop(
+                        { name: defaultFileNameMap['txt'], extension: 'txt' },
+                        e
+                      );
                     },
                   },
                   {
@@ -126,7 +132,7 @@
                     icon: ExcelIcon,
                     onClick() {
                       createNewFileIconInDeskTop(
-                        { name: '新建 Microsoft Excel 工作表', extension: 'xlsx' },
+                        { name: defaultFileNameMap['xlsx'], extension: 'xlsx' },
                         e
                       );
                     },

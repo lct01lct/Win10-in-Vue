@@ -128,11 +128,11 @@ export class Folder {
     };
 
     if (isFile(content)) {
-      content.name = resolveName(content.name);
+      content.name = resolveName(content.name, content.extension);
 
       this.children.push(content);
 
-      return this;
+      return content;
     } else {
       const file = new Files(
         {
@@ -146,7 +146,7 @@ export class Folder {
       file.name = resolveName(file.name, file.extension);
       this.children.push(file);
 
-      return this;
+      return file;
     }
   }
 

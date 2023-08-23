@@ -7,9 +7,9 @@ import { Files, InitFileOpt } from '../File';
 import { Folder } from '../Folder';
 import { Desc } from '../Desc';
 
-const CustomFileList = [PptFile, RtfFile, TxtFile, WordFile, ExcelFile];
+export const CustomFileList = [PptFile, RtfFile, TxtFile, WordFile, ExcelFile];
 
-export const createFile = (option: InitFileOpt, parent: Folder | Desc) => {
+export const createFile = (option: InitFileOpt, parent?: Folder | Desc) => {
   const ext = option.extension;
   const map = CustomFileList.reduce((map, CustomFile) => {
     return map.set(CustomFile.prototype.extension, CustomFile), map;

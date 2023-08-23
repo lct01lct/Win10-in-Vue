@@ -6,6 +6,14 @@ import FileDefaultIcon from './extent-files/img/document.png';
 
 export const extensions = ['docx', 'pptx', 'xlsx', 'txt', 'rtf', ''] as const;
 export type Extension = (typeof extensions)[number];
+export const defaultFileNameMap: Record<Extension, string> = {
+  docx: '新建 Microsoft Word 文档',
+  pptx: '新建 Microsoft PowerPoint 演示文稿',
+  rtf: '新建 RTF 文档',
+  txt: '新建文本文档',
+  xlsx: '新建 Microsoft Excel 工作表',
+  '': '新建文件',
+};
 
 export interface InitFileOpt {
   name: string;

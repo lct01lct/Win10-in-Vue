@@ -10,6 +10,8 @@ import RtfIcon from '@/assets/images/file/rtf.png';
 import { currPointer, clearSelectedFoldersAndFiles, isCurrPointerInDeskTop } from '../../../folder';
 import { checkAppisFolderApp, registeredAppList } from '@/app';
 import fileFullIcon from '@/system-app/folder/img/file-full.png';
+import { InitFileOpt, createFile, defaultFileNameMap } from 'model-core';
+import { notepadApp } from '@/system-app/notepad';
 
 export const { open: openWrapperContextMenu } = createContextMenu();
 
@@ -84,11 +86,41 @@ export const wrapperContextmenuOptions: ContextMenuProps['options'] = [
           { name: '快捷方式(S)', icon: ShortcutsIcon },
         ],
         [
-          { name: 'Microsoft Word 文档', icon: WordIcon },
-          { name: 'Microsoft PowerPoint 演示文稿', icon: PptIcon },
-          { name: 'RTF 格式', icon: RtfIcon },
-          { name: '文本文档', icon: DocumentIcon },
-          { name: 'Microsoft Excel 工作表', icon: ExcelIcon },
+          {
+            name: 'Microsoft Word 文档',
+            icon: WordIcon,
+            onClick() {
+              addFileInFolderApp({ name: defaultFileNameMap['docx'], extension: 'docx' });
+            },
+          },
+          {
+            name: 'Microsoft PowerPoint 演示文稿',
+            icon: PptIcon,
+            onClick() {
+              addFileInFolderApp({ name: defaultFileNameMap['pptx'], extension: 'pptx' });
+            },
+          },
+          {
+            name: 'RTF 格式',
+            icon: RtfIcon,
+            onClick() {
+              addFileInFolderApp({ name: defaultFileNameMap['rtf'], extension: 'rtf' });
+            },
+          },
+          {
+            name: '文本文档',
+            icon: DocumentIcon,
+            onClick() {
+              addFileInFolderApp({ name: defaultFileNameMap['txt'], extension: 'txt' });
+            },
+          },
+          {
+            name: 'Microsoft Excel 工作表',
+            icon: ExcelIcon,
+            onClick() {
+              addFileInFolderApp({ name: defaultFileNameMap['xlsx'], extension: 'xlsx' });
+            },
+          },
           { name: '压缩文件夹', icon: ZipIcon },
         ],
       ],
@@ -96,3 +128,11 @@ export const wrapperContextmenuOptions: ContextMenuProps['options'] = [
   ],
   [{ name: '属性(R)' }],
 ];
+
+export const addFileInFolderApp = (fileOption: InitFileOpt) => {
+  const newFile = createFile(fileOption, currPointer.value);
+
+  if (isCurrPointerInDeskTop()) {
+    notepadApp.createShortcut(newFile.defaultIcon, newFile.fullName);
+  }
+};
