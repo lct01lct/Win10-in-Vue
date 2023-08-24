@@ -3,6 +3,7 @@ import { Desc } from './Desc';
 import { Folder } from './Folder';
 import { Base, Middle } from './middle';
 import FileDefaultIcon from './extent-files/img/document.png';
+import { isFile, isRepeatFile, reSetBinName } from './utils';
 
 export const extensions = ['docx', 'pptx', 'xlsx', 'txt', 'rtf', ''] as const;
 export type Extension = (typeof extensions)[number];
@@ -48,8 +49,24 @@ export class Files implements CustomFile {
   }
 
   set name(newName) {
+    const resolveName = (name: string) => {
+      console.log(name);
+      const scope = this.parent?.children.filter(
+        (item) => isFile(item) && item.extension === this.extension
+      );
+
+      if (scope) {
+        while (isRepeatFile(scope, name)) {
+          name = reSetBinName(name);
+        }
+        return name;
+      } else {
+        return name;
+      }
+    };
+
     if (!newName.trim()) {
-      newName = '新建文件';
+      newName = resolveName(newName.trim() || '新建文件');
     }
     this._name = newName;
   }

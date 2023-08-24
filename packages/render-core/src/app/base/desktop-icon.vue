@@ -112,8 +112,25 @@
               name: '删除(D)',
               onClick() {
                 const appInstance = props.deskTopIcon.reference;
+
                 if (appInstance) {
-                  if (!appInstance.isFromSystem) {
+                  if (checkAppisFolderApp(appInstance)) {
+                    const folderNode = deskTopData.children.find((item) => {
+                      return item.name === props.deskTopIcon.displayName;
+                    });
+
+                    if (isFolder(folderNode)) {
+                      deleteFolder(folderNode.path);
+                    }
+                  } else if (checkAppIsFileApp(appInstance)) {
+                    const fileNode = deskTopData.children.find((item) => {
+                      return isFile(item) && item.fullName === props.deskTopIcon.displayName;
+                    });
+
+                    if (isFile(fileNode)) {
+                      deskTopData.removeFile(fileNode);
+                    }
+                  } else if (!appInstance.isFromSystem) {
                     const downloadedApp = downloadAppStore.downloadAppList;
                     const downloadId = downloadedApp.find(
                       (item) => item.name === appInstance.name
@@ -121,14 +138,6 @@
 
                     if (downloadId) {
                       R_RemoveDownloadedApp(downloadId);
-                    }
-                  } else if (checkAppisFolderApp(appInstance)) {
-                    const folderNode = deskTopData.children.find((item) => {
-                      return item.name === props.deskTopIcon.displayName;
-                    });
-
-                    if (isFolder(folderNode)) {
-                      deleteFolder(folderNode.path);
                     }
                   }
 
@@ -170,46 +179,58 @@
   );
 
   const onTextareaEnter = () => {
-    const originName = props.deskTopIcon.displayName;
-
-    if (checkAppisFolderApp(props.deskTopIcon.reference)) {
-      const oldFolder = deskTopData.children.find(
-        (item) => isFolder(item) && item.name === originName
-      );
-
-      if (oldFolder) {
-        oldFolder.name = appTempName.value;
-      }
-    } else if (checkAppIsFileApp(props.deskTopIcon.reference)) {
-      const oldFile = deskTopData.children.find(
-        (item) =>
-          isFile(item) &&
-          item.fullName === originName &&
-          (item.fullName.split('.')[1] ?? '') === item.extension
-      );
-
-      if (isFile(oldFile)) {
-        const oldExt = oldFile.extension;
-        oldFile.fullName = appTempName.value;
-
-        const newFile = oldFile;
-        if (oldExt !== newFile.extension) {
-          const FileClass = CustomFileList.find((item) => {
-            return newFile.extension === item.prototype.extension;
-          });
-
-          if (FileClass) {
-            const newIcon = FileClass.prototype.defaultIcon;
-            Object.setPrototypeOf(newFile, FileClass.prototype);
-            newFile.icon = newIcon;
-            props.deskTopIcon.icon = newIcon;
-          }
-        }
-      }
+    if (!appTempName.value) {
+      appTempName.value = props.deskTopIcon.displayName;
     }
 
-    props.deskTopIcon.isEditting = false;
-    props.deskTopIcon.displayName = appTempName.value;
+    if (props.deskTopIcon.isEditting) {
+      const originName = props.deskTopIcon.displayName;
+
+      if (checkAppisFolderApp(props.deskTopIcon.reference)) {
+        const oldFolder = deskTopData.children.find(
+          (item) => isFolder(item) && item.name === originName
+        );
+
+        if (oldFolder) {
+          if (appTempName.value) {
+            oldFolder.name = appTempName.value;
+            const newFolder = oldFolder;
+            props.deskTopIcon.displayName = newFolder.name;
+          }
+        }
+      } else if (checkAppIsFileApp(props.deskTopIcon.reference)) {
+        const oldFile = deskTopData.children.find(
+          (item) =>
+            isFile(item) &&
+            item.fullName === originName &&
+            (item.fullName.split('.')[1] ?? '') === item.extension
+        );
+
+        if (isFile(oldFile)) {
+          const oldExt = oldFile.extension;
+          oldFile.fullName = appTempName.value;
+
+          const newFile = oldFile;
+          if (oldExt !== newFile.extension) {
+            const FileClass = CustomFileList.find((item) => {
+              return newFile.extension === item.prototype.extension;
+            });
+
+            if (FileClass) {
+              const newIcon = FileClass.prototype.defaultIcon;
+              Object.setPrototypeOf(newFile, FileClass.prototype);
+              newFile.icon = newIcon;
+              props.deskTopIcon.icon = newIcon;
+            }
+          }
+
+          props.deskTopIcon.displayName = newFile.fullName;
+        }
+      }
+
+      props.deskTopIcon.displayName = appTempName.value;
+      props.deskTopIcon.isEditting = false;
+    }
   };
 
   defineExpose({

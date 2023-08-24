@@ -8,6 +8,7 @@ export const notepadApp = new WinApp({
   name: notepadAppName,
   icon: NotepadAppIcon,
   comp: NotepadVue,
+  isFromSystem: true,
 });
 
 export { NotepadAppIcon as notepadAppIcon };

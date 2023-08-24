@@ -28,13 +28,27 @@
     }[];
   }>();
 
-  const folderOrFileTempName = ref(props.item.name);
+  const getItemName = () => {
+    const folderOrFile = props.item;
+    if (isFolder(folderOrFile)) {
+      return folderOrFile.name;
+    } else {
+      return folderOrFile.fullName;
+    }
+  };
+
+  const folderOrFileTempName = ref(getItemName());
+
   const setCurrPointer = inject<(currPointer: Folder | Desc) => void>('setCurrPointer');
   const onTextareaEnter = () => {
     if (props.item.isEditting) {
       const currItem = props.item;
       const originName = currItem.name;
-      currItem.name = folderOrFileTempName.value;
+      if (isFolder(currItem)) {
+        currItem.name = folderOrFileTempName.value;
+      } else {
+        currItem.fullName = folderOrFileTempName.value;
+      }
       currItem.isEditting = false;
 
       if (isCurrPointerInDeskTop()) {
@@ -92,6 +106,8 @@
               onClick() {
                 props.item.isEditting = true;
                 props.item.isFocus = true;
+                console.log(props.item);
+                folderOrFileTempName.value = getItemName();
               },
             },
           ],
