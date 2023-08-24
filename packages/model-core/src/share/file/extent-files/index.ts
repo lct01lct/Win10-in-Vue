@@ -7,7 +7,9 @@ import { Files, InitFileOpt } from '../File';
 import { Folder } from '../Folder';
 import { Desc } from '../Desc';
 
-export const CustomFileList = [PptFile, RtfFile, TxtFile, WordFile, ExcelFile];
+// If the extension of the file is' ', it will be created by Files Class
+
+export const CustomFileList = [PptFile, RtfFile, TxtFile, WordFile, ExcelFile, Files];
 
 export const createFile = (option: InitFileOpt, parent?: Folder | Desc) => {
   const ext = option.extension;

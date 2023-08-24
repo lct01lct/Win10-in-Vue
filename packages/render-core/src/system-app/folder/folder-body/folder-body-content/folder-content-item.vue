@@ -148,7 +148,9 @@
         />
       </Icon>
 
-      <span class="folder-name" v-if="!item?.isEditting">{{ item.name }}</span>
+      <span class="folder-name" v-if="!item?.isEditting">
+        {{ isFolder(item) ? item.name : item.fullName }}
+      </span>
       <win-textarea
         v-else
         class="app-name-textarea"

@@ -50,9 +50,18 @@ export class WinApp extends BaseApp {
       posIdx: option?.posIdx,
     });
 
-    deskTopIcon.addNewDeskTopIcon(() =>
-      h(DesktopIconVue, {
-        deskTopIcon,
+    deskTopIcon.addNewDeskTopIcon(
+      markRaw({
+        setup(props, { expose }) {
+          const deskTopIconVueRef = ref();
+
+          expose({ deskTopIconVueRef });
+          return () =>
+            h(DesktopIconVue, {
+              deskTopIcon,
+              ref: deskTopIconVueRef,
+            });
+        },
       })
     );
 
@@ -94,4 +103,13 @@ export const checkAppisFolderApp = (app: WinApp, fn?: Function) => {
   }
 
   return isFolderApp;
+};
+
+export const checkAppIsFileApp = (app: WinApp, fn?: Function) => {
+  const isFileApp = app.name === '记事本';
+  if (isFileApp) {
+    fn?.();
+  }
+
+  return isFileApp;
 };

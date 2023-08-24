@@ -99,10 +99,10 @@ export function defineFileDefaultOption(
     });
   }
 
-  if (extension) {
+  if (typeof extension === 'string') {
     Reflect.defineProperty(prototype, 'extension', {
       value: extension,
-      writable: false,
+      writable: true,
       configurable: false,
       enumerable: true,
     });

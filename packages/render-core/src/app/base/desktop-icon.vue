@@ -1,12 +1,19 @@
 <script lang="ts" setup>
-  import { checkAppisFolderApp, maxAppHeight } from '../.';
+  import { checkAppisFolderApp, maxAppHeight, checkAppIsFileApp } from '../.';
   import { FolderApp } from '@/system-app';
   import { DeskTopIcon } from './desktop-icon';
   import { DragBindingValue } from 'utils';
   import { openMenu } from './desktop-icon-contextmenu';
   import EdgeIcon from './img/contextmenu/edge.png';
   import ChromeIcon from './img/contextmenu/chrome.png';
-  import { deskTopData, isFolder, useDownloadAppStore, deleteFolder } from 'model-core';
+  import {
+    deskTopData,
+    isFolder,
+    useDownloadAppStore,
+    deleteFolder,
+    isFile,
+    CustomFileList,
+  } from 'model-core';
   import { R_RemoveDownloadedApp } from 'model-core';
   import {
     DESKTOP_ICON_MARGINX,
@@ -166,16 +173,48 @@
     const originName = props.deskTopIcon.displayName;
 
     if (checkAppisFolderApp(props.deskTopIcon.reference)) {
-      const oldFolder = deskTopData.children.find((item) => item.name === originName);
+      const oldFolder = deskTopData.children.find(
+        (item) => isFolder(item) && item.name === originName
+      );
 
       if (oldFolder) {
         oldFolder.name = appTempName.value;
+      }
+    } else if (checkAppIsFileApp(props.deskTopIcon.reference)) {
+      const oldFile = deskTopData.children.find(
+        (item) =>
+          isFile(item) &&
+          item.fullName === originName &&
+          (item.fullName.split('.')[1] ?? '') === item.extension
+      );
+
+      if (isFile(oldFile)) {
+        const oldExt = oldFile.extension;
+        oldFile.fullName = appTempName.value;
+
+        const newFile = oldFile;
+        if (oldExt !== newFile.extension) {
+          const FileClass = CustomFileList.find((item) => {
+            return newFile.extension === item.prototype.extension;
+          });
+
+          if (FileClass) {
+            const newIcon = FileClass.prototype.defaultIcon;
+            Object.setPrototypeOf(newFile, FileClass.prototype);
+            newFile.icon = newIcon;
+            props.deskTopIcon.icon = newIcon;
+          }
+        }
       }
     }
 
     props.deskTopIcon.isEditting = false;
     props.deskTopIcon.displayName = appTempName.value;
   };
+
+  defineExpose({
+    onTextareaEnter: onTextareaEnter,
+  });
 </script>
 
 <template>

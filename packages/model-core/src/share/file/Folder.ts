@@ -167,7 +167,7 @@ export class Folder {
     return removedFolder;
   }
 
-  removeFile(content: string | Files) {
+  removeFile(content: string | Files, newFolderOrFile?: Folder | Files) {
     let index = -1;
     if (content instanceof Files) {
       index = this.children.findIndex((item) => item === content);

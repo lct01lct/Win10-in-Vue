@@ -18,9 +18,14 @@
 
   const reset = () => {
     DeskTopIcon.resetDeskTopIcon();
+
+    deskTopIconVueRefs.value.forEach((item) => {
+      item.deskTopIconVueRef.onTextareaEnter();
+    });
   };
 
   const userStore = useUserStore();
+  const deskTopIconVueRefs = shallowRef<any[]>([]);
 
   const wallpaperStyle = computed<CSSProperties>(() => ({
     'background-image': `url(${userStore.user?.wallpaper})`,
@@ -167,7 +172,7 @@
     @contextmenu.stop="onDeskTopContextMenu"
   >
     <template v-for="comp in DeskTopIcon.DeskTopComponentMap.values()" :key="comp">
-      <component :is="comp"></component>
+      <component :is="comp" ref="deskTopIconVueRefs"></component>
     </template>
   </div>
 </template>
