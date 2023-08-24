@@ -106,7 +106,6 @@
               onClick() {
                 props.item.isEditting = true;
                 props.item.isFocus = true;
-                console.log(props.item);
                 folderOrFileTempName.value = getItemName();
               },
             },

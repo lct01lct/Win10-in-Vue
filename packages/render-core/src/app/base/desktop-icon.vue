@@ -148,10 +148,9 @@
             {
               name: '重命名(M)',
               onClick() {
-                if (props.deskTopIcon) {
-                  props.deskTopIcon.isEditting = true;
-                  props.deskTopIcon.isFocus = true;
-                }
+                appTempName.value = props.deskTopIcon.displayName;
+                props.deskTopIcon.isEditting = true;
+                props.deskTopIcon.isFocus = true;
               },
             },
           ],

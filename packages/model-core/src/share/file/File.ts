@@ -50,7 +50,6 @@ export class Files implements CustomFile {
 
   set name(newName) {
     const resolveName = (name: string) => {
-      console.log(name);
       const scope = this.parent?.children.filter(
         (item) => isFile(item) && item.extension === this.extension
       );
