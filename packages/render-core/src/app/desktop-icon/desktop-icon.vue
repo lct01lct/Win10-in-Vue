@@ -193,8 +193,6 @@
         if (oldFolder) {
           if (appTempName.value) {
             oldFolder.name = appTempName.value;
-            const newFolder = oldFolder;
-            props.deskTopIcon.displayName = newFolder.name;
           }
         }
       } else if (checkAppIsFileApp(props.deskTopIcon.reference)) {
@@ -222,11 +220,8 @@
               props.deskTopIcon.icon = newIcon;
             }
           }
-
-          props.deskTopIcon.displayName = newFile.fullName;
         }
       }
-
       props.deskTopIcon.displayName = appTempName.value;
       props.deskTopIcon.isEditting = false;
     }

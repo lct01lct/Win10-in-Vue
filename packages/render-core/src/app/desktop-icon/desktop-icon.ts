@@ -7,7 +7,14 @@ import {
   DESKTOP_ICON_SIZE,
 } from './config';
 import { getNewlyPosIdx } from './utils';
-import { appDeskTopIconConfigList, unReactiveDeskTopList, deskTopIconList } from './data';
+import {
+  appDeskTopIconConfigList,
+  unReactiveDeskTopList,
+  deskTopIconList,
+  folderAndFileDeskTopIconList,
+} from './data';
+import { Files, Folder, InitFileOpt, createFile, deskTopData, isFile } from 'model-core';
+import { getRandomId } from 'utils';
 
 export interface DeskTopIconItem {
   appInstance: WinApp;
@@ -23,32 +30,43 @@ export interface DeskTopIconOpt {
   displayName: string;
   icon: string;
   posIdx?: number;
+  originFileOrFolder?: Files | Folder;
 }
 export class DeskTopIcon {
+  id = getRandomId();
   displayName: string = '';
   posIdx: number = 0;
   isFocus = false;
   isEditting = false;
   reference: WinApp;
   icon: string;
+  originFileOrFolder?: Files | Folder;
 
   constructor(option: DeskTopIconOpt) {
     this.displayName = option.displayName;
     this.reference = option.reference;
     this.icon = option.icon;
-    appDeskTopIconConfigList.push(this);
+    this.posIdx = (option.posIdx && DeskTopIcon.resolvePosIdx(option.posIdx)) || getNewlyPosIdx();
+    this.originFileOrFolder = option.originFileOrFolder;
     unReactiveDeskTopList.push(this);
 
-    this.posIdx = (option.posIdx && DeskTopIcon.resolvePosIdx(option.posIdx)) || getNewlyPosIdx();
+    if (!checkAppIsFileApp(this.reference) && !checkAppisFolderApp(this.reference)) {
+      appDeskTopIconConfigList.push(this);
+    }
+
+    return reactive(this) as DeskTopIcon;
   }
 
   removeDeskTopIcon() {
     if (!checkAppisFolderApp(this.reference) && !checkAppIsFileApp(this.reference)) {
       const index = appDeskTopIconConfigList.findIndex((item) => item === this);
-      const unReactiveIndex = unReactiveDeskTopList.findIndex((item) => item === this);
+      const unReactiveIndex = unReactiveDeskTopList.findIndex(
+        (item) => item.displayName === this.displayName
+      );
+
       if (index > -1 && unReactiveIndex > -1) {
         appDeskTopIconConfigList.splice(index, 1);
-        appDeskTopIconConfigList.splice(unReactiveIndex, 1);
+        unReactiveDeskTopList.splice(unReactiveIndex, 1);
       }
     }
   }
@@ -93,3 +111,16 @@ export class DeskTopIcon {
     return posIdx;
   }
 }
+
+export const createFileIconInDeskTop = (fileOption: InitFileOpt, e: MouseEvent) => {
+  const newFile = createFile(fileOption, deskTopData);
+
+  const newFileIcon = folderAndFileDeskTopIconList.value.find((item) => {
+    return isFile(item.originFileOrFolder) && item.originFileOrFolder.fullName === newFile.fullName;
+  })!;
+  newFileIcon.posIdx = DeskTopIcon.computePosIdx(e);
+  newFileIcon.isEditting = true;
+  newFileIcon.isFocus = true;
+
+  return newFileIcon;
+};

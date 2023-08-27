@@ -1,5 +1,4 @@
 import { BaseApp } from './base/baseApp';
-import DesktopIconVue from './desktop-icon.vue';
 import type { BaseAppContructorOpt } from './base/baseApp';
 import { DeskTopIcon } from './desktop-icon';
 import { Component } from 'vue';
@@ -37,12 +36,12 @@ export class WinApp extends BaseApp {
     registeredAppList.push(this);
   }
 
-  // 创建快捷方式
   createShortcut(appIcon: string, displayName: string, option?: ShortCutOption) {
-    checkAppisNotFolderApp(this, () => {
-      this.displayName = displayName;
-    });
+    this.displayName = displayName;
 
+    if (checkAppisFolderApp(this) || checkAppIsFileApp(this)) {
+      throw Error('FolderApp or FileApp cannot create shortcut');
+    }
     const deskTopIcon = new DeskTopIcon({
       displayName: displayName,
       reference: this,

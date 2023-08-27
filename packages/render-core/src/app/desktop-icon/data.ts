@@ -12,21 +12,33 @@ export const deskTopIconList = computed<DeskTopIcon[]>(() => {
 export const unReactiveDeskTopList: DeskTopIcon[] = [];
 
 export const folderAndFileDeskTopIconList = computed(() => {
-  return deskTopData.children.map((item) => {
-    const opt: DeskTopIconOpt = {
-      displayName: item.name,
-      icon: fileFullIcon,
-      reference: registeredAppList.find((item) => checkAppisFolderApp(item))!,
-    };
+  const arr: DeskTopIcon[] = [];
 
-    if (isFile(item)) {
-      opt.displayName = item.fullName;
-      opt.icon = item.defaultIcon;
-      opt.reference = registeredAppList.find((item) => checkAppIsFileApp(item))!;
+  for (const item of deskTopData.children) {
+    const folderOrFileDeskTopIcon = folderAndFileDeskTopIconList.value?.find(
+      (app) => app.originFileOrFolder === item
+    );
+
+    if (folderOrFileDeskTopIcon) {
+      arr.push(folderOrFileDeskTopIcon);
+    } else {
+      const opt: DeskTopIconOpt = {
+        displayName: item.name,
+        icon: fileFullIcon,
+        reference: registeredAppList.find((item) => checkAppisFolderApp(item))!,
+        originFileOrFolder: item,
+      };
+
+      if (isFile(item)) {
+        opt.displayName = item.fullName;
+        opt.icon = item.defaultIcon;
+        opt.reference = registeredAppList.find((item) => checkAppIsFileApp(item))!;
+      }
+
+      const deskTopIcon = new DeskTopIcon(opt);
+      arr.push(deskTopIcon);
     }
+  }
 
-    const deskTopIcon = new DeskTopIcon(opt);
-
-    return deskTopIcon;
-  });
+  return arr;
 });

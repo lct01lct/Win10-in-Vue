@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { Ref } from 'vue';
-  import { Desc, Folder, isFile } from 'model-core';
+  import { Desc, Folder } from 'model-core';
   import FolderContentItem from './folder-content-item.vue';
   import {
     openWrapperContextMenu,

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-  import { DeskTopIcon } from '@/app';
-  import { defaultFileNameMap, useUserStore } from 'model-core';
+  import { DeskTopIcon, folderAndFileDeskTopIconList } from '@/app';
+  import { defaultFileNameMap, isFolder, useUserStore } from 'model-core';
   import { CSSProperties } from 'vue';
   import { openMenu } from './contextmenu/';
   import DisplaySettingIcon from './contextmenu/img/display-settings.png';
@@ -13,16 +13,15 @@
   import ExcelIcon from '@/assets/images/file/excel.png';
   import PptIcon from '@/assets/images/file/ppt.png';
   import RtfIcon from '@/assets/images/file/rtf.png';
-  import { settingApp, createNewFileIconInDeskTop, addFolderInDeskTop } from '@/system-app';
+  import { settingApp } from '@/system-app';
   import { Folder } from 'model-core';
-  import { deskTopIconList, DeskTopIconVue } from '@/app';
+  import { deskTopIconList, DeskTopIconVue, createFileIconInDeskTop } from '@/app';
 
   const reset = () => {
     DeskTopIcon.resetDeskTopIcon();
-
-    // deskTopIconVueRefs.value.forEach((item) => {
-    //   item.deskTopIconVueRef.onTextareaEnter();
-    // });
+    deskTopIconVueRefs.value.forEach((item) => {
+      item.onTextareaEnter();
+    });
   };
 
   const userStore = useUserStore();
@@ -81,12 +80,15 @@
                     name: '文件夹(F)',
                     onClick() {
                       const newFolder = Folder.getDeskTop().addFolder();
-                      const newFolderIcon = addFolderInDeskTop(newFolder, {
-                        posIdx: DeskTopIcon.computePosIdx(e),
-                      });
-
-                      newFolderIcon.isEditting = true;
-                      newFolderIcon.isFocus = true;
+                      const folderIcon = folderAndFileDeskTopIconList.value.find((item) => {
+                        return (
+                          isFolder(item.originFileOrFolder) &&
+                          item.originFileOrFolder.name === newFolder.name
+                        );
+                      })!;
+                      folderIcon.posIdx = DeskTopIcon.computePosIdx(e);
+                      folderIcon.isEditting = true;
+                      folderIcon.isFocus = true;
                     },
                     icon: FolderIcon,
                   },
@@ -97,7 +99,7 @@
                     name: 'Microsoft Word 文档',
                     icon: WordIcon,
                     onClick() {
-                      createNewFileIconInDeskTop(
+                      createFileIconInDeskTop(
                         { name: defaultFileNameMap['docx'], extension: 'docx' },
                         e
                       );
@@ -107,7 +109,7 @@
                     name: 'Microsoft PowerPoint 演示文稿',
                     icon: PptIcon,
                     onClick() {
-                      createNewFileIconInDeskTop(
+                      createFileIconInDeskTop(
                         { name: defaultFileNameMap['pptx'], extension: 'pptx' },
                         e
                       );
@@ -117,7 +119,7 @@
                     name: 'RTF 格式',
                     icon: RtfIcon,
                     onClick() {
-                      createNewFileIconInDeskTop(
+                      createFileIconInDeskTop(
                         { name: defaultFileNameMap['rtf'], extension: 'rtf' },
                         e
                       );
@@ -127,7 +129,7 @@
                     name: '文本文档',
                     icon: DocumentIcon,
                     onClick() {
-                      createNewFileIconInDeskTop(
+                      createFileIconInDeskTop(
                         { name: defaultFileNameMap['txt'], extension: 'txt' },
                         e
                       );
@@ -137,7 +139,7 @@
                     name: 'Microsoft Excel 工作表',
                     icon: ExcelIcon,
                     onClick() {
-                      createNewFileIconInDeskTop(
+                      createFileIconInDeskTop(
                         { name: defaultFileNameMap['xlsx'], extension: 'xlsx' },
                         e
                       );
@@ -172,7 +174,12 @@
     :style="wallpaperStyle"
     @contextmenu.stop="onDeskTopContextMenu"
   >
-    <DeskTopIconVue v-for="item in deskTopIconList" :desk-top-icon="item"></DeskTopIconVue>
+    <DeskTopIconVue
+      v-for="item in deskTopIconList"
+      :desk-top-icon="item"
+      :key="item.id"
+      ref="deskTopIconVueRefs"
+    ></DeskTopIconVue>
   </div>
 </template>
 
