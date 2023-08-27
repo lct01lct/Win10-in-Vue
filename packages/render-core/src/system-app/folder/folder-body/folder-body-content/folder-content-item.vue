@@ -51,14 +51,14 @@
       }
       currItem.isEditting = false;
 
-      if (isCurrPointerInDeskTop()) {
-        const folderIcon = DeskTopIcon.deskTopIconList.find(
-          (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
-        );
-        if (folderIcon) {
-          folderIcon.displayName = currItem.name;
-        }
-      }
+      // if (isCurrPointerInDeskTop()) {
+      //   const folderIcon = DeskTopIcon.deskTopIconList.find(
+      //     (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
+      //   );
+      //   if (folderIcon) {
+      //     folderIcon.displayName = currItem.name;
+      //   }
+      // }
     }
   };
 
@@ -93,12 +93,12 @@
                 }
                 const currItem = props.item;
                 const originName = currItem.name;
-                if (isCurrPointerInDeskTop()) {
-                  const folderIcon = DeskTopIcon.deskTopIconList.find(
-                    (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
-                  );
-                  folderIcon?.removeDeskTopIcon();
-                }
+                // if (isCurrPointerInDeskTop()) {
+                //   const folderIcon = DeskTopIcon.deskTopIconList.find(
+                //     (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
+                //   );
+                //   folderIcon?.removeDeskTopIcon();
+                // }
               },
             },
             {

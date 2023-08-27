@@ -4,7 +4,7 @@ import { currPointer } from '../../store';
 import { matchUnequalCount } from '../../hooks';
 import { isFolder } from 'model-core';
 import { getDesktopPointer } from 'model-core';
-import { DeskTopIcon } from '@/app';
+import { DeskTopIcon, deskTopIconList } from '@/app';
 
 export default {
   commandName: 'rm',
@@ -29,7 +29,7 @@ export default {
         currPointer.value?.removeFolder(folderName);
 
         if (currPointer.value === getDesktopPointer()) {
-          DeskTopIcon.deskTopIconList
+          deskTopIconList.value
             .find((item) => item.displayName === folderName)
             ?.removeDeskTopIcon();
         }

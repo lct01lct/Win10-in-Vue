@@ -1,14 +1,13 @@
-import { ShortCutOption, WinApp, maxAppHeight, registeredAppList } from '..';
+import { WinApp, checkAppIsFileApp, checkAppisFolderApp, maxAppHeight } from '..';
 import { Component } from 'vue';
 import {
   DESKTOP_ICON_MARGINX,
   DESKTOP_ICON_MARGINY,
   DESKTOP_ICON_PADDING_TOP,
   DESKTOP_ICON_SIZE,
-} from './view-config';
-import fileFullIcon from '@/system-app/folder/img/file-full.png';
-import { folderAppName, notepadAppName } from '@/system-app';
-import { Folder, InitFileOpt, createFile, deskTopData } from 'model-core';
+} from './config';
+import { getNewlyPosIdx } from './utils';
+import { appDeskTopIconConfigList, unReactiveDeskTopList, deskTopIconList } from './data';
 
 export interface DeskTopIconItem {
   appInstance: WinApp;
@@ -19,7 +18,7 @@ export interface DeskTopIconItem {
   comp: Component;
 }
 
-interface DeskTopIconOpt {
+export interface DeskTopIconOpt {
   reference: WinApp;
   displayName: string;
   icon: string;
@@ -27,7 +26,7 @@ interface DeskTopIconOpt {
 }
 export class DeskTopIcon {
   displayName: string = '';
-  posIdx: number;
+  posIdx: number = 0;
   isFocus = false;
   isEditting = false;
   reference: WinApp;
@@ -36,52 +35,26 @@ export class DeskTopIcon {
   constructor(option: DeskTopIconOpt) {
     this.displayName = option.displayName;
     this.reference = option.reference;
-    this.posIdx =
-      (option.posIdx && DeskTopIcon.resolvePosIdx(option.posIdx)) || DeskTopIcon.getNewlyPosIdx();
     this.icon = option.icon;
+    appDeskTopIconConfigList.push(this);
+    unReactiveDeskTopList.push(this);
 
-    return reactive(this) as DeskTopIcon;
-  }
-
-  static isFocusIcons = computed(() => DeskTopIcon.deskTopIconList.filter((item) => item.isFocus));
-  static deskTopIconList: DeskTopIcon[] = reactive([]);
-  static DeskTopComponentMap = reactive(new Map<DeskTopIcon, Component>());
-
-  addNewDeskTopIcon(Component: Component) {
-    DeskTopIcon.deskTopIconList.push(this);
-    DeskTopIcon.DeskTopComponentMap.set(this, Component);
+    this.posIdx = (option.posIdx && DeskTopIcon.resolvePosIdx(option.posIdx)) || getNewlyPosIdx();
   }
 
   removeDeskTopIcon() {
-    const index = DeskTopIcon.deskTopIconList.findIndex((item) => item === this);
-    if (index > -1) {
-      const component = DeskTopIcon.DeskTopComponentMap.get(this);
-      DeskTopIcon.DeskTopComponentMap.delete(this);
-      return {
-        desktopIcon: DeskTopIcon.deskTopIconList.splice(index, 1),
-        component: component,
-      };
-    }
-  }
-
-  static getNewlyPosIdx(): number {
-    const nextIdx: number[] = [];
-    const iconList = Array(...DeskTopIcon.deskTopIconList).sort((a, b) => a.posIdx - b.posIdx);
-
-    for (let icon of iconList) {
-      const index = nextIdx.indexOf(icon.posIdx);
-      if (index === -1) {
-        nextIdx.push(icon.posIdx + 1);
-      } else if (index > -1) {
-        nextIdx[index] = icon.posIdx + 1;
+    if (!checkAppisFolderApp(this.reference) && !checkAppIsFileApp(this.reference)) {
+      const index = appDeskTopIconConfigList.findIndex((item) => item === this);
+      const unReactiveIndex = unReactiveDeskTopList.findIndex((item) => item === this);
+      if (index > -1 && unReactiveIndex > -1) {
+        appDeskTopIconConfigList.splice(index, 1);
+        appDeskTopIconConfigList.splice(unReactiveIndex, 1);
       }
     }
-
-    return DeskTopIcon.deskTopIconList.length ? Math.min(...nextIdx) : 1;
   }
 
   static resetDeskTopIcon() {
-    DeskTopIcon.deskTopIconList.forEach((item) => {
+    deskTopIconList.value.forEach((item) => {
       item.isEditting = false;
       item.isFocus = false;
     });
@@ -106,7 +79,7 @@ export class DeskTopIcon {
 
   private static resolvePosIdx(posIdx: number) {
     let currIdx = posIdx;
-    const arr = DeskTopIcon.deskTopIconList.sort((a, b) => a.posIdx - b.posIdx);
+    const arr = unReactiveDeskTopList.sort((a, b) => a.posIdx - b.posIdx);
 
     for (let item of arr) {
       if (item.posIdx === currIdx) {

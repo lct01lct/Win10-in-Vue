@@ -11,7 +11,7 @@ import { currPointer, clearSelectedFoldersAndFiles, isCurrPointerInDeskTop } fro
 import { checkAppisFolderApp, registeredAppList } from '@/app';
 import fileFullIcon from '@/system-app/folder/img/file-full.png';
 import { InitFileOpt, createFile, defaultFileNameMap } from 'model-core';
-import { notepadApp } from '@/system-app/notepad';
+import { notepadApp } from '@/system-app';
 
 export const { open: openWrapperContextMenu } = createContextMenu();
 
@@ -133,6 +133,6 @@ export const addFileInFolderApp = (fileOption: InitFileOpt) => {
   const newFile = createFile(fileOption, currPointer.value);
 
   if (isCurrPointerInDeskTop()) {
-    notepadApp.createShortcut(newFile.defaultIcon, newFile.fullName);
+    // notepadApp.createShortcut(newFile.defaultIcon, newFile.fullName);
   }
 };

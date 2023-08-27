@@ -15,13 +15,14 @@
   import RtfIcon from '@/assets/images/file/rtf.png';
   import { settingApp, createNewFileIconInDeskTop, addFolderInDeskTop } from '@/system-app';
   import { Folder } from 'model-core';
+  import { deskTopIconList, DeskTopIconVue } from '@/app';
 
   const reset = () => {
     DeskTopIcon.resetDeskTopIcon();
 
-    deskTopIconVueRefs.value.forEach((item) => {
-      item.deskTopIconVueRef.onTextareaEnter();
-    });
+    // deskTopIconVueRefs.value.forEach((item) => {
+    //   item.deskTopIconVueRef.onTextareaEnter();
+    // });
   };
 
   const userStore = useUserStore();
@@ -171,9 +172,7 @@
     :style="wallpaperStyle"
     @contextmenu.stop="onDeskTopContextMenu"
   >
-    <template v-for="comp in DeskTopIcon.DeskTopComponentMap.values()" :key="comp">
-      <component :is="comp" ref="deskTopIconVueRefs"></component>
-    </template>
+    <DeskTopIconVue v-for="item in deskTopIconList" :desk-top-icon="item"></DeskTopIconVue>
   </div>
 </template>
 

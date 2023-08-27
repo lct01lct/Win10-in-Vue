@@ -1,7 +1,7 @@
 import { BaseApp } from './base/baseApp';
-import DesktopIconVue from './base/desktop-icon.vue';
+import DesktopIconVue from './desktop-icon.vue';
 import type { BaseAppContructorOpt } from './base/baseApp';
-import { DeskTopIcon } from './base/desktop-icon';
+import { DeskTopIcon } from './desktop-icon';
 import { Component } from 'vue';
 import { pinyin } from 'pinyin-pro';
 import { AppOrigin } from './types';
@@ -49,21 +49,6 @@ export class WinApp extends BaseApp {
       icon: appIcon,
       posIdx: option?.posIdx,
     });
-
-    deskTopIcon.addNewDeskTopIcon(
-      markRaw({
-        setup(props, { expose }) {
-          const deskTopIconVueRef = ref();
-
-          expose({ deskTopIconVueRef });
-          return () =>
-            h(DesktopIconVue, {
-              deskTopIcon,
-              ref: deskTopIconVueRef,
-            });
-        },
-      })
-    );
 
     return deskTopIcon;
   }

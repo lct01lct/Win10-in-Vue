@@ -4,8 +4,8 @@
   import { DeskTopIcon } from './desktop-icon';
   import { DragBindingValue } from 'utils';
   import { openMenu } from './desktop-icon-contextmenu';
-  import EdgeIcon from './img/contextmenu/edge.png';
-  import ChromeIcon from './img/contextmenu/chrome.png';
+  import EdgeIcon from './img/edge.png';
+  import ChromeIcon from './img/chrome.png';
   import {
     deskTopData,
     isFolder,
@@ -20,7 +20,7 @@
     DESKTOP_ICON_MARGINY,
     DESKTOP_ICON_PADDING_TOP,
     DESKTOP_ICON_SIZE,
-  } from './view-config';
+  } from './config';
 
   const props = defineProps<{
     deskTopIcon: DeskTopIcon;

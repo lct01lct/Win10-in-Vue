@@ -16,6 +16,8 @@ export const folderApp = new FolderApp({
   isFromSystem: true,
 });
 
+export { fileFullIcon };
+
 (function init() {
   deskTopData.children.forEach((item: { name: string }) => {
     folderApp.createShortcut(fileFullIcon, item.name);
