@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { checkAppisFolderApp, maxAppHeight, checkAppIsFileApp } from '../.';
+  import { checkAppIsFolderApp, maxAppHeight, checkAppIsFileApp } from '../.';
   import { FolderApp } from '@/system-app';
   import { DeskTopIcon } from './desktop-icon';
   import { DragBindingValue } from 'utils';
@@ -77,7 +77,7 @@
     });
 
     // reRender folder
-    if (appInstance._isRender && checkAppisFolderApp(appInstance)) {
+    if (appInstance._isRender && checkAppIsFolderApp(appInstance)) {
       (appInstance as FolderApp).init?.();
     }
 
@@ -114,7 +114,7 @@
                 const appInstance = props.deskTopIcon.reference;
 
                 if (appInstance) {
-                  if (checkAppisFolderApp(appInstance)) {
+                  if (checkAppIsFolderApp(appInstance)) {
                     const folderNode = deskTopData.children.find((item) => {
                       return item.name === props.deskTopIcon.displayName;
                     });
@@ -185,7 +185,7 @@
     if (props.deskTopIcon.isEditting) {
       const originName = props.deskTopIcon.displayName;
 
-      if (checkAppisFolderApp(props.deskTopIcon.reference)) {
+      if (checkAppIsFolderApp(props.deskTopIcon.reference)) {
         const oldFolder = deskTopData.children.find(
           (item) => isFolder(item) && item.name === originName
         );

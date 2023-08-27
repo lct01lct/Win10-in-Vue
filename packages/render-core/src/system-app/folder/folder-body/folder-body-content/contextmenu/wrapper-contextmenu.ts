@@ -7,11 +7,8 @@ import WordIcon from '@/assets/images/file/word.png';
 import ExcelIcon from '@/assets/images/file/excel.png';
 import PptIcon from '@/assets/images/file/ppt.png';
 import RtfIcon from '@/assets/images/file/rtf.png';
-import { currPointer, clearSelectedFoldersAndFiles, isCurrPointerInDeskTop } from '../../../folder';
-import { checkAppisFolderApp, registeredAppList } from '@/app';
-import fileFullIcon from '@/system-app/folder/img/file-full.png';
+import { currPointer, clearSelectedFoldersAndFiles } from '../../../folder';
 import { InitFileOpt, createFile, defaultFileNameMap } from 'model-core';
-import { notepadApp } from '@/system-app';
 
 export const { open: openWrapperContextMenu } = createContextMenu();
 
@@ -71,14 +68,6 @@ export const wrapperContextmenuOptions: ContextMenuProps['options'] = [
                 clearSelectedFoldersAndFiles();
                 newFolder.isEditting = true;
                 newFolder.isFocus = true;
-
-                if (isCurrPointerInDeskTop()) {
-                  const folderApp = registeredAppList.find((item) => checkAppisFolderApp(item));
-
-                  if (folderApp) {
-                    folderApp.createShortcut(fileFullIcon, newFolder.name);
-                  }
-                }
               }
             },
             icon: FolderIcon,
@@ -131,8 +120,6 @@ export const wrapperContextmenuOptions: ContextMenuProps['options'] = [
 
 export const addFileInFolderApp = (fileOption: InitFileOpt) => {
   const newFile = createFile(fileOption, currPointer.value);
-
-  if (isCurrPointerInDeskTop()) {
-    // notepadApp.createShortcut(newFile.defaultIcon, newFile.fullName);
-  }
+  newFile.isEditting = true;
+  newFile.isEditting = true;
 };

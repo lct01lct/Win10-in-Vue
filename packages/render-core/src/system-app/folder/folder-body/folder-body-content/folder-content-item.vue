@@ -2,8 +2,7 @@
   import { Desc, Extension, Files, Folder, isFile, isFolder } from 'model-core';
   import { Icon } from '@/components';
   import { openPointerContextMenu } from './contextmenu/table-item-contextmenu';
-  import { clearSelectedFoldersAndFiles, isCurrPointerInDeskTop } from '../../folder';
-  import { checkAppisFolderApp, DeskTopIcon } from '@/app';
+  import { clearSelectedFoldersAndFiles } from '../../folder';
   import DocumentIcon from '@/assets/images/file/document.png';
   import WordIcon from '@/assets/images/file/word.png';
   import ExcelIcon from '@/assets/images/file/excel.png';
@@ -43,22 +42,12 @@
   const onTextareaEnter = () => {
     if (props.item.isEditting) {
       const currItem = props.item;
-      const originName = currItem.name;
       if (isFolder(currItem)) {
         currItem.name = folderOrFileTempName.value;
       } else {
         currItem.fullName = folderOrFileTempName.value;
       }
       currItem.isEditting = false;
-
-      // if (isCurrPointerInDeskTop()) {
-      //   const folderIcon = DeskTopIcon.deskTopIconList.find(
-      //     (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
-      //   );
-      //   if (folderIcon) {
-      //     folderIcon.displayName = currItem.name;
-      //   }
-      // }
     }
   };
 
@@ -95,7 +84,7 @@
                 const originName = currItem.name;
                 // if (isCurrPointerInDeskTop()) {
                 //   const folderIcon = DeskTopIcon.deskTopIconList.find(
-                //     (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
+                //     (item) => checkAppIsFolderApp(item.reference) && item.displayName === originName
                 //   );
                 //   folderIcon?.removeDeskTopIcon();
                 // }

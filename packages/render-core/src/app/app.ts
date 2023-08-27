@@ -39,7 +39,7 @@ export class WinApp extends BaseApp {
   createShortcut(appIcon: string, displayName: string, option?: ShortCutOption) {
     this.displayName = displayName;
 
-    if (checkAppisFolderApp(this) || checkAppIsFileApp(this)) {
+    if (checkAppIsFolderApp(this) || checkAppIsFileApp(this)) {
       throw Error('FolderApp or FileApp cannot create shortcut');
     }
     const deskTopIcon = new DeskTopIcon({
@@ -80,7 +80,7 @@ export const checkAppisNotFolderApp = (app: WinApp, fn?: Function) => {
   return isFolderApp;
 };
 
-export const checkAppisFolderApp = (app: WinApp, fn?: Function) => {
+export const checkAppIsFolderApp = (app: WinApp, fn?: Function) => {
   const isFolderApp = app.name === '文件夹';
   if (isFolderApp) {
     fn?.();

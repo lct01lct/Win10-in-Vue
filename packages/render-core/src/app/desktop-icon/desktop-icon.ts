@@ -1,4 +1,4 @@
-import { WinApp, checkAppIsFileApp, checkAppisFolderApp, maxAppHeight } from '..';
+import { WinApp, checkAppIsFileApp, checkAppIsFolderApp, maxAppHeight } from '..';
 import { Component } from 'vue';
 import {
   DESKTOP_ICON_MARGINX,
@@ -13,7 +13,7 @@ import {
   deskTopIconList,
   folderAndFileDeskTopIconList,
 } from './data';
-import { Files, Folder, InitFileOpt, createFile, deskTopData, isFile } from 'model-core';
+import { Files, Folder, InitFileOpt, createFile, deskTopData, isFile, isFolder } from 'model-core';
 import { getRandomId } from 'utils';
 
 export interface DeskTopIconItem {
@@ -43,6 +43,8 @@ export class DeskTopIcon {
   originFileOrFolder?: Files | Folder;
 
   constructor(option: DeskTopIconOpt) {
+    const _self = reactive(this) as DeskTopIcon;
+
     this.displayName = option.displayName;
     this.reference = option.reference;
     this.icon = option.icon;
@@ -50,19 +52,35 @@ export class DeskTopIcon {
     this.originFileOrFolder = option.originFileOrFolder;
     unReactiveDeskTopList.push(this);
 
-    if (!checkAppIsFileApp(this.reference) && !checkAppisFolderApp(this.reference)) {
+    if (!checkAppIsFileApp(this.reference) && !checkAppIsFolderApp(this.reference)) {
       appDeskTopIconConfigList.push(this);
     }
 
-    return reactive(this) as DeskTopIcon;
+    if (checkAppIsFolderApp(_self.reference) && isFolder(_self.originFileOrFolder)) {
+      watch(
+        () => _self.originFileOrFolder?.name,
+        (val) => {
+          if (val) _self.displayName = val;
+        }
+      );
+    } else if (checkAppIsFileApp(_self.reference) && isFile(_self.originFileOrFolder)) {
+      watch(
+        () => (_self.originFileOrFolder as Files).fullName,
+        (val) => {
+          if (val) _self.displayName = val;
+        }
+      );
+    }
+
+    return _self;
   }
 
   removeDeskTopIcon() {
-    if (!checkAppisFolderApp(this.reference) && !checkAppIsFileApp(this.reference)) {
+    if (!checkAppIsFolderApp(this.reference) && !checkAppIsFileApp(this.reference)) {
       const index = appDeskTopIconConfigList.findIndex((item) => item === this);
-      const unReactiveIndex = unReactiveDeskTopList.findIndex(
-        (item) => item.displayName === this.displayName
-      );
+      const unReactiveIndex = unReactiveDeskTopList.findIndex((item) => {
+        return item.displayName === this.displayName;
+      });
 
       if (index > -1 && unReactiveIndex > -1) {
         appDeskTopIconConfigList.splice(index, 1);

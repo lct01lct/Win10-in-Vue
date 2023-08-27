@@ -1,4 +1,4 @@
-import { checkAppisFolderApp, deskTopIconList } from '@/app';
+import { checkAppIsFolderApp, deskTopIconList } from '@/app';
 import { Pointer } from './types';
 import { Files, Folder } from 'model-core';
 
@@ -32,7 +32,7 @@ export const renamePointer = (item: Files | Folder, newName: string) => {
 
     if (isCurrPointerInDeskTop()) {
       const folderIcon = deskTopIconList.value.find(
-        (item) => checkAppisFolderApp(item.reference) && item.displayName === originName
+        (item) => checkAppIsFolderApp(item.reference) && item.displayName === originName
       );
       if (folderIcon) {
         folderIcon.displayName = newName;

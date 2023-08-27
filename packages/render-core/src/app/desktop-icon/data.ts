@@ -1,7 +1,7 @@
 import { deskTopData, isFile } from 'model-core';
 import { DeskTopIcon, DeskTopIconOpt } from './desktop-icon';
 import fileFullIcon from '@/system-app/folder/img/file-full.png';
-import { checkAppIsFileApp, checkAppisFolderApp, registeredAppList } from '..';
+import { checkAppIsFileApp, checkAppIsFolderApp, registeredAppList } from '..';
 
 export const appDeskTopIconConfigList: DeskTopIcon[] = reactive([]);
 
@@ -25,7 +25,7 @@ export const folderAndFileDeskTopIconList = computed(() => {
       const opt: DeskTopIconOpt = {
         displayName: item.name,
         icon: fileFullIcon,
-        reference: registeredAppList.find((item) => checkAppisFolderApp(item))!,
+        reference: registeredAppList.find((item) => checkAppIsFolderApp(item))!,
         originFileOrFolder: item,
       };
 
