@@ -160,6 +160,7 @@
         class="app-name-textarea"
         v-model="folderOrFileTempName"
         @enter="onTextareaEnter"
+        :autoFocus="(str: string) => [0, str.lastIndexOf('.')]"
       ></win-textarea>
     </td>
     <td class="folder-content-table-cell" :style="{ width: headerItemsConfig[1].width + 'px' }">

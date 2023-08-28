@@ -14,7 +14,7 @@
     isFile,
     CustomFileList,
   } from 'model-core';
-  import { R_RemoveDownloadedApp } from 'model-core';
+  import { R_RemoveDownloadedApp, getFileExtension } from 'model-core';
   import {
     DESKTOP_ICON_MARGINX,
     DESKTOP_ICON_MARGINY,
@@ -249,6 +249,7 @@
         class="app-name-textarea"
         v-model="appTempName"
         @enter="onTextareaEnter"
+        :autoFocus="(str: string) => [0, str.lastIndexOf('.')]"
       ></win-textarea>
     </div>
     <span v-else class="app-name" :class="[deskTopIcon.isFocus ? '' : 'omit']">

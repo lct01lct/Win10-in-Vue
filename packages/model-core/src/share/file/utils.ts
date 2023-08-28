@@ -108,3 +108,7 @@ export const isFolder = (data: any): data is Folder => {
 export const isDesc = (data: any): data is Desc => {
   return data instanceof Desc;
 };
+
+export const getFileExtension = (name: string) => {
+  return name.substring(name.lastIndexOf('.') + 1);
+};

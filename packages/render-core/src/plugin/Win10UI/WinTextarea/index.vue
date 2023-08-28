@@ -1,9 +1,17 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
 
-  const props = defineProps<{
-    modelValue: string;
-  }>();
+  type AutoFocusFn = (val: string) => [number, number];
+
+  const props = withDefaults(
+    defineProps<{
+      modelValue: string;
+      autoFocus?: boolean | AutoFocusFn;
+    }>(),
+    {
+      autoFocus: true,
+    }
+  );
 
   const emits = defineEmits<{
     'update:modelValue': [value: string];
@@ -25,7 +33,14 @@
   });
 
   const onFocus = (e: Event) => {
-    (e.target as HTMLTextAreaElement).select();
+    const oTextArea = e.target as HTMLTextAreaElement;
+    if (props.autoFocus === true) {
+      oTextArea.select();
+    } else if (typeof props.autoFocus === 'function') {
+      const [start, end] = props.autoFocus(value.value);
+      oTextArea.selectionStart = start;
+      oTextArea.selectionEnd = end;
+    }
   };
 
   const onEnter = (e: KeyboardEvent) => {
