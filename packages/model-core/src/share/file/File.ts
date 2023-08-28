@@ -64,7 +64,7 @@ export class Files implements CustomFile {
       }
     };
 
-    if (!newName.trim()) {
+    if (newName.trim()) {
       newName = resolveName(newName.trim() || '新建文件');
     }
     this._name = newName;

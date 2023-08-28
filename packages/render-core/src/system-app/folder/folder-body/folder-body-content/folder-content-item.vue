@@ -80,14 +80,6 @@
                 } else {
                   props.item.parent?.removeFolder(props.item);
                 }
-                const currItem = props.item;
-                const originName = currItem.name;
-                // if (isCurrPointerInDeskTop()) {
-                //   const folderIcon = DeskTopIcon.deskTopIconList.find(
-                //     (item) => checkAppIsFolderApp(item.reference) && item.displayName === originName
-                //   );
-                //   folderIcon?.removeDeskTopIcon();
-                // }
               },
             },
             {
