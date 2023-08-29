@@ -35,12 +35,22 @@ export interface DeskTopIconOpt {
 export class DeskTopIcon {
   id = getRandomId();
   displayName: string = '';
-  posIdx: number = 0;
+  private _posIdx: number = 0;
   isFocus = false;
   isEditting = false;
   reference: WinApp;
   icon: string;
   originFileOrFolder?: Files | Folder;
+
+  set posIdx(idx: number) {
+    if (idx < 0) return;
+    if (deskTopIconList.value.find((item) => item.posIdx === idx)) return;
+    this._posIdx = idx;
+  }
+
+  get posIdx() {
+    return this._posIdx;
+  }
 
   constructor(option: DeskTopIconOpt) {
     const _self = reactive(this) as DeskTopIcon;
@@ -48,7 +58,7 @@ export class DeskTopIcon {
     this.displayName = option.displayName;
     this.reference = option.reference;
     this.icon = option.icon;
-    this.posIdx = (option.posIdx && DeskTopIcon.resolvePosIdx(option.posIdx)) || getNewlyPosIdx();
+    this._posIdx = (option.posIdx && DeskTopIcon.resolvePosIdx(option.posIdx)) || getNewlyPosIdx();
     this.originFileOrFolder = option.originFileOrFolder;
     unReactiveDeskTopList.push(this);
 

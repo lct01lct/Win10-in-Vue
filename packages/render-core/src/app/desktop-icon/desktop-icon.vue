@@ -14,7 +14,7 @@
     isFile,
     CustomFileList,
   } from 'model-core';
-  import { R_RemoveDownloadedApp, getFileExtension } from 'model-core';
+  import { R_RemoveDownloadedApp } from 'model-core';
   import {
     DESKTOP_ICON_MARGINX,
     DESKTOP_ICON_MARGINY,
@@ -166,7 +166,14 @@
     }
   };
 
-  const vDragOpt: DragBindingValue = {};
+  const vDragOpt: DragBindingValue = {
+    onMouseupCb({ e }) {
+      props.deskTopIcon.posIdx = DeskTopIcon.computePosIdx(e);
+      const newPos = getPosition();
+
+      return { x: parseInt(newPos.left), y: parseInt(newPos.top) };
+    },
+  };
 
   const appTempName = ref(props.deskTopIcon.displayName);
 

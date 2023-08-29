@@ -6,6 +6,11 @@ export interface DragBindingValue {
   tar?: string;
   movedFn?: (x: number, y: number) => void;
   onMousedownCb?: (tar: HTMLElement) => void;
+  onMouseupCb?: (mouseupOption: {
+    pageX: number;
+    pageY: number;
+    e: MouseEvent;
+  }) => void | { x: number; y: number };
 }
 
 const directive: Directive = {
@@ -34,8 +39,20 @@ const directive: Directive = {
         tar.style.top = tarPos1.top + movePx.y + 'px';
       };
 
-      const onMouseUp = () => {
-        binding.value?.movedFn?.(tarPos1.left + movePx.x, tarPos1.top + movePx.y);
+      const onMouseUp = (e: MouseEvent) => {
+        const newPos = binding.value?.onMouseupCb?.({
+          pageX: e.pageX,
+          pageY: e.pageY,
+          e,
+        });
+
+        if (newPos) {
+          tar.style.left = newPos.x + 'px';
+          tar.style.top = newPos.y + 'px';
+          binding.value?.movedFn?.(newPos.x, newPos.y);
+        } else {
+          binding.value?.movedFn?.(tarPos1.left + movePx.x, tarPos1.top + movePx.y);
+        }
 
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
