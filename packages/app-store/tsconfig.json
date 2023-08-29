@@ -5,6 +5,7 @@
     "module": "ESNext",
     "declaration": true,
     "declarationDir": "dist/types",
+    "experimentalDecorators": true,
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",

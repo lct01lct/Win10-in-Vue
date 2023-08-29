@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "main": "./dist/render-core.js",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/types/app/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build --emptyOutDir ",
