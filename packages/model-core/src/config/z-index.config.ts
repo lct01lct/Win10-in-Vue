@@ -1,5 +1,7 @@
 type ZIndexType = 'messageBox';
 
+export const appBaseIndex = 1000;
+
 export const taskBarZIndex = 9999; // 任务栏
 
 export const taskBarContentZIndex = 9998; // 任务栏中触发的 popover 内容
