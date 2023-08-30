@@ -1,0 +1,18 @@
+{
+  "name": "win-app",
+  "version": "1.0.0",
+  "author": "01_lct_01",
+  "description": "Create a custom windows application in vue",
+  "type": "module",
+  "main": "./dist/render-core.js",
+  "types": "./dist/types/app/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "win",
+    "vue",
+    "win-application"
+  ],
+  "license": "ISC"
+}
