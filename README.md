@@ -73,3 +73,29 @@ const app = WinApp.install(appOrigin);
 // 创建桌面上的快捷方式
 app.createShortcut('icon', 'shortcut-name');
 ```
+
+# 3 运行
+
+此项目是一个前后端分离的项目
+
+后端文档：https://github.com/lct01lct/win-api
+
+### 3.1 运行 render-core
+
+```
+pnpm i
+
+pnpm dev
+```
+
+### 3.2 运行 app-store
+
+```
+pnpm i
+
+pnpm build:app-core
+
+pnpm build:app-store
+
+pnpm dev:play
+```
